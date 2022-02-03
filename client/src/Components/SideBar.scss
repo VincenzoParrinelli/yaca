@@ -1,0 +1,45 @@
+.SideBar {
+    height: 100%; 
+    width: 140px; 
+    position: fixed; 
+    z-index: 1; 
+    top: 0; 
+    left: 0;
+    background-color: #111; 
+    overflow-x: hidden;
+    
+    .icons {
+        text-align: center;
+        
+        .user-icon {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            width: 3.5em;
+            height: 3.5em;
+            margin-top: 20px;
+            border-radius: 60px;
+            background-color: grey;
+            cursor: pointer;
+        }
+    }
+
+    .separator-wrapper {
+        text-align: center;
+
+        .separator { 
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            width: 2.6em;
+            height: 0.2em;
+            bottom: 5px;
+            border-radius: 60px;
+            background-color: rgb(97, 96, 96);
+        }
+    }
+
+}

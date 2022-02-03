@@ -1,0 +1,338 @@
+.Login {
+    height: 100vh;
+    width: 100vw;
+    background-image: url(../Assets/Images/login-form-page-background.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: "arial";
+
+    .logo {
+        display: flex;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 0;
+        width: 18vw;
+        height: 18vh;
+        box-shadow: 10px, 10px, 30px, 10px;
+    }
+
+
+    .login-form-container {
+        display: flex;
+
+        .login-form1 {
+            display: flex;
+            margin: auto;
+            width: 70vh;
+            height: 80vh;
+            transform: translate(0, 0);
+            background-color: white;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 0;
+            flex-direction: column;   
+            margin-left: 160px;   
+            box-shadow: -10px 10px 30px -20px;
+            background-image: url(../Assets/Images/login-form-background.jpg);
+            background-position: right;
+
+            .user-icon {
+                display: flex;
+                margin: auto;
+                margin-top: 66px;
+                width: 15vh;
+                height: 15vh;
+            }
+
+            .email, .password {
+                display: flex;
+                position: relative;
+                bottom: 100px;
+                width: 40vh;
+                height: 4vh;
+                border-radius: 16px;
+                margin-left: auto;
+                margin-right: auto;
+                transform: translate(0, 15px);
+                color: white;
+                background: transparent;
+                border-style: solid;
+                border-width: 1px;
+                border-color: rgb(224, 224, 224);
+                outline: none;
+                margin-bottom: 35px;
+                text-indent: 40px;
+                background: url(../Assets/Images/lock.png);
+                background-position: left;
+                background-size: 18px;
+                background-repeat: no-repeat;
+                background-position: 10px;
+                background-position-y: 5px;
+                opacity: 0.7;
+                font-size: 16px;
+                
+                &:focus {
+                    opacity: 1;
+                }
+            } 
+
+            .email {
+                background: url(../Assets/Images/email.png);
+                background-position: left;
+                background-size: 18px;
+                background-repeat: no-repeat;
+                background-position: 10px;
+                background-position-y: 6px;
+            }
+
+            .email-container {
+                font-size: 13px;
+
+                .email ~ span {
+                    color: white;
+                    transition:top .7s ease;
+                    position:absolute;
+                    top: 273.5px;
+                    left: 100px;
+                }
+    
+                .email:focus ~ span{
+                    font-size: 12px;
+                    top: 242px;
+                }
+            }
+
+            .password-container {
+                font-size: 13px;
+
+                .password ~ span {
+                    color: white;
+                    transition:top .7s ease;
+                    position:absolute;
+                    top: 341.5px;
+                    left: 99px;
+                }
+    
+                .password:focus ~ span{
+                    font-size: 12px;
+                    top: 312px;
+                }
+            }
+        
+            .submit {
+                display: flex;
+                position: relative;
+                bottom: 26vh;
+                border: none;
+                border-radius: 16px;
+                transform: translate(0, 120px);
+                width: 42vh;
+                height: 5vh;
+                margin-left: auto;
+                margin-right: auto;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                color: white;
+                font-weight: bolder;
+                letter-spacing: 2px;
+                background: url(../Assets/Images/login-icon.png);
+                background-position: left;
+                background-size: 25px;
+                background-repeat: no-repeat;
+                background-position: 18px;
+                background-position-y: 5.5px;
+                background-color: #0000ff;
+            }
+
+            .remember-me-container {
+                display: flex;
+                margin-left: 50px;
+
+                .remember-me-checkbox {
+                    width: 1.1em;
+                    height: 1.1em;
+                    position: relative;
+                    bottom: 23px;
+                    right: 8px;
+                    border-radius: 50%;
+                    border: 1px solid #ddd;
+                    appearance: none;
+                    -webkit-appearance: none;
+                    outline: none;
+                    
+
+                    &:active {
+                        background-color: white;
+                    }
+                }
+    
+                .remember-me-paragraph {
+                    position: relative;
+                    color: white;
+                    font-size: 12px;
+                    bottom: 32px;
+                }
+            }
+
+            .reset-password {
+                position: relative;
+                color: white;
+                margin-left: auto;
+                margin-right: auto;
+                left: 240px;
+                bottom: 60px;
+                font-size: 12px;
+                font-style: oblique;
+                opacity: 0.7;
+            }
+        }
+
+        .sign-up-form-container {
+
+            .sign-up-form {
+    
+                .back-arrow {
+                    position: relative;
+                    width: 4vh;
+                    top: -400px;
+                    left: 20px;
+                    opacity: 0.9;
+                    cursor: pointer;
+                }
+                
+                .email-sign-up-container {
+                    font-size: 13px;
+    
+                    .email-sign-up {
+                        display: flex;
+                        position: relative;
+                        bottom: 223px;
+                        width: 40vh;
+                        height: 4vh;
+                        border-radius: 16px;
+                        margin-left: auto;
+                        margin-right: auto;
+                        transform: translate(0, 15px);
+                        color: white;
+                        background: transparent;
+                        border-style: solid;
+                        border-width: 1px;
+                        border-color: rgb(224, 224, 224);
+                        outline: none;
+                        margin-bottom: 35px;
+                        text-indent: 40px;
+                        background: url(../Assets/Images/email.png);
+                        background-position: left;
+                        background-size: 18px;
+                        background-repeat: no-repeat;
+                        background-position: 10px;
+                        background-position-y: 6px;
+                        opacity: 0.7;
+                        font-size: 16px;
+                    }
+
+                    .email-sign-up ~ .email-sign-up-span {
+                        color: white;
+                        transition: top .7s ease;
+                        position: absolute;
+                        top: 274.5px;
+                        left: 100px;
+                    }
+    
+                    .email-sign-up:focus ~ .email-sign-up-span {
+                        font-size: 12px;
+                        top: 242px;
+                    }
+                }
+            }
+        }
+
+
+        .login-form2 {
+            display: flex;
+            position: relative;
+            margin: auto;
+            margin-right: 160px;    
+            width: 140vh;
+            height: 80vh;
+            background-color: white;
+            border-top-left-radius: 0;
+            border-top-right-radius: 8px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 8px;
+            flex-direction: column;
+            box-shadow: -15px 0 10px -10px white, 20px 15px 10px 1px, -15px 10px 10px 0;
+            background-image: url(../Assets/Images/login-form-background.jpg);
+
+            .welcome {
+                color: white;
+                position: relative;
+                right: 10vh;
+                bottom: 20vh;
+                margin-top: auto;
+                margin-left: auto;
+                font-weight: bolder;
+                font-size: 48px;
+                animation: 1.5s welcome-transition;
+            }
+
+            .not-a-member {
+                color: white;
+                position: relative;
+                right: 22vh;
+                bottom: 20vh;
+                margin-left: auto;
+                font-weight: bolder;
+                font-size: 12px;
+                opacity: 0.5;
+                animation: 1s welcome-transition;
+            }
+            
+            .sign-up {
+                color: white;
+                position: relative;
+                right: 11.4vh;
+                bottom: 25.21vh;
+                margin-left: auto;
+                font-weight: bolder;
+                font-size: 12px;
+                animation: 1s welcome-transition;
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    @keyframes welcome-transition {
+        0% {
+            transform: translate(-140px);
+        }
+
+        100% {
+            transform: translate(0);
+        }
+    }
+
+    @keyframes sign-up-form-open {
+        from {
+            transform: rotate3d(0, -1, 0, 90deg)
+         
+        }
+        to {
+            transform: rotate3d(0);
+        }
+    }
+
+    
+    @keyframes sign-up-form-close {
+        from {
+            transform: rotate3d(0);
+        }
+        to {
+            transform: rotate3d(0, -1, 0, 90deg)
+        }
+    } 
+}
