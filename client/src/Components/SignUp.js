@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch } from "react-redux"
+import { createUser } from '../Redux/userSlice';
 import backArrow from "../Assets/Images/back-arrow.png"
+import "./SignUp.scss"
 
 
 export default function SignUp(props) {
     const [signUpEmail, setSignUpEmail] = useState("")
     const emailSpanRef = useRef(null)
+    const dispatch = useDispatch()
 
     useEffect(() => {
 
@@ -22,7 +26,7 @@ export default function SignUp(props) {
 
     return (
 
-        <div className='sign-up-form-container' >
+        <div className='SignUp' >
 
             <div
                 className='sign-up-form'
@@ -50,7 +54,7 @@ export default function SignUp(props) {
 
                 </label>
 
-                <button className='submit'>SUBMIT</button>
+                <button className='submit' onClick={() => dispatch(createUser(signUpEmail))}>SUBMIT</button>
 
             </div>
         </div>

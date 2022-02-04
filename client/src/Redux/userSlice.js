@@ -1,13 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
 
 const initialState = {
-    email = "",
-    password = "",
-    isLogged = false,
+    email: "",
+    password: "",
+    isLogged: false,
 }
 
+export const createUser = createAsyncThunk(
+    "user/createUser",
+    async (email) => await axios.post("http://localhost:5000/user/createUser", {
+        email
+    }).then(() => {
+
+    }).catch(err => { console.error(err.message) })
+)
+
 export const userSlice = createSlice({
-    name: "userData",
+    name: "user",
 
     initialState,
 
@@ -20,7 +30,21 @@ export const userSlice = createSlice({
         login: state => {
 
         },
- 
+
+    },
+
+    extraReducers: {
+        [createUser.pending]: (state, action) => {
+
+        },
+
+        [createUser.fulfilled]: (state, action) => {
+
+        },
+
+        [createUser.rejected]: (state, action) => {
+
+        },
     }
 })
 
