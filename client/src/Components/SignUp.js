@@ -1,16 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from "react-redux"
-import { createUser } from '../Redux/userSlice';
+import { useDispatch, useSelector } from "react-redux"
+import { createUser, reset } from '../Redux/userSlice';
 import backArrow from "../Assets/Images/back-arrow.png"
+import loginIcon from "../Assets/Images/login-icon.png"
 import "./SignUp.scss"
+import EmailSent from './EmailSent.js';
 
 
 export default function SignUp(props) {
     const [signUpEmail, setSignUpEmail] = useState("")
     const emailSpanRef = useRef(null)
+    const emailInputRef = useRef(null)
+    const { emailSent, errors } = useSelector(state => state.user)
+
     const dispatch = useDispatch()
 
     useEffect(() => {
+
+        dispatch(reset())
+
+        if (emailSent) return
 
         if (signUpEmail) {
             emailSpanRef.current.style.top = "242px"
@@ -23,40 +32,68 @@ export default function SignUp(props) {
 
     }, [signUpEmail])
 
+    useEffect(() => {
+        if (emailSent) return
+
+        if (!errors.isValid || errors.isPresent) {
+            emailInputRef.current.style.borderColor = "red"
+            emailSpanRef.current.style.color = "red"
+        } else {
+            emailInputRef.current.style.borderColor = ""
+            emailSpanRef.current.style.color = ""
+        }
+    }, [errors])
 
     return (
 
         <div className='SignUp' >
 
-            <div
-                className='sign-up-form'
-            >
+            {emailSent ?
 
-                <img
-                    className='back-arrow'
-                    onClick={() => props.handleSignUpForm(true)}
-                    src={backArrow}
+                <EmailSent
+                    handleSignUpForm={props.handleSignUpForm}
                 />
 
-                <label className='email-sign-up-container'>
+                :
 
-                    <input
-                        type="email"
-                        className='email-sign-up'
-                        onChange={e => setSignUpEmail(e.target.value)}
+                <div
+                    className='sign-up-form'
+                >
+
+                    <img
+                        className='back-arrow'
+                        onClick={() => props.handleSignUpForm(true)}
+                        src={backArrow}
                     />
 
-                    <span
-                        ref={emailSpanRef}
-                        className='email-sign-up-span'
-                    > EMAIL
-                    </span>
+                    <label className='email-sign-up-container'>
 
-                </label>
+                        <input
+                            ref={emailInputRef}
+                            type="email"
+                            className='email-sign-up'
+                            onChange={e => setSignUpEmail(e.target.value)}
+                        />
 
-                <button className='submit' onClick={() => dispatch(createUser(signUpEmail))}>SUBMIT</button>
+                        <span
+                            ref={emailSpanRef}
+                            className='email-sign-up-span'
+                        > EMAIL {
+                                !errors.isValid ? <span>- please input a valid email</span> :
+                                    errors.isPresent && <span>- email already present</span>
+                            }
+                        </span>
 
-            </div>
+                    </label>
+
+                    <img className='login-icon' src={loginIcon} />
+
+                    <button className='submit' id='submit-sign-up' onClick={() => dispatch(createUser(signUpEmail))}>SUBMIT</button>
+
+                </div>
+
+            }
+
         </div>
 
     )

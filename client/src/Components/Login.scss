@@ -34,16 +34,20 @@
             border-bottom-right-radius: 0;
             flex-direction: column;   
             margin-left: 160px;   
-            box-shadow: -10px 10px 30px -20px;
+            box-shadow: 0px 20px 10px 15px;
             background-image: url(../Assets/Images/login-form-background.jpg);
             background-position: right;
 
-            .user-icon {
+            .icon {
                 display: flex;
                 margin: auto;
                 margin-top: 66px;
                 width: 15vh;
                 height: 15vh;
+            }
+
+            #icon-email {
+                opacity: 0.9;
             }
 
             .email, .password {
@@ -120,13 +124,22 @@
                     top: 312px;
                 }
             }
+
+            .login-icon {
+                position: absolute;
+                width: 3.8vh;
+                height: 3.8vh;
+                left: 65px;
+                bottom: 128px;
+                z-index: 1;
+            }
         
             .submit {
                 display: flex;
                 position: relative;
                 bottom: 26vh;
                 border: none;
-                border-radius: 16px;
+                border-radius: 20px;
                 transform: translate(0, 120px);
                 width: 42vh;
                 height: 5vh;
@@ -138,12 +151,6 @@
                 color: white;
                 font-weight: bolder;
                 letter-spacing: 2px;
-                background: url(../Assets/Images/login-icon.png);
-                background-position: left;
-                background-size: 25px;
-                background-repeat: no-repeat;
-                background-position: 18px;
-                background-position-y: 5.5px;
                 background-color: #0000ff;
             }
 

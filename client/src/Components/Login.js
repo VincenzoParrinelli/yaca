@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from "react-redux"
+import { reset } from '../Redux/userSlice';
 import "./Login.scss"
 import logo from "../Assets/Images/logo.png"
+import loginIcon from "../Assets/Images/login-icon.png"
 import userIcon from "../Assets/Images/user-icon.png"
+import emailIcon from "../Assets/Images/email.png"
 import SignUpForm from "./SignUp"
 
 export default function Login() {
@@ -13,11 +17,9 @@ export default function Login() {
     const loginRef = useRef(null)
     const emailSpanLoginRef = useRef(null)
     const passwordSpanRef = useRef(null)
+    const { emailSent } = useSelector(state => state.user)
 
-
-    //The back parameter is a flag that tells this function if we want to swap from
-    //signup to login form
-
+    const dispatch = useDispatch()
 
     useEffect(() => {
 
@@ -45,8 +47,10 @@ export default function Login() {
 
     }, [password])
 
-    const handleSignUpForm = back => {
+    //The back parameter is a flag that tells this function if we want to swap from
+    //signup to login form
 
+    const handleSignUpForm = back => {
         setBack(back)
 
         if (openSignUp && !back) return
@@ -54,9 +58,14 @@ export default function Login() {
         loginRef.current.style.animation = "sign-up-form-close 0.4s"
 
         setLoginEmail("")
+
     }
 
     const openSignUpForm = () => {
+
+        //removes errors and emailSent flag while swapping form
+        dispatch(reset())
+
         loginRef.current.style.animation = "sign-up-form-open 0.4s"
 
         if (!back) {
@@ -81,7 +90,14 @@ export default function Login() {
                     value={openSignUp}
                 >
 
-                    <img className='user-icon' src={userIcon} />
+                    {emailSent ?
+
+                        <img className='icon' id='icon-email' src={emailIcon} />
+
+                        :
+
+                        <img className='icon' id='icon-user' src={userIcon} />
+                    }
 
                     { //swap form to signup on user click
 
@@ -120,6 +136,8 @@ export default function Login() {
 
                                 </label>
 
+
+                                <img className='login-icon' src={loginIcon} />
 
                                 <button className='submit'>LOGIN</button>
 

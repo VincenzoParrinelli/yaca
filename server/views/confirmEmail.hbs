@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <style>
+        body {
+            display: table;
+            position: relative;
+            margin: auto;
+        }
+
+        .confirmEmail {
+            font-family: "arial";
+            position: relative;
+            top: 20px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .confirm-button {
+            display: flex;
+            margin: auto;
+            margin-top: 20px;
+            width: 150vh;
+            height: 15vh;
+            color: white;
+            background-color: #0000ff;
+            letter-spacing: 2px;
+            justify-content: center;
+            align-items: center;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="confirmEmail">
+        Hello: {{email}}, please click the button below to activate your account
+
+        <button class="confirm-button" <a href="http://localhost:3000/new_password/${id}">
+            Please set your password
+        </button>
+    </div>
+</body>
+
+</html>

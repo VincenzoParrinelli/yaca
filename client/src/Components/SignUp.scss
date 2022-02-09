@@ -1,7 +1,7 @@
 .SignUp {
 
     .sign-up-form {
-
+        
         .back-arrow {
             position: relative;
             width: 4vh;
@@ -10,7 +10,7 @@
             opacity: 0.9;
             cursor: pointer;
         }
-        
+
         .email-sign-up-container {
             font-size: 13px;
 
@@ -46,7 +46,7 @@
                 }
             }
 
-            .email-sign-up ~ .email-sign-up-span {
+            .email-sign-up~.email-sign-up-span {
                 color: white;
                 transition: top .7s ease;
                 position: absolute;
@@ -54,10 +54,14 @@
                 left: 100px;
             }
 
-            .email-sign-up:focus ~ .email-sign-up-span {
+            .email-sign-up:focus~.email-sign-up-span {
                 font-size: 12px;
                 top: 242px;
             }
         }
+    }
+
+    #submit-sign-up {
+        bottom: 33.8vh;
     }
 }
