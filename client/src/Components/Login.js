@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { reset } from '../Redux/userSlice';
+import { reset, login } from '../Redux/userSlice';
 import "./Login.scss"
 import logo from "../Assets/Images/logo.png"
 import loginIcon from "../Assets/Images/login-icon.png"
@@ -17,9 +18,18 @@ export default function Login() {
     const loginRef = useRef(null)
     const emailSpanLoginRef = useRef(null)
     const passwordSpanRef = useRef(null)
-    const { emailSent } = useSelector(state => state.user)
+    const { emailSent, isLogged } = useSelector(state => state.user)
 
+    const navigate = useNavigate()
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if(isLogged) {
+            navigate("/dashboard")
+        }
+    }, [isLogged])
+
+    console.log(isLogged)
 
     useEffect(() => {
 
@@ -139,7 +149,12 @@ export default function Login() {
 
                                 <img className='login-icon' src={loginIcon} />
 
-                                <button className='submit'>LOGIN</button>
+                                <button
+                                    className='submit'
+                                    onClick={() => dispatch(login({ loginEmail, password }))}>
+
+                                    LOGIN
+                                </button>
 
                                 <div className='remember-me-container'>
                                     <input type="checkbox" className='remember-me-checkbox'></input>

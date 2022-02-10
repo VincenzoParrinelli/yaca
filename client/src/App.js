@@ -1,8 +1,7 @@
 import "./App.scss"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./Components/Login"
-import SideBar from "./Components/SideBar"
-import Nav from "./Components/Nav"
+import Dashboard from "./Components/Dashboard"
 import NewPassword from "./Components/NewPassword"
 
 
@@ -13,6 +12,7 @@ export default function App() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/new_password/:id" element={<NewPassword />} />
+                <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
         </BrowserRouter>
     )

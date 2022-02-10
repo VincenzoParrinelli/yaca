@@ -37,9 +37,10 @@ export const activateAccount = createAsyncThunk(
 
 export const login = createAsyncThunk(
     "user/login",
-    async () => await axios.post("http://localhost:5000/user/login", {
+    async (data) => await axios.post("http://localhost:5000/user/login", 
+        data
+    ).then(data => {
 
-    }).then(data => {
         return data.data
     }).catch(err => { throw Error(err) })
 )
@@ -77,6 +78,13 @@ export const userSlice = createSlice({
 
         [activateAccount.fulfilled]: (state, action) => {
             state.errors = action.payload
+        },
+
+        [login.fulfilled]: (state, action) => {
+            state.user = action.payload.data
+            state.errors.isValid = action.payload.isValid
+            state.errors.isPresent = action.payload.isPresent
+            state.isLogged = action.payload.isLogged
         }
     }
 })
