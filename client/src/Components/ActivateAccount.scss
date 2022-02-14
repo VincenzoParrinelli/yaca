@@ -1,4 +1,4 @@
-.NewPassword {
+.ActivateAccount {
     height: 100vh;
     width: 100vw;
     background-image: url(../Assets/Images/login-form-page-background.jpg);
@@ -57,6 +57,27 @@
                     font-size: 12px;
                     top: 245px;
                 }
+            }
+
+            #username {
+                top: 190px;
+                font-size: 16px;
+
+                &:focus~#username-span {
+                    top: 150px;
+                    font-size: 11px;
+                }
+            }
+
+            .password~#username-span {
+                color: white;
+                transition: top .7s ease;
+                position: absolute;
+                margin-right: auto;
+                left: 168px;
+                top: 33%;
+                transform: translate(-50%, -50%);
+                font-size: 12px;
             }
 
             .password~#password-span {

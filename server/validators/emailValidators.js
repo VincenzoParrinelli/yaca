@@ -15,13 +15,12 @@ const validateSignUpEmail = async (req, res, next) => {
             next()
         }
     })
-
 }
 
 const validateLoginEmail = async (req, res, next) => {
-    
+
     var loginEmail = req.body.loginEmail
-   
+
     if (!validator.isEmail(loginEmail)) {
         res.json({ isValid: false })
 

@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
+import { auth } from "../firebase"
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 
 const initialState = {
     isLogged: false,
@@ -17,31 +19,36 @@ export const createUser = createAsyncThunk(
 
     async (email) => await axios.post("http://localhost:5000/user/create-user", {
         email
-    }).then(data => {
+    }).then(async res => {
 
-        return data.data;
+
+        return res.data;
     }).catch(err => { throw Error(err) })
 )
 
 export const activateAccount = createAsyncThunk(
     "user/activateAccount",
 
-    async (data) => await axios.post("http://localhost:5000/user/activate-account", 
+    async (data) => await axios.post("http://localhost:5000/user/activate-account",
         data
 
-    ).then(data => {
-        
-        return data.data;
+    ).then(res => {
+
+        createUserWithEmailAndPassword(auth, res.data.payload.email, res.data.hashedPassword)
+
+        return res.data;
     }).catch(err => { throw Error(err) })
 )
 
 export const login = createAsyncThunk(
     "user/login",
-    async (data) => await axios.post("http://localhost:5000/user/login", 
+    async (data) => await axios.post("http://localhost:5000/user/login",
         data
-    ).then(data => {
+    ).then(res => {
+        console.log(res.data)
+        signInWithEmailAndPassword(auth, res.data.user.data.email, res.data.user.data.password)
 
-        return data.data
+        return res.data
     }).catch(err => { throw Error(err) })
 )
 
@@ -67,7 +74,7 @@ export const userSlice = createSlice({
 
     extraReducers: {
         [createUser.pending]: (state, action) => {
-            state.error = null
+            state.errors = initialState.errors
             state.emailSent = false
         },
 
@@ -76,12 +83,25 @@ export const userSlice = createSlice({
             state.errors = action.payload
         },
 
+        [createUser.rejected]: (state, action) => {
+            state.errors = initialState.errors
+            state.emailSent = false
+        },
+
+        [activateAccount.pending]: (state, action) => {
+            state.errors = initialState.errors
+        },
+
         [activateAccount.fulfilled]: (state, action) => {
             state.errors = action.payload
         },
 
+        [activateAccount.rejected]: (state, action) => {
+            state.errors = initialState.errors
+        },
+
         [login.fulfilled]: (state, action) => {
-            state.user = action.payload.data
+            state.user = action.payload.user
             state.errors.isValid = action.payload.isValid
             state.errors.isPresent = action.payload.isPresent
             state.isLogged = action.payload.isLogged

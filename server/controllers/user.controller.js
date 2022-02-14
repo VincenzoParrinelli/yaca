@@ -1,5 +1,6 @@
 const User = require("../models/User.js")
 const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 module.exports = {
     createUser: async (req, res, next) => {
@@ -13,24 +14,26 @@ module.exports = {
 
     },
 
+
     activateAccount: async (req, res) => {
         var id = req.body.id
+        var username = req.body.username
         var password = req.body.password
 
         await User.findOne({ id }).then(async data => {
             if (data) {
 
-                if (data.password === "NOT SET") {
+                if (data.password === "NOT SET" || data.username === "NOT SET") {
                     try {
                         const hashedPassword = await bcrypt.hash(password, 10)
 
                         await User.findByIdAndUpdate(id, {
 
-                            password: hashedPassword, $unset: { createdAt: 1 }
+                            password: hashedPassword, username, $unset: { createdAt: 1 }
 
                         }).then(() => {
 
-                            res.json({ isValid: true, isMatch: true })
+                            res.json({ isValid: true, isMatch: true, payload: data, hashedPassword })
 
                         }).catch(err => console.error(err.message))
 
@@ -42,7 +45,7 @@ module.exports = {
                     res.json({ isValid: true, isPresent: true, isMatch: true })
                 }
             } else {
-                res.json({ isPresent: false })
+                res.json({ isValid: true, isPresent: false })
             }
 
         }).catch(err => console.error(err.message))
@@ -53,7 +56,17 @@ module.exports = {
         var password = req.body.password
 
         if (await bcrypt.compare(password, data.password)) {
-            res.json({ isLogged: true, isValid: true, data })
+            //convert user object whose coming from mongoose to json
+            const userToJSON = data.toJSON()
+            
+            //create access token
+            const accessToken = jwt.sign({id: userToJSON._id}, process.env.ACCESS_TOKEN_KEY)
+
+            res.cookie("accessToken", accessToken, {
+                httpOnly: true
+            })
+
+            res.json({ isLogged: true, isValid: true, user: {data} })
         } else {
             res.json({ isLogged: false, isValid: false })
         }

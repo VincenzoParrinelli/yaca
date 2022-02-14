@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { useLocation } from 'react-router-dom'
 import { activateAccount, reset } from '../Redux/userSlice';
-import "./NewPassword.scss"
+import "./ActivateAccount.scss"
 
-export default function NewPassword() {
+export default function ActivateAccount() {
+    const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [password2, setPassword2] = useState("")
 
+    const usernameSpanRef = useRef(null)
     const passwordInputRef = useRef(null)
     const passwordInputRef2 = useRef(null)
     const passwordSpanRef = useRef(null)
@@ -18,6 +20,20 @@ export default function NewPassword() {
 
     const dispatch = useDispatch()
     const location = useLocation()
+
+    useEffect(() => {
+
+        if (username) {
+            usernameSpanRef.current.style.top = "150px"
+            usernameSpanRef.current.style.fontSize = "11px"
+
+        } else {
+            usernameSpanRef.current.style.top = ""
+            usernameSpanRef.current.style.fontSize = ""
+        }
+
+    }, [username])
+
 
     useEffect(() => {
 
@@ -75,16 +91,25 @@ export default function NewPassword() {
             passwordSpanRef2.current.style.color = ""
         }
 
-        if (errors.isPresent) {
-
-        }
     }, [errors])
 
 
     return (
-        <div className='NewPassword'>
+        <div className='ActivateAccount'>
 
             <div className='new-password-form-container'>
+
+                <label className='password-container'>
+                    <input
+                        className='password'
+                        id='username'
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                    />
+                    <span ref={usernameSpanRef} id="username-span"> USERNAME
+                      
+                    </span>
+                </label>
 
                 <label className='password-container'>
                     <input
@@ -123,8 +148,10 @@ export default function NewPassword() {
                 </div>
 
                 <button className='submit'
-                    onClick={() => dispatch(activateAccount({ password, password2, id: location.pathname.substring(location.pathname.lastIndexOf("/") + 1) }))}>
-                    Activate account
+                    onClick={() => dispatch(activateAccount({ username, password, password2, id: location.pathname.substring(location.pathname.lastIndexOf("/") + 1) }))}
+                >
+
+                    ActivateAccount
                 </button>
 
                 <Link to="/login" className='login-link'>Log In</Link>

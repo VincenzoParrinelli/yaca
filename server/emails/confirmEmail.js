@@ -58,7 +58,6 @@ const sendConfirmEmail = async (req, res) => {
             }
         })
     })
-
 }
 
 module.exports = { sendConfirmEmail }
