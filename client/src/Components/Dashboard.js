@@ -1,18 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux"
 import SideBar from "../Components/SideBar"
 import Nav from "../Components/Nav"
-import Settings from "../Components/Settings"
+import ProfileModal from "../Components/ProfileModal"
 import "./Dashboard.scss"
 
 export default function Dashboard() {
-    const [settingsModal, setSettingsModal] = useState(false)
     const { user } = useSelector(state => state.user)
+    const { settings } = useSelector(state => state.modal)
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!user.data) {
+            navigate("/login")
+        }
+    }, [])
 
     return (
         <div className='Dashboard'>
 
-            <Settings />
+            {settings && <ProfileModal />}
             <SideBar />
             <Nav />
 

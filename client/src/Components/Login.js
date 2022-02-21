@@ -29,8 +29,6 @@ export default function Login() {
         }
     }, [isLogged])
 
-    console.log(user)
-
     useEffect(() => {
 
         if (loginEmail) {

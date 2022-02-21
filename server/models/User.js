@@ -16,6 +16,11 @@ const userSchema = mongoose.Schema({
         default: "NOT SET"
     },
 
+    profilePicId: {
+        type: String,
+        default: ""
+    },
+
     createdAt: {
         type: Date,
         expires: "10m",

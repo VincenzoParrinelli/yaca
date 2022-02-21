@@ -1,18 +1,35 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
-import { auth } from "../firebase"
+import { auth, storage } from "../firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
+import { ref, uploadBytes, deleteObject } from "firebase/storage"
+
+//refresh token on expiry
+axios.interceptors.response.use(res => res, async (err) => {
+    if (err.response.status === 403) {
+        await axios.post("http://localhost:5000/user/refresh-token",
+            {},
+            { withCredentials: true }
+
+        )
+    }
+})
+///
 
 const initialState = {
     isLogged: false,
     emailSent: false,
-    user: {},
+    user: {
+        profilePicId: {},
+        friendList: {},
+    },
     errors: {
         isValid: true,
         isPresent: false,
         isMatch: true
     }
 }
+
 
 export const createUser = createAsyncThunk(
     "user/createUser",
@@ -43,10 +60,35 @@ export const activateAccount = createAsyncThunk(
 export const login = createAsyncThunk(
     "user/login",
     async (data) => await axios.post("http://localhost:5000/user/login",
-        data
+        data,
+        { withCredentials: true }
     ).then(res => {
-        console.log(res.data)
+
         signInWithEmailAndPassword(auth, res.data.user.data.email, res.data.user.data.password)
+
+        return res.data
+    }).catch(err => { throw Error(err) })
+)
+
+
+export const updateUser = createAsyncThunk(
+    "user/updateUser",
+    async (data) => await axios.post("http://localhost:5000/user/update",
+
+        { data },
+        { withCredentials: true },
+
+    ).then(async res => {
+
+        const prevProPicRef = ref(storage, `proPics/${initialState.profilePicId}`)
+
+        await deleteObject(prevProPicRef).then(async () => {
+            const proPicRef = ref(storage, `proPics/${res.data.profilePicId}`)
+
+            await uploadBytes(proPicRef, data.newProPic).catch(err => console.error(err.message))
+
+        }).catch(err => console.error(err.message))
+
 
         return res.data
     }).catch(err => { throw Error(err) })
@@ -105,7 +147,12 @@ export const userSlice = createSlice({
             state.errors.isValid = action.payload.isValid
             state.errors.isPresent = action.payload.isPresent
             state.isLogged = action.payload.isLogged
-        }
+        },
+
+        [updateUser.fulfilled]: (state, action) => {
+            state.user.profilePicId = action.payload.profilePicId
+        },
+
     }
 })
 

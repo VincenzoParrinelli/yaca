@@ -58,17 +58,38 @@ module.exports = {
         if (await bcrypt.compare(password, data.password)) {
             //convert user object whose coming from mongoose to json
             const userToJSON = data.toJSON()
-            
-            //create access token
-            const accessToken = jwt.sign({id: userToJSON._id}, process.env.ACCESS_TOKEN_KEY)
+
+            //create access and refresh token
+            const accessToken = jwt.sign({ id: userToJSON._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
+            const refreshToken = jwt.sign({ id: userToJSON._id }, process.env.REFRESH_TOKEN_SECRET)
 
             res.cookie("accessToken", accessToken, {
                 httpOnly: true
             })
 
-            res.json({ isLogged: true, isValid: true, user: {data} })
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+            })
+
+            res.json({ isLogged: true, isValid: true, user: { data } })
         } else {
             res.json({ isLogged: false, isValid: false })
         }
+    },
+
+    update: async (req, res) => {
+        var newProPicId = req.body.data.newProPic.split("/")[3]
+        var id = req.body.data._id
+
+        if (newProPicId) {
+            await User.findOneAndUpdate(id, {
+                profilePicId: newProPicId
+            }, { new: true }).then((data) => {
+               
+                res.json({ username: data.username, profilePicId: data.profilePicId })
+            }).catch(err => console.error(err.message))
+
+        } else return
+
     }
 }
