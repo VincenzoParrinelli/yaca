@@ -14,8 +14,8 @@ export default function ProfileModal() {
     const dispatch = useDispatch()
 
     const updateProfile = () => {
-        if(newProPic) {
-            dispatch(updateUser({newProPic, _id : user.data._id}))
+        if (newProPic) {
+            dispatch(updateUser({ newProPic, _id: user._id }))
         }
 
         dispatch(closeSettings())
@@ -43,8 +43,8 @@ export default function ProfileModal() {
                     />
                 </label>
 
-                <p className='email' type="text">{user.data.email}</p>
-                <p className='username' type="text">{user.data.username}</p>
+                <p className='email' type="text">{user.email}</p>
+                <p className='username' type="text">{user.username}</p>
 
                 <footer className='settings-footer'>
                     <button className='save-btn' onClick={() => updateProfile()}>

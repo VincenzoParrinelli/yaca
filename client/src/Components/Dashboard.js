@@ -7,13 +7,13 @@ import ProfileModal from "../Components/ProfileModal"
 import "./Dashboard.scss"
 
 export default function Dashboard() {
-    const { user } = useSelector(state => state.user)
+    const { isLogged } = useSelector(state => state.user)
     const { settings } = useSelector(state => state.modal)
 
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!user.data) {
+        if (!isLogged) {
             navigate("/login")
         }
     }, [])
