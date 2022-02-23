@@ -71,7 +71,9 @@ module.exports = {
                 httpOnly: true,
             })
 
-            res.json({ isLogged: true, isValid: true, user: { data } })
+            const user = data
+
+            res.json({ isLogged: true, isValid: true, user })
         } else {
             res.json({ isLogged: false, isValid: false })
         }
@@ -85,6 +87,8 @@ module.exports = {
             await User.findOneAndUpdate(id, {
                 profilePicId: newProPicId
             }, { new: true }).then((data) => {
+
+                console.log({ username: data.username, profilePicId: data.profilePicId })
                
                 res.json({ username: data.username, profilePicId: data.profilePicId })
             }).catch(err => console.error(err.message))
