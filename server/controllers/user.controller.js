@@ -51,6 +51,14 @@ module.exports = {
         }).catch(err => console.error(err.message))
     },
 
+    load: async (req, res) => {
+        var data = req.body
+
+        if (data) {
+            res.json(data)
+        } else res.sendStatus(404)
+    },
+
     login: async (req, res) => {
         var data = res.locals.data
         var password = req.body.password
@@ -80,16 +88,15 @@ module.exports = {
     },
 
     update: async (req, res) => {
-        var newProPicId = req.body.data.newProPic.split("/")[3]
-        var id = req.body.data._id
+        var newProPicId = req.body.newProPicUrl.split("/")[3]
+        var id = req.body._id
+
 
         if (newProPicId) {
             await User.findOneAndUpdate(id, {
                 profilePicId: newProPicId
             }, { new: true }).then((data) => {
 
-                console.log({ username: data.username, profilePicId: data.profilePicId })
-               
                 res.json({ username: data.username, profilePicId: data.profilePicId })
             }).catch(err => console.error(err.message))
 

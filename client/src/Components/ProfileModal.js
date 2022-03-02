@@ -8,18 +8,42 @@ import Modal from "react-modal"
 
 export default function ProfileModal() {
     const [newProPic, setNewProPic] = useState(null)
+    const [newProPicUrl, setNewProPicUrl] = useState(null)
 
     const { user } = useSelector(state => state.user)
     const { settings } = useSelector(state => state.modal)
     const dispatch = useDispatch()
 
+    const handleNewProPic = e => {
+        setNewProPic(e.target.files[0])
+
+        setNewProPicUrl(URL.createObjectURL(e.target.files[0]))
+    }
+
+
     const updateProfile = () => {
         if (newProPic) {
-            dispatch(updateUser({ newProPic, _id: user._id }))
+
+            //we define these 2 nested objects:
+            //payload obj: values that we want to send to the server
+            //file obj: raw image that we don't want to send to the server, but to redux only
+            //in order to store it in firebase 
+            const payload = {
+                payload: {
+                    newProPicUrl, _id: user._id
+                },
+
+                file: {
+                    proPic: newProPic
+                }
+            }
+
+            dispatch(updateUser(payload))
         }
 
         dispatch(closeSettings())
     }
+
 
     return (
         <>
@@ -33,13 +57,13 @@ export default function ProfileModal() {
 
             >
                 <label className='proPic-container'>
-                    <img className='proPic' src={newProPic} />
+                    <img className='proPic' src={newProPicUrl ? newProPicUrl : user.proPic} />
 
                     <input
                         className='pic-changer'
                         type="file"
                         accept='.jpg, .png'
-                        onChange={e => setNewProPic(URL.createObjectURL(e.target.files[0]))}
+                        onChange={e => handleNewProPic(e)}
                     />
                 </label>
 

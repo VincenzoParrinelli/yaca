@@ -18,7 +18,7 @@ export default function Login() {
     const loginRef = useRef(null)
     const emailSpanLoginRef = useRef(null)
     const passwordSpanRef = useRef(null)
-    const { emailSent, isLogged, user } = useSelector(state => state.user)
+    const { emailSent, isLogged } = useSelector(state => state.user)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()

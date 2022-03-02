@@ -1,8 +1,10 @@
-import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 import { auth, storage } from "../firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
-import { ref, uploadBytes, deleteObject } from "firebase/storage"
+import { ref, getDownloadURL } from "firebase/storage"
+
+import { deletePrevPic, updateProPic } from "./helpers/helpers"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
@@ -23,6 +25,7 @@ const initialState = {
     isLogged: false,
     emailSent: false,
     user: {
+        proPic: {},
         profilePicId: {},
         friendList: {},
     },
@@ -37,7 +40,7 @@ const initialState = {
 export const createUser = createAsyncThunk(
     "user/createUser",
 
-    async (email) => await axios.post(`${serverUrl}user/create-user`, {
+    async email => await axios.post(`${serverUrl}user/create-user`, {
         email
     }).then(async res => {
 
@@ -49,7 +52,7 @@ export const createUser = createAsyncThunk(
 export const activateAccount = createAsyncThunk(
     "user/activateAccount",
 
-    async (data) => await axios.post(`${serverUrl}user/activate-account`,
+    async data => await axios.post(`${serverUrl}user/activate-account`,
         data
 
     ).then(res => {
@@ -62,22 +65,43 @@ export const activateAccount = createAsyncThunk(
 
 export const login = createAsyncThunk(
     "user/login",
-    async (data) => await axios.post(`${serverUrl}user/login`,
+    async data => await axios.post(`${serverUrl}user/login`,
+
         data,
         { withCredentials: true }
+
     ).then(res => {
 
         signInWithEmailAndPassword(auth, res.data.user.email, res.data.user.password)
+
         return res.data
+
     }).catch(err => { throw Error(err) })
 )
 
+export const loadUser = createAsyncThunk(
+    "user/load",
+    async data => await axios.post(`${serverUrl}user/load`,
+        data,
+        { withCredentials: true }
+
+    ).then(res => {
+
+        const proPicId = ref(storage, `proPics/${res.data.profilePicId}`)
+
+        const proPic = getDownloadURL(proPicId)
+
+        return proPic
+
+    }).catch(err => { throw Error(err) })
+
+)
 
 export const updateUser = createAsyncThunk(
     "user/updateUser",
-    async (data) => await axios.post(`${serverUrl}user/update`,
+    async data => await axios.post(`${serverUrl}user/update`,
 
-        { data },
+        data.payload,
         { withCredentials: true },
 
     ).then(async res => {
@@ -92,7 +116,7 @@ export const userSlice = createSlice({
     initialState,
 
     reducers: {
-        reset: (state) => {
+        reset: state => {
             state.emailSent = false
             state.errors.isPresent = false
             state.errors.isValid = true
@@ -134,6 +158,10 @@ export const userSlice = createSlice({
             state.errors = initialState.errors
         },
 
+        [loadUser.fulfilled]: (state, action) => {
+            state.user.proPic = action.payload
+        },
+
         [login.fulfilled]: (state, action) => {
             state.user = action.payload.user
             state.errors.isValid = action.payload.isValid
@@ -143,40 +171,16 @@ export const userSlice = createSlice({
 
         [updateUser.fulfilled]: (state, action) => {
 
-            deletePrevPic(state.user)
+            deletePrevPic(state)
 
             state.user.profilePicId = action.payload.profilePicId
 
-            updateProPic(state)
+            updateProPic(state, action)
 
         },
 
     }
 })
-
-const deletePrevPic = async state => {
-    const prevPicId = state.profilePicId
-
-    if (!prevPicId) return
-
-    const prevPic = ref(storage, `proPics/${prevPicId}`)
-
-    await deleteObject(prevPic).catch(err => {
-        console.log(err.message)
-        if (err.message === "Firebase Storage: Object 'proPics/undefined' does not exist. (storage/object-not-found)") {
-            return
-        }
-    })
-}
-
-const updateProPic = async state => {
-    const proPicId = state.user.profilePicId
-
-    const proPic = ref(storage, `proPics/${proPicId}`)
-
-    await uploadBytes(proPic).catch(err => { throw err })
-}
-
 
 export const {
     reset,
