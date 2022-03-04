@@ -91,7 +91,6 @@ module.exports = {
         var newProPicId = req.body.newProPicUrl.split("/")[3]
         var id = req.body._id
 
-
         if (newProPicId) {
             await User.findOneAndUpdate(id, {
                 profilePicId: newProPicId

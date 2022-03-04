@@ -3,7 +3,7 @@ const router = express.Router()
 
 const { validateSignUpEmail, validateLoginEmail } = require("../validators/emailValidators")
 const { validateSignUpPassword, validateLoginPassword } = require("../validators/passwordValidators")
-const { validateToken, refreshToken } = require("../validators/tokenValidators")
+const { validateToken } = require("../validators/tokenValidators")
 
 const { sendConfirmEmail } = require("../emails/confirmEmail")
 
@@ -18,7 +18,5 @@ router.post("/login", validateLoginEmail, validateLoginPassword, userController.
 router.post("/load", validateToken, userController.load)
 
 router.post("/update", validateToken, userController.update)
-
-router.post("/refresh-token", refreshToken)
 
 module.exports = router

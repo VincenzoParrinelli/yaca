@@ -7,9 +7,14 @@ const validateToken = (req, res, next) => {
     if (!accessToken) res.sendStatus(401)
 
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) res.sendStatus(403)
 
-        next()
+        //automatically refresh token on expiry
+        if (err && err.name === "TokenExpiredError") {
+
+            refreshToken
+        } else if (err) res.sendStatus(403)
+
+        else next()
     })
 }
 

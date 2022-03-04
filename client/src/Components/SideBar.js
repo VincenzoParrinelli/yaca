@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux"
 import { loadUser } from '../Redux/userSlice';
 import { openSettings } from "../Redux/modalSlice"
 import './SideBar.scss'
 
 export default function SideBar() {
-    const [proPic, setProPic] = useState(null)
 
     const { user, isLogged } = useSelector(state => state.user)
 

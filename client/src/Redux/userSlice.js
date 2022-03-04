@@ -8,26 +8,14 @@ import { deletePrevPic, updateProPic } from "./helpers/helpers"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
-//refresh token on expiry
-axios.interceptors.response.use(res => res, async (err) => {
-    if (err.response.status === 403) {
-        await axios.post(`${serverUrl}user/refresh-token`,
-            {},
-            { withCredentials: true }
-
-        )
-    }
-})
-///
-
-
 const initialState = {
     isLogged: false,
     emailSent: false,
     user: {
-        proPic: {},
-        profilePicId: {},
-        friendList: {},
+        proPic: "",
+        profilePicId: "",
+        friendRequests: [],
+        friendList: [],
     },
     errors: {
         isValid: true,
