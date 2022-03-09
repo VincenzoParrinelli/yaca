@@ -1,4 +1,4 @@
-import { auth, storage } from "../../firebase"
+import { storage } from "../../firebase"
 import { ref, uploadBytes, deleteObject } from "firebase/storage"
 
 export const deletePrevPic = async state => {
@@ -25,5 +25,8 @@ export const updateProPic = async (state, action) => {
 
     const proPicRef = ref(storage, `proPics/${proPicId}`)
 
-    await uploadBytes(proPicRef, proPicFile).catch(err => { throw err })
+    await uploadBytes(proPicRef, proPicFile).then(() => {
+        state.user.proPic = proPicFile
+    }).catch(err => { throw err })
+
 }

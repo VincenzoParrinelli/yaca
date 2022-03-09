@@ -164,7 +164,6 @@ export const userSlice = createSlice({
             state.user.profilePicId = action.payload.profilePicId
 
             updateProPic(state, action)
-
         },
 
     }

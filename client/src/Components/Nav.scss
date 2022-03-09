@@ -18,12 +18,14 @@ $color2: rgb(255, 255, 255);
         width: 30px;
         height: 30px;
         opacity: 0.8;
-        
 
         &:hover {
             cursor: pointer;
             opacity: 1;
         }
-    }
 
+        &[value=true] {
+            opacity: 1;
+        }
+    }
 }

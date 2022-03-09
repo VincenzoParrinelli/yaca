@@ -1,28 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
-    settings: false
+    settings: false,
+    inbox: false
 }
 
 export const modalsSlice = createSlice({
-    name: "modal",
+    name: "modals",
 
     initialState,
 
     reducers: {
-        openSettings: state => {
+        handleSettings: state => {
             state.settings = !state.settings
         },
 
-        closeSettings: state => {
-            state.settings = false
-        }
+        handleInbox: state => {
+            state.inbox = !state.inbox
+        },
+
     }
 })
 
 export const {
-    openSettings,
-    closeSettings
+    handleSettings,
+    handleInbox
 } = modalsSlice.actions
 
 export default modalsSlice.reducer

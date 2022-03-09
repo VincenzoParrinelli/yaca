@@ -10,7 +10,7 @@ export default function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Login />} />
                 <Route path="/activate_account/:id" element={<ActivateAccount />} />
                 <Route path="/dashboard" element={<Dashboard />} />
             </Routes>

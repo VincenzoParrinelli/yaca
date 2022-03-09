@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import "./ProfileModal.scss"
 import { useSelector, useDispatch } from "react-redux"
 import { updateUser } from '../Redux/userSlice';
-import { closeSettings } from "../Redux/modalSlice"
+import { handleSettings } from "../Redux/modalsSlice"
 import Modal from "react-modal"
 
 
@@ -19,7 +19,6 @@ export default function ProfileModal() {
 
         setNewProPicUrl(URL.createObjectURL(e.target.files[0]))
     }
-
 
     const updateProfile = () => {
         if (newProPic) {
@@ -41,7 +40,7 @@ export default function ProfileModal() {
             dispatch(updateUser(payload))
         }
 
-        dispatch(closeSettings())
+        dispatch(handleSettings())
     }
 
 
@@ -49,11 +48,11 @@ export default function ProfileModal() {
         <>
             <Modal
                 className="ProfileModal"
-                overlayClassName="overlay"
+                overlayClassName="ProfileModal-overlay"
 
                 appElement={document.getElementById('root') || undefined}
                 isOpen={settings}
-                onRequestClose={() => dispatch(closeSettings())}
+                onRequestClose={() => dispatch(handleSettings())}
 
             >
                 <label className='proPic-container'>
