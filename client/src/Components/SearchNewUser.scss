@@ -1,0 +1,56 @@
+.SearchNewUser {
+    display: flex;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-53%, -50%);
+    font-size: 22px;
+    margin: 20px;
+
+    .search-bar-container {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-53%, -50%);
+
+        .search-bar {
+            background-color: #111;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+            font-size: 16px;
+            width: 40vw;
+            height: 6vh;
+            text-indent: 20px;
+
+            &:focus {
+                outline: solid 2px;
+                outline-color: rgb(107, 107, 182);
+            }
+        }
+
+        .search-lens {
+            display: inline-flex;
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            top: 3px;
+            right: 10px;
+            cursor: pointer;
+        }
+    }
+
+    .separator {
+        display: inline-flex;
+        position: absolute;
+        top: 12%;
+        left: 50%;
+        transform: translate(-50.2%, -50%);
+        background-color: white;
+        width: 173.9%;
+        height: 0.01em;
+        border-radius: 60px;
+        background-color: rgb(97, 96, 96);
+    }
+}

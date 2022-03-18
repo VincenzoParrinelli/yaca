@@ -78,7 +78,8 @@ export default function SignUp(props) {
                         <span
                             ref={emailSpanRef}
                             className='email-sign-up-span'
-                        > EMAIL {
+                        > EMAIL
+                            {
                                 !errors.isValid ? <span>- please input a valid email</span> :
                                     errors.isPresent && <span>- email already present</span>
                             }

@@ -9,10 +9,12 @@ import { deletePrevPic, updateProPic } from "./helpers/helpers"
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
+    _id: null,
+    rememberMe: false,
     isLogged: false,
     emailSent: false,
     user: {
-        proPic: "",
+        proPicBlob: "",
         profilePicId: "",
         friendRequests: [],
         friendList: [],
@@ -147,7 +149,7 @@ export const userSlice = createSlice({
         },
 
         [loadUser.fulfilled]: (state, action) => {
-            state.user.proPic = action.payload
+            state.user.proPicBlob = action.payload
         },
 
         [login.fulfilled]: (state, action) => {
@@ -163,7 +165,9 @@ export const userSlice = createSlice({
 
             state.user.profilePicId = action.payload.profilePicId
 
-            updateProPic(state, action)
+            updateProPic(action)
+
+            state.user.proPicBlob = URL.createObjectURL(action.meta.arg.file.proPic)
         },
 
     }

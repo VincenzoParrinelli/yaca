@@ -24,7 +24,6 @@ export default function Login() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-       
         if(isLogged) {
             navigate("/dashboard")
         } 

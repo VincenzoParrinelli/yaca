@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux"
 import { loadUser } from '../Redux/userSlice';
 import { connection } from '../Redux/socketsSlice';
-import SideBar from "../Components/SideBar"
-import Nav from "../Components/Nav"
-import ProfileModal from "../Components/ProfileModal"
+import SideBar from "./SideBar"
+import Nav from "./Nav"
+import ProfileModal from "./ProfileModal"
+import MainContent from "./MainContent"
 import "./Dashboard.scss"
 
 export default function Dashboard() {
@@ -32,6 +33,7 @@ export default function Dashboard() {
             {settings && <ProfileModal />}
             <SideBar />
             <Nav />
+            <MainContent />
 
         </div>
     )

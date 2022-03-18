@@ -17,16 +17,14 @@ export const deletePrevPic = async state => {
 }
 
 
-export const updateProPic = async (state, action) => {
+export const updateProPic = async (action) => {
 
-    const proPicId = state.user.profilePicId
+    const proPicId = action.payload.profilePicId
 
     const proPicFile = action.meta.arg.file.proPic
 
     const proPicRef = ref(storage, `proPics/${proPicId}`)
 
-    await uploadBytes(proPicRef, proPicFile).then(() => {
-        state.user.proPic = proPicFile
-    }).catch(err => { throw err })
+    await uploadBytes(proPicRef, proPicFile).catch(err => { throw err })
 
 }

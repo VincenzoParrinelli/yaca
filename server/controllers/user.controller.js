@@ -20,9 +20,9 @@ module.exports = {
         var username = req.body.username
         var password = req.body.password
 
-        await User.findOne({ id }).then(async data => {
+        await User.findById( id ).then(async data => {
             if (data) {
-
+                
                 if (data.password === "NOT SET" || data.username === "NOT SET") {
                     try {
                         const hashedPassword = await bcrypt.hash(password, 10)

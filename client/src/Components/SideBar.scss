@@ -1,6 +1,6 @@
 .SideBar {
     height: 100%; 
-    width: 140px; 
+    width: 120px; 
     position: fixed; 
     z-index: 1; 
     background-color: #111; 
@@ -20,6 +20,36 @@
             border-radius: 60px;
             background-color: grey;
             cursor: pointer;
+        }
+    }
+
+    .user-actions-container {
+        display: flex;
+        justify-content: space-evenly;
+        margin-top: 10px;
+        margin-bottom: 2px;
+
+        .add-friend-icon {
+            width: 1.6vw;
+            position: relative;
+            cursor: pointer;
+            opacity: 0.8;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .logout-icon {
+            width: 1.6vw;
+            position: relative;
+            cursor: pointer;
+            opacity: 0.8;
+
+            &:hover {
+                filter: invert(66%) sepia(75%) saturate(5823%) hue-rotate(332deg) brightness(92%) contrast(112%);
+                opacity: 1;
+            }
         }
     }
 

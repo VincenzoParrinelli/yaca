@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
     settings: false,
-    inbox: false
+    addFriend: false,
+    inbox: false,
 }
 
 export const modalsSlice = createSlice({
@@ -19,12 +20,17 @@ export const modalsSlice = createSlice({
             state.inbox = !state.inbox
         },
 
+        handleAddFriend: state => {
+            state.addFriend = !state.addFriend
+        }
+
     }
 })
 
 export const {
     handleSettings,
-    handleInbox
+    handleAddFriend,
+    handleInbox,
 } = modalsSlice.actions
 
 export default modalsSlice.reducer

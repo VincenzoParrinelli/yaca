@@ -13,6 +13,7 @@ export default function ProfileModal() {
     const { user } = useSelector(state => state.user)
     const { settings } = useSelector(state => state.modal)
     const dispatch = useDispatch()
+    
 
     const handleNewProPic = e => {
         setNewProPic(e.target.files[0])
@@ -43,7 +44,6 @@ export default function ProfileModal() {
         dispatch(handleSettings())
     }
 
-
     return (
         <>
             <Modal
@@ -56,7 +56,7 @@ export default function ProfileModal() {
 
             >
                 <label className='proPic-container'>
-                    <img className='proPic' src={newProPicUrl ? newProPicUrl : user.proPic} />
+                    <img className='proPic' src={newProPicUrl ? newProPicUrl : user.proPicBlob} />
 
                     <input
                         className='pic-changer'
