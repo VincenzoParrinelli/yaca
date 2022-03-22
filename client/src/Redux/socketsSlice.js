@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit"
 import { io } from "socket.io-client"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
@@ -11,11 +11,33 @@ var options = {
 
 
 const initialState = {
-    username: "",
     message: "",
+
+    errors: {
+        unAuthorized: false
+    },
 
     searchedUsers: []
 }
+
+export const connection = createAsyncThunk(
+    "sockets/connection",
+
+    () => {
+        var errorFlag
+
+        socket = io(serverUrl, options)
+        socket.on("connect", () => {
+            console.log(socket.id)
+        })
+
+        socket.on("connect_error", err => {
+            if(err) errorFlag = true
+        })
+
+        return errorFlag
+    }
+)
 
 export const socketsSlice = createSlice({
     name: "sockets",
@@ -23,28 +45,27 @@ export const socketsSlice = createSlice({
     initialState,
 
     reducers: {
-        connection: state => {
-            socket = io(serverUrl, options)
-            socket.on("connect", () => {
-                console.log(socket.id)
-            })
-
-            socket.on("connect_error", err => {
-                
-                if(err.message === "401") {
-                   
-                }
-            })
+        reset: (state) => {
+            state.errors = initialState.errors
         },
 
         searchUsers: (state, action) => {
             socket.emit("get-searched-users", action.payload)
         }
+    },
+
+    extraReducers: {
+        [connection.fulfilled]: (state, action) => {
+          console.log(action)
+            if(action.payload) {
+                state.errors.unAuthorized = true
+            }
+        },
     }
 })
 
 export const {
-    connection,
+    reset,
     searchUsers
 } = socketsSlice.actions
 

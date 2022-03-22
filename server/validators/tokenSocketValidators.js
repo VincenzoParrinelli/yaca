@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken")
 
+
 const validateSocketToken = (socket, next) => {
-    console.log("first")
     const authHeader = socket.request.headers.cookie
     const accessToken = ""
 

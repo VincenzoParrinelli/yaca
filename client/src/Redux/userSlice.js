@@ -115,7 +115,7 @@ export const userSlice = createSlice({
 
         logout: (state, action) => {
             state.isLogged = false
-            state.user = null
+            state.user = initialState.user
         }
 
     },

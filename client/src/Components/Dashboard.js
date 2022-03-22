@@ -12,20 +12,22 @@ import "./Dashboard.scss"
 export default function Dashboard() {
     const { user, isLogged } = useSelector(state => state.user)
     const { settings } = useSelector(state => state.modal)
+    const { errors } = useSelector(state => state.sockets)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
     useEffect(() => {
 
-        if (!isLogged) {
+        if (!isLogged || errors.unAuthorized) {
             navigate("/")
+            
         } else {
             dispatch(loadUser(user))
             dispatch(connection())
         }
 
-    }, [])
+    }, [errors.unAuthorized])
 
     return (
         <div className='Dashboard'>

@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { reset, login } from '../Redux/userSlice';
-import "./Login.scss"
+import { reset as resetUserState, login, logout } from '../Redux/userSlice';
+import { reset as resetSocketState } from "../Redux/socketsSlice"
 import logo from "../Assets/Images/logo.png"
 import loginIcon from "../Assets/Images/login-icon.png"
 import userIcon from "../Assets/Images/user-icon.png"
 import emailIcon from "../Assets/Images/email.png"
 import SignUpForm from "./SignUp"
+import "./Login.scss"
 
 export default function Login() {
 
@@ -19,14 +20,24 @@ export default function Login() {
     const emailSpanLoginRef = useRef(null)
     const passwordSpanRef = useRef(null)
     const { emailSent, isLogged } = useSelector(state => state.user)
+    const { errors } = useSelector(state => state.sockets)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
+    // reset socket and user slices state when login page is rendered
+
     useEffect(() => {
-        if(isLogged) {
+        dispatch(resetSocketState())
+        dispatch(logout())
+    }, [])
+
+    ///
+
+    useEffect(() => {
+        if (isLogged && !errors.unAuthorized) {
             navigate("/dashboard")
-        } 
+        }
     }, [isLogged])
 
     useEffect(() => {
@@ -72,7 +83,7 @@ export default function Login() {
     const openSignUpForm = () => {
 
         //removes errors and emailSent flag while swapping form
-        dispatch(reset())
+        dispatch(resetUserState())
 
         loginRef.current.style.animation = "sign-up-form-open 0.4s"
 
