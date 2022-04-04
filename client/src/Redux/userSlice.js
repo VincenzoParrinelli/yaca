@@ -100,6 +100,19 @@ export const updateUser = createAsyncThunk(
     }).catch(err => { throw Error(err) })
 )
 
+export const logout = createAsyncThunk(
+    "user/logout",
+    async () => await axios.get(`${serverUrl}user/logout`,
+
+        { withCredentials: true },
+
+    ).then(res => {
+
+        return res.data
+    }).catch(err => { throw Error(err) })
+)
+
+
 export const userSlice = createSlice({
     name: "user",
 
@@ -112,12 +125,6 @@ export const userSlice = createSlice({
             state.errors.isValid = true
             state.errors.isMatch = true
         },
-
-        logout: (state, action) => {
-            state.isLogged = false
-            state.user = initialState.user
-        }
-
     },
 
     extraReducers: {
@@ -170,12 +177,16 @@ export const userSlice = createSlice({
             state.user.proPicBlob = URL.createObjectURL(action.meta.arg.file.proPic)
         },
 
+        [logout.fulfilled]: (state, action) => {
+            state.isLogged = false
+            state.user = initialState.user
+        }
+
     }
 })
 
 export const {
     reset,
-    logout
 } = userSlice.actions
 
 export default userSlice.reducer

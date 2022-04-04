@@ -43,9 +43,8 @@ const io = require("socket.io")(server, {
     }
 })
 
-const socketsController = require("./controllers/sockets.controller")
-
-socketsController.start(io)
+//Handle socket.io in this file
+require("./controllers/sockets.controller")(io)
 
 ///
 

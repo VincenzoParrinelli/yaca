@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux"
 import { loadUser } from '../Redux/userSlice';
-import { connection } from '../Redux/socketsSlice';
+import { connection } from '../Redux/socketSlice';
 import SideBar from "./SideBar"
 import Nav from "./Nav"
 import ProfileModal from "./ProfileModal"
@@ -17,17 +17,18 @@ export default function Dashboard() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+
     useEffect(() => {
 
-        if (!isLogged || errors.unAuthorized) {
+        if (!isLogged || !errors.authorized) {
             navigate("/")
-            
+
         } else {
             dispatch(loadUser(user))
             dispatch(connection())
         }
 
-    }, [errors.unAuthorized])
+    }, [errors.authorized])
 
     return (
         <div className='Dashboard'>

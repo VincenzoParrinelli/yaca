@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { reset as resetUserState, login, logout } from '../Redux/userSlice';
-import { reset as resetSocketState } from "../Redux/socketsSlice"
+import { reset as resetSocketState } from "../Redux/socketSlice"
 import logo from "../Assets/Images/logo.png"
 import loginIcon from "../Assets/Images/login-icon.png"
 import userIcon from "../Assets/Images/user-icon.png"
@@ -28,14 +28,16 @@ export default function Login() {
     // reset socket and user slices state when login page is rendered
 
     useEffect(() => {
+
         dispatch(resetSocketState())
         dispatch(logout())
+
     }, [])
 
     ///
 
     useEffect(() => {
-        if (isLogged && !errors.unAuthorized) {
+        if (isLogged && errors.authorized) {
             navigate("/dashboard")
         }
     }, [isLogged])

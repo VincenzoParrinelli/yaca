@@ -101,5 +101,13 @@ module.exports = {
 
         } else return
 
+    },
+
+    logout: async(req, res) => {
+
+        //clear tokens on logout
+        res.clearCookie("accessToken")
+        res.clearCookie("refreshToken")
+        res.end()
     }
 }

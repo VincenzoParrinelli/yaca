@@ -1,20 +1,19 @@
-const mongoose = require("mongoose")
-const User = require("../models/User.js")
 const { validateSocketToken } = require("../validators/tokenSocketValidators.js")
 
-module.exports = {
+module.exports = io => {
 
-    start: io => {
+    io.use((socket, next) => {
+        validateSocketToken(socket, next)
+    })
+    
+    io.on("connection", socket => {
+        console.log(socket.id)
 
-        io.use((socket, next) => {
-            validateSocketToken(socket, next)
-            next()
-        }).on("connection", socket => {
-            
-            socket.on("get-searched-users", username => {
-                console.log(username)
-            })
+        socket.on("search-users", username => {
+            console.log(username)
+          
         })
-    }
+    })
+
 }
 

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { searchUsers } from '../Redux/socketsSlice'
+import { searchUsers } from '../Redux/socketSlice'
 import SearchLens from "../Assets/Images/search-lens.png"
 import "./SearchNewUser.scss"
 

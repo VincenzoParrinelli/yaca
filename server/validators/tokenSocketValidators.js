@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 
 const validateSocketToken = (socket, next) => {
     const authHeader = socket.request.headers.cookie
-    const accessToken = ""
+    const accessToken = authHeader && authHeader.split(" ")[0].split("=")[1].split(";")[0]
 
     if (!accessToken) next(new Error("401"))
 
