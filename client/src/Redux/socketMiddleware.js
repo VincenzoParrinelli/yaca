@@ -27,6 +27,12 @@ const socketMiddleware = store => next => action => {
         socket.emit("search-users", action.payload)
     }
 
+    if (socket) {
+        socket.on("users-list", data => {
+            console.log(data)
+        })
+    }
+
     next(action)
 }
 
