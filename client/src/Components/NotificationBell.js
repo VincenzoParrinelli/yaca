@@ -1,24 +1,24 @@
 import React from 'react'
 import Modal from "react-modal"
 import { useSelector, useDispatch } from "react-redux"
-import { handleInbox } from "../Redux/modalsSlice"
-import "./InboxModal.scss"
+import { handleNotificationBell } from "../Redux/modalsSlice"
+import "./NotificationBell.scss"
 
 export default function InboxModal() {
 
-    const { inbox } = useSelector(state => state.modal)
+    const { notificationBell } = useSelector(state => state.modal)
 
     const dispatch = useDispatch()
 
     return (
         <>
             <Modal
-                className="InboxModal"
-                overlayClassName="InboxModal-overlay"
+                className="NotificationBell"
+                overlayClassName="NotificationBell-overlay"
 
                 appElement={document.getElementById('root') || undefined}
-                isOpen={inbox}
-                onRequestClose={() => dispatch(handleInbox())}
+                isOpen={notificationBell}
+                onRequestClose={() => dispatch(handleNotificationBell())}
                 
             >
                 <div>

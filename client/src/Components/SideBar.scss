@@ -1,14 +1,13 @@
 .SideBar {
-    height: 100%; 
-    width: 120px; 
-    position: fixed; 
-    z-index: 1; 
-    background-color: #111; 
+    height: 100vh;
+    width: 120px;
+    z-index: 1;
+    background-color: linear-gradient(#1B2121, #17181C, #17181C);
     overflow-x: hidden;
-    
+
     .icons {
         text-align: center;
-        
+
         .user-icon {
             display: inline-flex;
             justify-content: center;
@@ -29,34 +28,22 @@
         margin-top: 10px;
         margin-bottom: 2px;
 
-        .add-friend-icon {
-            width: 1.6vw;
-            position: relative;
-            cursor: pointer;
+        .soundImage, .micImage {
+            width: 1.5em;
             opacity: 0.8;
 
             &:hover {
+                cursor: pointer;
                 opacity: 1;
             }
         }
 
-        .logout-icon {
-            width: 1.6vw;
-            position: relative;
-            cursor: pointer;
-            opacity: 0.8;
-
-            &:hover {
-                filter: invert(66%) sepia(75%) saturate(5823%) hue-rotate(332deg) brightness(92%) contrast(112%);
-                opacity: 1;
-            }
-        }
     }
 
     .separator-wrapper {
         text-align: center;
 
-        .separator { 
+        .separator {
             position: relative;
             display: inline-flex;
             background-color: white;
@@ -65,6 +52,56 @@
             bottom: 5px;
             border-radius: 60px;
             background-color: rgb(97, 96, 96);
+        }
+    }
+
+    .sidebar-icons {
+        position: relative;
+        top: 30px;
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+
+        li {
+            margin: 0 0 35px 0;
+
+            .notificationBell {
+                width: 30px;
+                height: 30px;
+                opacity: 0.8;
+
+                &:hover {
+                    cursor: pointer;
+                    opacity: 1;
+                }
+
+                &[value=true] {
+                    opacity: 1;
+                }
+            }
+
+            .add-friend-icon {
+                width: 2vw;
+                height: 2vw;
+                cursor: pointer;
+                opacity: 0.8;
+
+                &:hover {
+                    opacity: 1;
+                }
+            }
+
+            .logout-icon {
+                width: 1.8vw;
+                position: relative;
+                cursor: pointer;
+                opacity: 0.8;
+    
+                &:hover {
+                    filter: invert(66%) sepia(75%) saturate(5823%) hue-rotate(332deg) brightness(92%) contrast(112%);
+                    opacity: 1;
+                }
+            }
         }
     }
 

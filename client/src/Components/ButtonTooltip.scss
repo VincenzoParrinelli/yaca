@@ -1,10 +1,9 @@
-.ButtonTooltip {
-    display: flex;
-    position: absolute;
-    top: 50px;
-    left: 183.8px;
+.ButtonToolTip {
+    display: none;
+    position: fixed;
+    left: 85px;
     min-width: 63px;
-    min-height: 60%;
+    min-height: 4%;
     width: min-content;
     height: max-content;
     border-radius: 4px;
@@ -12,13 +11,12 @@
     font-size: 14px;
     white-space: nowrap;
     letter-spacing: .02em;
-    text-align: center;
-    justify-content: center;
     align-items: center;
     background-color: rgb(36, 35, 35);
     color: white;
     animation: popIn .2s;
     pointer-events: none;
+    z-index: 1;
 
     p {
         margin-left: 14px;
@@ -29,10 +27,9 @@
 
     &:after {
         content: " ";
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        margin-left: -5px;
+        position: relative;
+        transform: rotate(-90deg);
+        right: 101%; 
         border-width: 5px;
         border-style: solid;
         border-color: transparent transparent rgb(36, 35, 35);

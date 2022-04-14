@@ -1,8 +1,9 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit"
+import { configureStore } from "@reduxjs/toolkit"
 import userReducer from "./userSlice"
 import socketsReducer from "./socketSlice"
 import modalReducer from "./modalsSlice"
 import socketMiddleware from "./socketMiddleware"
+import modalsMiddleware from "./modalsMiddleware"
 
 const store = configureStore({
     reducer: {
@@ -12,7 +13,7 @@ const store = configureStore({
 
     },
 
-    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(socketMiddleware) 
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(socketMiddleware, modalsMiddleware) 
 
 })
 

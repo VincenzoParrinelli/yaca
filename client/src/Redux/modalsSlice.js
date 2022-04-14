@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState = {
     settings: false,
     addFriend: false,
-    inbox: false,
+    buttonToolTip: false,
+    notificationBell: false,
 }
 
 export const modalsSlice = createSlice({
@@ -16,8 +17,12 @@ export const modalsSlice = createSlice({
             state.settings = !state.settings
         },
 
-        handleInbox: state => {
-            state.inbox = !state.inbox
+        handleNotificationBell: state => {
+            state.notificationBell = !state.notificationBell
+        },
+
+        handleButtonToolTip: state => {
+            state.buttonToolTip = !state.buttonToolTip
         },
 
         handleAddFriend: state => {
@@ -29,8 +34,9 @@ export const modalsSlice = createSlice({
 
 export const {
     handleSettings,
+    handleButtonToolTip,
+    handleNotificationBell,
     handleAddFriend,
-    handleInbox,
 } = modalsSlice.actions
 
 export default modalsSlice.reducer

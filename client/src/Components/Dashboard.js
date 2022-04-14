@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from "react-redux"
 import { loadUser } from '../Redux/userSlice';
 import { connection } from '../Redux/socketSlice';
 import SideBar from "./SideBar"
-import Nav from "./Nav"
 import ProfileModal from "./ProfileModal"
 import MainContent from "./MainContent"
+import ChatList from './ChatList'
 import "./Dashboard.scss"
 
 export default function Dashboard() {
@@ -35,7 +35,12 @@ export default function Dashboard() {
 
             {settings && <ProfileModal />}
             <SideBar />
-            <Nav />
+
+            <div className='separator-vertical' />
+
+            <ChatList />
+            <div className='separator-vertical' />
+
             <MainContent />
 
         </div>
