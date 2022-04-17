@@ -5,6 +5,7 @@ import micImage from "../Assets/Images/mic.png"
 import soundImage from "../Assets/Images/sound.png"
 import addFriend from "../Assets/Images/add-friend.png"
 import logout from "../Assets/Images/logout.png"
+import home from "../Assets/Images/home.png"
 import bellImage from "../Assets/Images/bell.png"
 import ButtonTooltip from './ButtonTooltip'
 import NotificationBellModal from './NotificationBell';
@@ -39,11 +40,13 @@ export default function SideBar() {
 
             <ul className='sidebar-icons'>
 
+                <li><img src={home} className="home"/></li>
+
                 <li>
                     <img
-                        value={notificationBell} //parameter that keeps button opacity set to 1 while modal is open
                         src={bellImage}
                         className='notificationBell'
+                        value={notificationBell} //parameter that keeps button opacity set to 1 while modal is open
                         onClick={() => dispatch(handleNotificationBell())}
                         onMouseOver={() => dispatch(handleButtonToolTip())}
                         onMouseLeave={() => dispatch(handleButtonToolTip(false))}

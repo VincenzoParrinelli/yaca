@@ -28,7 +28,8 @@
         margin-top: 10px;
         margin-bottom: 2px;
 
-        .soundImage, .micImage {
+        .soundImage,
+        .micImage {
             width: 1.5em;
             opacity: 0.8;
 
@@ -65,10 +66,24 @@
         li {
             margin: 0 0 35px 0;
 
+            .home {
+                width: 30px;
+
+                &:hover {
+                    cursor: pointer;
+                    opacity: 1;
+                }
+
+            }
+
+            img {
+                opacity: 0.4;
+            }
+
             .notificationBell {
                 width: 30px;
                 height: 30px;
-                opacity: 0.8;
+               
 
                 &:hover {
                     cursor: pointer;
@@ -84,7 +99,6 @@
                 width: 2vw;
                 height: 2vw;
                 cursor: pointer;
-                opacity: 0.8;
 
                 &:hover {
                     opacity: 1;
@@ -95,8 +109,7 @@
                 width: 1.8vw;
                 position: relative;
                 cursor: pointer;
-                opacity: 0.8;
-    
+
                 &:hover {
                     filter: invert(66%) sepia(75%) saturate(5823%) hue-rotate(332deg) brightness(92%) contrast(112%);
                     opacity: 1;

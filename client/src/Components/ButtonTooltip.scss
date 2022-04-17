@@ -1,39 +1,37 @@
 .ButtonToolTip {
     display: none;
     position: fixed;
-    left: 85px;
-    min-width: 63px;
-    min-height: 4%;
-    width: min-content;
-    height: max-content;
+}
+
+.ButtonToolTip .toolTipText {
+    width: 100px;
+    background-color: rgb(36, 35, 35);
+    color: #fff;
+    text-align: center;
     border-radius: 4px;
+    padding: 5px 0;
+    position: absolute;
+    left: 85px;
     font-family: "arial";
     font-size: 14px;
     white-space: nowrap;
     letter-spacing: .02em;
-    align-items: center;
-    background-color: rgb(36, 35, 35);
-    color: white;
     animation: popIn .2s;
     pointer-events: none;
     z-index: 1;
 
-    p {
-        margin-left: 14px;
-        margin-right: 14px;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    &:after {
+    &:before {
         content: " ";
-        position: relative;
+        position: absolute;
         transform: rotate(-90deg);
-        right: 101%; 
+        top: 50%;
+        right: 100%;
+        margin-top: -5px;
         border-width: 5px;
         border-style: solid;
         border-color: transparent transparent rgb(36, 35, 35);
     }
+
 }
 
 @keyframes popIn {
