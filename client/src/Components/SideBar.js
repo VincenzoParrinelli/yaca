@@ -1,9 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from "react-redux"
-import { handleSettings, handleAddFriend, handleButtonToolTip, handleNotificationBell } from "../Redux/modalsSlice"
+import {
+    handleDashboard,
+    handleSettings,
+    handleAddFriend,
+    openButtonToolTip,
+    closeButtonToolTip,
+    handleNotificationBell
+} from "../Redux/modalsSlice"
 import micImage from "../Assets/Images/mic.png"
 import soundImage from "../Assets/Images/sound.png"
-import addFriend from "../Assets/Images/add-friend.png"
+import addFriendImage from "../Assets/Images/add-friend.png"
 import logout from "../Assets/Images/logout.png"
 import home from "../Assets/Images/home.png"
 import bellImage from "../Assets/Images/bell.png"
@@ -13,7 +20,7 @@ import './SideBar.scss'
 
 export default function SideBar() {
 
-    const { buttonToolTip, notificationBell } = useSelector(state => state.modal)
+    const { dashboard, addFriend, buttonToolTip, notificationBell } = useSelector(state => state.modal)
     const { user } = useSelector(state => state.user)
 
     const dispatch = useDispatch()
@@ -38,34 +45,55 @@ export default function SideBar() {
 
             </div>
 
-            <ul className='sidebar-icons'>
+            <ul className='sidebar-icons' >
 
-                <li><img src={home} className="home"/></li>
+                <li>
+                    <img
+                        src={home}
+                        data-tooltiptext="Dashboard"
+                        className="home"
+                        value={dashboard}
+                        onClick={() => dispatch(handleDashboard())}
+                        onMouseOver={() => dispatch(openButtonToolTip())}
+                        onMouseLeave={() => dispatch(closeButtonToolTip())}
+                    />
+                </li>
 
                 <li>
                     <img
                         src={bellImage}
+                        data-tooltiptext="Notifications"
                         className='notificationBell'
                         value={notificationBell} //parameter that keeps button opacity set to 1 while modal is open
                         onClick={() => dispatch(handleNotificationBell())}
-                        onMouseOver={() => dispatch(handleButtonToolTip())}
-                        onMouseLeave={() => dispatch(handleButtonToolTip(false))}
+                        onMouseOver={() => dispatch(openButtonToolTip())}
+                        onMouseLeave={() => dispatch(closeButtonToolTip())}
                     />
-
-                    {buttonToolTip &&
-                        <ButtonTooltip />
-                    }
 
                 </li>
 
 
-                <li><img src={addFriend} className="add-friend-icon" onClick={() => dispatch(handleAddFriend())} /></li>
+                <li>
+                    <img
+                        src={addFriendImage}
+                        data-tooltiptext="Add friend"
+                        className="add-friend-icon"
+                        value={addFriend} //parameter that keeps button opacity set to 1 while modal is open
+                        onClick={() => dispatch(handleAddFriend())}
+                        onMouseOver={() => dispatch(openButtonToolTip())}
+                        onMouseLeave={() => dispatch(closeButtonToolTip())}
+                    />
+                </li>
                 <li><img src={logout} className="logout-icon" /></li>
 
                 {notificationBell && <NotificationBellModal />}
 
 
             </ul>
+
+            {buttonToolTip &&
+                <ButtonTooltip />
+            }
 
         </div>
     )

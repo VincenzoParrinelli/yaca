@@ -24,45 +24,5 @@
         }
 
     }
-
-    .nav {
-        display: flex;
-        position: relative;
-        top: 10px;
-        justify-content: center;
-
-        input {
-            background-color: rgb(25, 25, 25);
-            color: white;
-            width: 13vw;
-            height: 5.5vh;
-            font-family: "Purissima";
-            font-size: 22px;
-            letter-spacing: 0.02em;
-            border: none;
-            border-radius: 10px;
-            outline: none;
-            padding: 0 20px;
-            padding-right: 55px;
-
-        }
-
-        .lens {
-            position: absolute;
-            top: 8px;
-            right: 30px;
-            width: 22px;
-            opacity: 0.5;
-            cursor: pointer;
-
-            &:hover {
-                opacity: 1;
-            }
-        }
-    }
 }
 
-@font-face {
-    font-family: "Purissima";
-    src: url(../Assets/Fonts/PurissimaBoldW00Regular.ttf);
-}

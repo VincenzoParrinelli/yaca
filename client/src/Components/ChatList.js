@@ -1,9 +1,10 @@
 import React from 'react'
-import lens from "../Assets/Images/search-lens.png"
 import home from "../Assets/Images/home.png"
 import "./ChatList.scss"
+import SearchBar from '../SharedComponents/SearchBar'
 
 export default function ChatList() {
+
     return (
         <div className='ChatList'>
 
@@ -13,16 +14,7 @@ export default function ChatList() {
                 <p>Dashboard</p>
             </div>
 
-            <div className='nav'>
-                <input
-                    type="text"
-                    placeholder="Search..."
-                    spellCheck="false"
-                />
-
-                <img className='lens' src={lens} />
-
-            </div>
+            <SearchBar />
 
         </div>
     )

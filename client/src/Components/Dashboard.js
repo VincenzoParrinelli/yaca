@@ -7,11 +7,12 @@ import SideBar from "./SideBar"
 import ProfileModal from "./ProfileModal"
 import MainContent from "./MainContent"
 import ChatList from './ChatList'
+import AddFriend from './AddFriend';
 import "./Dashboard.scss"
 
 export default function Dashboard() {
     const { user, isLogged } = useSelector(state => state.user)
-    const { settings } = useSelector(state => state.modal)
+    const { addFriend, settings } = useSelector(state => state.modal)
     const { errors } = useSelector(state => state.sockets)
 
     const dispatch = useDispatch()
@@ -37,8 +38,10 @@ export default function Dashboard() {
             <SideBar />
 
             <div className='separator-vertical' />
+            
+            {addFriend ? <AddFriend/> : <ChatList />}
 
-            <ChatList />
+         
             <div className='separator-vertical' />
 
             <MainContent />

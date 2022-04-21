@@ -10,7 +10,7 @@ const store = configureStore({
         user: userReducer,
         sockets: socketsReducer,
         modal: modalReducer,
-
+    
     },
 
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(socketMiddleware, modalsMiddleware) 
