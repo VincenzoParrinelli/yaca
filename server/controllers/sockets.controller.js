@@ -12,15 +12,6 @@ module.exports = io => {
     io.on("connection", socket => {
         console.log(socket.id)
 
-        socket.on("search-users", username => {
-            console.log(username)
-
-            User.find({ username: { "$regex": username, "$options": "i" } }).select(
-                { "email": 1, "username": 1, "profilePicId": 1 }
-            ).then(data => {
-                socket.emit("users-list", data)
-            }).catch(err => new Error(err))
-        })
     })
 
 }

@@ -9,6 +9,7 @@ export default function ButtonTooltip() {
 
 
     useEffect(() => {
+
         let sidebarIconRef = document.querySelector(".sidebar-icons")
 
         let sidebarIconHovered = sidebarIconRef.querySelector(":hover > img")
@@ -21,10 +22,11 @@ export default function ButtonTooltip() {
 
         toolTipRef.current.style.display = "flex"
 
+
     }, [])
 
     return (
-        <div ref={toolTipRef} className="ButtonToolTip">
+        <div ref={toolTipRef} className="ButtonToolTip" >
             <span className='toolTipText'>
                 {hoveredId}
             </span>

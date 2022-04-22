@@ -20,9 +20,9 @@ module.exports = {
         var username = req.body.username
         var password = req.body.password
 
-        await User.findById( id ).then(async data => {
+        await User.findById(id).then(async data => {
             if (data) {
-                
+
                 if (data.password === "NOT SET" || data.username === "NOT SET") {
                     try {
                         const hashedPassword = await bcrypt.hash(password, 10)
@@ -103,7 +103,21 @@ module.exports = {
 
     },
 
-    logout: async(req, res) => {
+    searchUsers: async (req, res) => {
+
+        var username = req.body.data
+
+        if (!username) return
+
+        User.find({ username: { "$regex": username, "$options": "i" } }).select(
+            { "email": 1, "username": 1, "profilePicId": 1 }
+        ).then(data => {
+            
+            res.json(data)
+        }).catch(err => new Error(err))
+    },
+
+    logout: async (req, res) => {
 
         //clear tokens on logout
         res.clearCookie("accessToken")

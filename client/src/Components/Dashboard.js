@@ -7,7 +7,7 @@ import SideBar from "./SideBar"
 import ProfileModal from "./ProfileModal"
 import MainContent from "./MainContent"
 import ChatList from './ChatList'
-import AddFriend from './AddFriend';
+import AddFriend from './AddFriendList';
 import "./Dashboard.scss"
 
 export default function Dashboard() {

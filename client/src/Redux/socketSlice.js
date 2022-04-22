@@ -1,4 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
+
+const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
     
@@ -12,6 +15,19 @@ const initialState = {
 
     searchedUsers: []
 }
+
+export const searchUsers = createAsyncThunk(
+    "socket/searchUsers",
+
+    async data => await axios.post(`${serverUrl}user/search-users`,
+   
+        {data},
+        { withCredentials: true }
+
+    ).then(res => {
+        return res.data
+    }).catch(err => { throw Error(err) })
+)
 
 export const socketsSlice = createSlice({
     name: "socket",
@@ -33,17 +49,20 @@ export const socketsSlice = createSlice({
             state.openSocket = false
         },
 
-        searchUsers: (state, action) => {
-           
-        }
     },
+
+    extraReducers: {
+        [searchUsers.fulfilled]: (state, action) => {
+            state.searchedUsers = action.payload
+        }
+    }
 
 })
 
 export const {
     connection,
     reset,
-    searchUsers
+    
 } = socketsSlice.actions
 
 export default socketsSlice.reducer

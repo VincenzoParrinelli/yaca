@@ -1,7 +1,7 @@
 import React from 'react'
 import home from "../Assets/Images/home.png"
 import "./ChatList.scss"
-import SearchBar from '../SharedComponents/SearchBar'
+import SearchBar from '../ComponentsShared/SearchBar'
 
 export default function ChatList() {
 
@@ -11,7 +11,7 @@ export default function ChatList() {
             <div className='page-title-container'>
                 <img className='home' src={home} />
 
-                <p>Dashboard</p>
+                Dashboard
             </div>
 
             <SearchBar />

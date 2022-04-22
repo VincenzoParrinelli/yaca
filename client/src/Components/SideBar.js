@@ -15,7 +15,6 @@ import logout from "../Assets/Images/logout.png"
 import home from "../Assets/Images/home.png"
 import bellImage from "../Assets/Images/bell.png"
 import ButtonTooltip from './ButtonTooltip'
-import NotificationBellModal from './NotificationBell';
 import './SideBar.scss'
 
 export default function SideBar() {
@@ -85,9 +84,6 @@ export default function SideBar() {
                     />
                 </li>
                 <li><img src={logout} className="logout-icon" /></li>
-
-                {notificationBell && <NotificationBellModal />}
-
 
             </ul>
 

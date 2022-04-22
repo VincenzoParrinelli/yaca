@@ -19,7 +19,9 @@ router.post("/load", validateToken, userController.load)
 
 router.post("/update", validateToken, userController.update)
 
-router.get("/logout",  userController.logout)
+router.post("/search-users", validateToken, userController.searchUsers)
+
+router.get("/logout", userController.logout)
 
 
 module.exports = router

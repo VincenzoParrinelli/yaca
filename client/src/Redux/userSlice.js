@@ -32,7 +32,7 @@ export const createUser = createAsyncThunk(
 
     async email => await axios.post(`${serverUrl}user/create-user`, {
         email
-    }).then(async res => {
+    }).then(res => {
 
 
         return res.data;

@@ -1,4 +1,4 @@
-const modalsMiddleware = store => next => action => {
+const modalsMiddleware = store => next => async action => {
 
     if (action.type === "modals/closeButtonToolTip") {
 
@@ -7,7 +7,7 @@ const modalsMiddleware = store => next => action => {
         if (toolTipRef) toolTipRef.style.animation = "popOut .1s"
 
         // close the tooltip after waiting for animation's end 
-        new Promise(res => setTimeout(res, 100))
+        await new Promise(res => setTimeout(res, 100))
 
     }
 
