@@ -112,12 +112,14 @@ module.exports = {
         User.find({ username: { "$regex": username, "$options": "i" } }).select(
             { "email": 1, "username": 1, "profilePicId": 1 }
         ).then(data => {
-            
+
             res.json(data)
         }).catch(err => new Error(err))
     },
 
     logout: async (req, res) => {
+
+        console.log(req.body)
 
         //clear tokens on logout
         res.clearCookie("accessToken")

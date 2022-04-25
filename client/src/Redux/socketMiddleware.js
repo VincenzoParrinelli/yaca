@@ -4,13 +4,18 @@ var socket
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
-var options = {
-    withCredentials: true
-}
 
 const socketMiddleware = store => next => action => {
 
     if (action.type === "socket/connection") {
+        
+        var options = {
+            withCredentials: true,
+            auth: {
+                currentUserID: action.payload
+            }
+        }
+
         socket = io(serverUrl, options)
 
         socket.on("connect_error", err => {
@@ -21,6 +26,17 @@ const socketMiddleware = store => next => action => {
             })
 
         })
+
+        socket.on("receive-friend-request", user => {
+            store.dispatch({
+                type: "user/getFriendRequests",
+                payload: user
+            })
+        })
+    }
+
+    if (action.type === "socket/sendFriendRequest") {
+        socket.emit("send-friend-request", action.payload)
     }
 
 

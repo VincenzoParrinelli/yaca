@@ -1,3 +1,25 @@
 .Notifications {
-    
+    width: 20%;
+    height: 100vh;
+    text-align: left;
+    color: white;
+    font-family: arial;
+
+    .notifications-header {
+        display: flex;
+        align-items: center;
+        position: relative;
+        left: 10px;
+        margin-top: 20px;
+        font-size: 14px;
+
+        .notifications-icon {
+            position: relative;
+            top: -1px;
+            width: 20px;
+            margin: 10px;
+            object-fit: contain;
+
+        }
+    }
 }

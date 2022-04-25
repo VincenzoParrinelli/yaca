@@ -6,7 +6,7 @@ import {
     handleAddFriend,
     openButtonToolTip,
     closeButtonToolTip,
-    handleNotificationBell
+    openNotifications
 } from "../Redux/modalsSlice"
 import micImage from "../Assets/Images/mic.png"
 import soundImage from "../Assets/Images/sound.png"
@@ -64,7 +64,7 @@ export default function SideBar() {
                         data-tooltiptext="Notifications"
                         className='notificationBell'
                         value={notificationBell} //parameter that keeps button opacity set to 1 while modal is open
-                        onClick={() => dispatch(handleNotificationBell())}
+                        onClick={() => dispatch(openNotifications())}
                         onMouseOver={() => dispatch(openButtonToolTip())}
                         onMouseLeave={() => dispatch(closeButtonToolTip())}
                     />

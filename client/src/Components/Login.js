@@ -16,16 +16,18 @@ export default function Login() {
     const [back, setBack] = useState(false)
     const [loginEmail, setLoginEmail] = useState("")
     const [password, setPassword] = useState("")
+
     const loginRef = useRef(null)
     const emailSpanLoginRef = useRef(null)
     const passwordSpanRef = useRef(null)
-    const { emailSent, isLogged } = useSelector(state => state.user)
+
+    const { user, emailSent, isLogged } = useSelector(state => state.user)
     const { errors } = useSelector(state => state.sockets)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    // reset socket and user slices state when login page is rendered
+    // reset socket and user slice state when login page is rendered
 
     useEffect(() => {
 

@@ -9,16 +9,19 @@ import { deletePrevPic, updateProPic } from "./helpers/helpers"
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
-    _id: null,
     rememberMe: false,
     isLogged: false,
     emailSent: false,
+
     user: {
+        _id: null,
+        socketID: null,
         proPicBlob: "",
         profilePicId: "",
         friendRequests: [],
         friendList: [],
     },
+
     errors: {
         isValid: true,
         isPresent: false,
@@ -103,7 +106,7 @@ export const updateUser = createAsyncThunk(
 export const logout = createAsyncThunk(
     "user/logout",
     async () => await axios.get(`${serverUrl}user/logout`,
-
+    
         { withCredentials: true },
 
     ).then(res => {
@@ -119,6 +122,11 @@ export const userSlice = createSlice({
     initialState,
 
     reducers: {
+
+        getFriendRequests: (state, action) => {
+            state.user.getFriendRequests = action.payload
+        },
+
         reset: state => {
             state.emailSent = false
             state.errors.isPresent = false

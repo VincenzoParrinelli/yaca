@@ -79,13 +79,17 @@
             height: 2.4em;
             left: 155px;
             color: white;
-            background-color: rgb(29, 29, 29);
+            background-color: rgb(40, 40, 40);
             border: none;
             border-radius: 10px;
             cursor: pointer;
+
+            &:hover {
+                border: solid 1px;
+                border-color: #3f8cee;
+            }
         }
 
     }
 
 }
-

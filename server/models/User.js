@@ -1,6 +1,12 @@
 const mongoose = require("mongoose")
 
 const userSchema = mongoose.Schema({
+
+    socketID: {
+        type: String,
+        default: "OFFLINE"
+    },
+
     email: {
         type: String,
         required: true
@@ -21,6 +27,11 @@ const userSchema = mongoose.Schema({
         default: ""
     },
 
+    friendRequests: [{
+        type: String,
+        default: "EMPTY"
+    }],
+      
     createdAt: {
         type: Date,
         expires: "10m",

@@ -13,7 +13,7 @@ const initialState = {
         authorized: true
     },
 
-    searchedUsers: []
+    searchedUsers: [],
 }
 
 export const searchUsers = createAsyncThunk(
@@ -49,6 +49,10 @@ export const socketsSlice = createSlice({
             state.openSocket = false
         },
 
+        sendFriendRequest: (state) => {
+
+        }
+
     },
 
     extraReducers: {
@@ -62,7 +66,7 @@ export const socketsSlice = createSlice({
 export const {
     connection,
     reset,
-    
+    sendFriendRequest
 } = socketsSlice.actions
 
 export default socketsSlice.reducer

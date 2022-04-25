@@ -5,7 +5,7 @@ const initialState = {
     settings: false,
     addFriend: false,
     buttonToolTip: false,
-    notificationBell: false,
+    openNotifications: false,
 }
 
 export const modalsSlice = createSlice({
@@ -19,7 +19,7 @@ export const modalsSlice = createSlice({
             //format string to resemble state key values
             //@desc: get the action name without the handle prefix and refactor first letter as lowercase
             //finally sum lower case letter with the rest of the action name
-            var actionName = action.payload.split("handle")[1]
+            var actionName = action.payload.split("handle")[1] || action.payload.split("open")[1]
             var firstActionLetter = actionName.split("")[0].toLowerCase()
             var actionName2 = actionName.split("")
             actionName2.shift()
@@ -44,8 +44,8 @@ export const modalsSlice = createSlice({
             state.settings = !state.settings
         },
 
-        handleNotificationBell: state => {
-            state.notificationBell = !state.notificationBell
+        openNotifications: state => {
+            state.openNotifications = !state.openNotifications
         },
 
         openButtonToolTip: state => {
@@ -68,7 +68,7 @@ export const {
     handleSettings,
     openButtonToolTip,
     closeButtonToolTip,
-    handleNotificationBell,
+    openNotifications,
     handleAddFriend,
 } = modalsSlice.actions
 
