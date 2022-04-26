@@ -19,14 +19,41 @@ module.exports = io => {
     io.on("connection", socket => {
         console.log(socket.id)
 
-        socket.on("send-friend-request", async userId => {
-            const { currentUserId, userToAddId } = userId
+        socket.on("send-friend-request", async usersID => {
+            const { currentUserId, userToAddId } = usersID
 
-            await User.findByIdAndUpdate(userToAddId, { friendRequests: currentUserId }).then(user => {
+            await User.findByIdAndUpdate(userToAddId, { friendRequests: currentUserId }).then(async userToAddData => {
 
-                io.to(user.socketID).emit("receive-friend-request", user)
+                await User.findById(currentUserId).then(currentUserData => {
+
+                    io.to(userToAddData.socketID).emit("receive-friend-request", currentUserData)
+
+                }).catch(err => new Error(err.message))
 
             }).catch(err => new Error(err.message))
+        })
+
+        socket.on("accept-friend-request", async usersID => {
+            const { currentUserID, userToAcceptID } = usersID
+
+            await User.findByIdAndUpdate(currentUserID, { friendList: userToAcceptID }).then(() => {
+
+            }).catch(err => new Error(err.message))
+
+            await User.findByIdAndUpdate(userToAcceptID, { friendList: currentUserID }).then(() => {
+
+            }).catch(err => new Error(err.message))
+        })
+
+        socket.on("refuse-friend-request", async usersID => {
+            const { currentUserID, userToRefuseID } = usersID
+
+            await User.findByIdAndUpdate(currentUserID, { $pull: { friendRequests: userToRefuseID } }).then(currentUserData => {
+
+                io.to(currentUserData.socketID).emit("delete-friend-request", userToRefuseID)
+
+            }).catch(err => new Error(err.message))
+
         })
 
         socket.on("disconnect", async () => {

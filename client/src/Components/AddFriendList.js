@@ -4,7 +4,7 @@ import { sendFriendRequest } from '../Redux/socketSlice'
 import SearchBar from '../ComponentsShared/SearchBar'
 import addFriendImage from "../Assets/Images/add-friend.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
-import "./AddFriendList.scss"
+import "../ComponentsShared/UserActions.scss"
 
 export default function AddFriend() {
 
@@ -22,11 +22,11 @@ export default function AddFriend() {
     }
 
     return (
-        <div className='AddFriendList'>
+        <div className='UserActions'>
 
-            <div className='add-friendlist-header'>
+            <div className='actions-header'>
 
-                <img src={addFriendImage} className="add-friend-icon" />
+                <img src={addFriendImage} className="actions-icon" />
 
                 Add new friend
 
@@ -40,7 +40,7 @@ export default function AddFriend() {
             {searchedUsers && searchedUsers.map((user, i) => {
 
                 return (
-                    <div key={user.email} data-index={i} className='users-container'>
+                    <div key={user._id} data-index={i} className='users-container'>
 
                         <div className='propic-container'>
 

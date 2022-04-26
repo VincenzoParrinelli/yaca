@@ -119,8 +119,6 @@ module.exports = {
 
     logout: async (req, res) => {
 
-        console.log(req.body)
-
         //clear tokens on logout
         res.clearCookie("accessToken")
         res.clearCookie("refreshToken")

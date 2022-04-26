@@ -51,6 +51,10 @@ export const socketsSlice = createSlice({
 
         sendFriendRequest: (state) => {
 
+        },
+
+        refuseFriendRequest: (state, action) => {
+
         }
 
     },
@@ -66,7 +70,8 @@ export const socketsSlice = createSlice({
 export const {
     connection,
     reset,
-    sendFriendRequest
+    sendFriendRequest,
+    refuseFriendRequest
 } = socketsSlice.actions
 
 export default socketsSlice.reducer

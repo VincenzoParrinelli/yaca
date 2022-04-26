@@ -27,6 +27,11 @@ const userSchema = mongoose.Schema({
         default: ""
     },
 
+    friendList: [{
+        type: String,
+        default: "EMPTY"
+    }],
+
     friendRequests: [{
         type: String,
         default: "EMPTY"

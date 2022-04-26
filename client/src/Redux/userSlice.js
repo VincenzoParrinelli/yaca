@@ -58,6 +58,7 @@ export const activateAccount = createAsyncThunk(
 
 export const login = createAsyncThunk(
     "user/login",
+
     async data => await axios.post(`${serverUrl}user/login`,
 
         data,
@@ -74,15 +75,16 @@ export const login = createAsyncThunk(
 
 export const loadUser = createAsyncThunk(
     "user/load",
+
     async data => await axios.post(`${serverUrl}user/load`,
         data,
         { withCredentials: true }
 
-    ).then(res => {
+    ).then(async res => {
 
         const proPicId = ref(storage, `proPics/${res.data.profilePicId}`)
 
-        const proPic = getDownloadURL(proPicId)
+        const proPic = await getDownloadURL(proPicId)
 
         return proPic
 
@@ -92,7 +94,7 @@ export const loadUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
     "user/updateUser",
-    async data => await axios.post(`${serverUrl}user/update`,
+    async data => await axios.put(`${serverUrl}user/update`,
 
         data.payload,
         { withCredentials: true },
@@ -105,8 +107,8 @@ export const updateUser = createAsyncThunk(
 
 export const logout = createAsyncThunk(
     "user/logout",
-    async () => await axios.get(`${serverUrl}user/logout`,
-    
+    async () => await axios.delete(`${serverUrl}user/logout`,
+
         { withCredentials: true },
 
     ).then(res => {
@@ -124,7 +126,11 @@ export const userSlice = createSlice({
     reducers: {
 
         getFriendRequests: (state, action) => {
-            state.user.getFriendRequests = action.payload
+            state.user.friendRequests = [...state.user.friendRequests, action.payload]
+        },
+
+        deleteFriendRequest: (state, action) => {
+            state.user.friendRequests.splice(action.payload, 1)
         },
 
         reset: state => {

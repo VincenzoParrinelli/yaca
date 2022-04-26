@@ -28,15 +28,32 @@ const socketMiddleware = store => next => action => {
         })
 
         socket.on("receive-friend-request", user => {
+            
             store.dispatch({
                 type: "user/getFriendRequests",
                 payload: user
+            })
+        })
+
+        socket.on("delete-friend-request", userToRefuseID => {
+         
+            store.dispatch({
+                type: "user/deleteFriendRequest",
+                payload: userToRefuseID
             })
         })
     }
 
     if (action.type === "socket/sendFriendRequest") {
         socket.emit("send-friend-request", action.payload)
+    }
+
+    if (action.type === "socket/acceptFriendRequest") {
+        socket.emit("accept-friend-request", action.payload)
+    }
+
+    if (action.type === "socket/refuseFriendRequest") {
+        socket.emit("refuse-friend-request", action.payload)
     }
 
 

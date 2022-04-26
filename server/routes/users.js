@@ -17,11 +17,11 @@ router.post("/login", validateLoginEmail, validateLoginPassword, userController.
 
 router.post("/load", validateToken, userController.load)
 
-router.post("/update", validateToken, userController.update)
+router.put("/update", validateToken, userController.update)
 
 router.post("/search-users", validateToken, userController.searchUsers)
 
-router.get("/logout", userController.logout)
+router.delete("/logout", userController.logout)
 
 
 module.exports = router

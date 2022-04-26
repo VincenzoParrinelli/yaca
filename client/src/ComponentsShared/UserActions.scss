@@ -1,11 +1,11 @@
-.AddFriendList {
+.UserActions {
     width: 20%;
     height: 100vh;
     text-align: left;
     color: white;
     font-family: arial;
 
-    .add-friendlist-header {
+    .actions-header {
         display: flex;
         align-items: center;
         position: relative;
@@ -13,7 +13,7 @@
         margin-top: 20px;
         font-size: 14px;
 
-        .add-friend-icon {
+        .actions-icon {
             position: relative;
             top: -1px;
             width: 20px;
@@ -49,8 +49,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 3em;
-            height: 3em;
+            width: 3.2em;
+            height: 3.2em;
             border-radius: 50%;
             background-color: rgb(40, 40, 40);
 
@@ -90,6 +90,52 @@
             }
         }
 
-    }
+        .accept-request-container {
+            position: absolute;
+            left: 160px;
+            width: 2.4em;
+            height: 2.4em;
+            background-color: rgb(40, 40, 40);
+            border-radius: 50%;
+            border: dashed transparent;
 
+            .accept-request {
+                position: relative;
+                width: 1vw;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            &:hover {
+                border: dashed red;
+                cursor: pointer;
+            }
+        }
+
+        .refuse-request-container {
+            position: absolute;
+            left: 220px;
+            width: 2.4em;
+            height: 2.4em;
+            background-color: rgb(40, 40, 40);
+            border-radius: 50%;
+            border: dashed transparent;
+
+            .refuse-request {
+                position: relative;
+                width: .9vw;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%)
+            }
+
+
+            &:hover {
+                border: dashed red;
+                cursor: pointer;
+            }
+        }
+
+    }
 }
