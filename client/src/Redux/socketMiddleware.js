@@ -27,11 +27,40 @@ const socketMiddleware = store => next => action => {
 
         })
 
+        socket.on("receive-searched-users", users => {
+            console.log(users)
+            store.dispatch({
+                type: "socket/getSearchedUsers",
+                payload: users
+            })
+        })
+
         socket.on("receive-friend-request", user => {
             
             store.dispatch({
                 type: "user/getFriendRequests",
                 payload: user
+            })
+        })
+
+        socket.on("receive-pending-friend-request", user => {
+            
+            store.dispatch({
+                type: "user/getPendingFriendRequest",
+                payload: user
+            })
+        })
+
+        socket.on("accept-friend-request", userToAcceptID => {
+        
+            store.dispatch({
+                type: "user/acceptFriendRequest",
+                payload: userToAcceptID
+            })
+
+            store.dispatch({
+                type: "user/deleteFriendRequest",
+                payload: userToAcceptID
             })
         })
 
@@ -42,6 +71,10 @@ const socketMiddleware = store => next => action => {
                 payload: userToRefuseID
             })
         })
+    }
+
+    if (action.type === "socket/searchUsers") {
+        socket.emit("search-user", action.payload)
     }
 
     if (action.type === "socket/sendFriendRequest") {

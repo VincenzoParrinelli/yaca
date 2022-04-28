@@ -17,9 +17,7 @@ router.post("/login", validateLoginEmail, validateLoginPassword, userController.
 
 router.post("/load", validateToken, userController.load)
 
-router.put("/update", validateToken, userController.update)
-
-router.post("/search-users", validateToken, userController.searchUsers)
+router.post("/update", validateToken, userController.update)
 
 router.delete("/logout", userController.logout)
 

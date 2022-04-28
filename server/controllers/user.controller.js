@@ -92,7 +92,7 @@ module.exports = {
         var id = req.body._id
 
         if (newProPicId) {
-            await User.findOneAndUpdate(id, {
+            await User.findByIdAndUpdate(id, {
                 profilePicId: newProPicId
             }, { new: true }).then((data) => {
 
@@ -101,20 +101,6 @@ module.exports = {
 
         } else return
 
-    },
-
-    searchUsers: async (req, res) => {
-
-        var username = req.body.data
-
-        if (!username) return
-
-        User.find({ username: { "$regex": username, "$options": "i" } }).select(
-            { "email": 1, "username": 1, "profilePicId": 1 }
-        ).then(data => {
-
-            res.json(data)
-        }).catch(err => new Error(err))
     },
 
     logout: async (req, res) => {

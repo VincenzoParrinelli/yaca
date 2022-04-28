@@ -19,6 +19,7 @@ const initialState = {
         proPicBlob: "",
         profilePicId: "",
         friendRequests: [],
+        friendRequestsPending: [],
         friendList: [],
     },
 
@@ -82,9 +83,11 @@ export const loadUser = createAsyncThunk(
 
     ).then(async res => {
 
-        const proPicId = ref(storage, `proPics/${res.data.profilePicId}`)
+        const userID = res.data._id
 
-        const proPic = await getDownloadURL(proPicId)
+        const proPicId = ref(storage, `proPics/${userID}/${res.data.profilePicId}`)
+
+        const proPic = getDownloadURL(proPicId)
 
         return proPic
 
@@ -94,7 +97,7 @@ export const loadUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
     "user/updateUser",
-    async data => await axios.put(`${serverUrl}user/update`,
+    async data => await axios.post(`${serverUrl}user/update`,
 
         data.payload,
         { withCredentials: true },
@@ -129,8 +132,17 @@ export const userSlice = createSlice({
             state.user.friendRequests = [...state.user.friendRequests, action.payload]
         },
 
+        getPendingFriendRequest: (state, action) => {
+            state.user.friendRequestsPending = [...state.user.friendRequestsPending, action.payload]
+        },
+
+        acceptFriendRequest: (state, action) => {
+            state.user.friendList = [...state.user.friendList, action.payload]
+        },
+
         deleteFriendRequest: (state, action) => {
             state.user.friendRequests.splice(action.payload, 1)
+            state.user.friendRequestsPending.splice(action.payload, 1)
         },
 
         reset: state => {
@@ -186,7 +198,7 @@ export const userSlice = createSlice({
 
             state.user.profilePicId = action.payload.profilePicId
 
-            updateProPic(action)
+            updateProPic(state, action)
 
             state.user.proPicBlob = URL.createObjectURL(action.meta.arg.file.proPic)
         },
@@ -201,6 +213,7 @@ export const userSlice = createSlice({
 
 export const {
     reset,
+
 } = userSlice.actions
 
 export default userSlice.reducer

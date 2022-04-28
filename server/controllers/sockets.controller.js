@@ -16,19 +16,37 @@ module.exports = io => {
         registerOnlineUsers(socket, next)
     })
 
+    const fieldsToExclude = { createdAt: 0, password: 0 }
+
     io.on("connection", socket => {
-        console.log(socket.id)
+
+        socket.on("search-user", async username => {
+
+            if (!username) return
+
+            await User.find({ username: { "$regex": username, "$options": "i" } })
+                .select({ "email": 1, "username": 1, "profilePicId": 1 })
+                .then(usersData => {
+
+                    socket.emit("receive-searched-users", usersData)
+
+                }).catch(err => new Error(err))
+        })
 
         socket.on("send-friend-request", async usersID => {
             const { currentUserId, userToAddId } = usersID
 
             await User.findByIdAndUpdate(userToAddId, { friendRequests: currentUserId }).then(async userToAddData => {
 
-                await User.findById(currentUserId).then(currentUserData => {
+                await User.findByIdAndUpdate(currentUserId, { friendRequestsPending: userToAddId })
+                    .select(fieldsToExclude)
+                    .then(currentUserData => {
 
-                    io.to(userToAddData.socketID).emit("receive-friend-request", currentUserData)
+                        io.to(currentUserData.socketID).emit("receive-pending-friend-request", userToAddId)
 
-                }).catch(err => new Error(err.message))
+                        io.to(userToAddData.socketID).emit("receive-friend-request", currentUserData)
+
+                    }).catch(err => new Error(err.message))
 
             }).catch(err => new Error(err.message))
         })
@@ -36,23 +54,44 @@ module.exports = io => {
         socket.on("accept-friend-request", async usersID => {
             const { currentUserID, userToAcceptID } = usersID
 
-            await User.findByIdAndUpdate(currentUserID, { friendList: userToAcceptID }).then(() => {
+            await User.findByIdAndUpdate(currentUserID, { friendList: userToAcceptID, $pull: { friendRequests: userToAcceptID, friendRequestsPending: userToAcceptID } })
+                .select(fieldsToExclude)
+                .then(async currentUserData => {
 
-            }).catch(err => new Error(err.message))
+                    await User.findByIdAndUpdate(userToAcceptID, { friendList: currentUserID })
+                        .select(fieldsToExclude)
+                        .then(userToAcceptData => {
 
-            await User.findByIdAndUpdate(userToAcceptID, { friendList: currentUserID }).then(() => {
+                            io.to(currentUserData.socketID).emit("accept-friend-request", userToAcceptData)
 
-            }).catch(err => new Error(err.message))
+                            io.to(userToAcceptData.socketID).emit("accept-friend-request", currentUserData)
+
+                        }).catch(err => new Error(err.message))
+
+                }).catch(err => new Error(err.message))
+
+
         })
 
         socket.on("refuse-friend-request", async usersID => {
             const { currentUserID, userToRefuseID } = usersID
 
-            await User.findByIdAndUpdate(currentUserID, { $pull: { friendRequests: userToRefuseID } }).then(currentUserData => {
+            await User.findByIdAndUpdate(currentUserID, { $pull: { friendRequests: userToRefuseID } })
+                .select(fieldsToExclude)
+                .then(async currentUserData => {
 
-                io.to(currentUserData.socketID).emit("delete-friend-request", userToRefuseID)
+                    await User.findByIdAndUpdate(userToRefuseID, { $pull: { friendRequestsPending: currentUserID } })
+                        .select(fieldsToExclude)
+                        .then(userToRefuseData => {
 
-            }).catch(err => new Error(err.message))
+                            io.to(currentUserData.socketID).emit("delete-friend-request", userToRefuseData)
+
+                            io.to(userToRefuseData.socketID).emit("delete-friend-request", currentUserData)
+
+                        }).catch(err => new Error(err.message))
+
+
+                }).catch(err => new Error(err.message))
 
         })
 

@@ -32,9 +32,10 @@ export default function Dashboard() {
 
     }, [errors.authorized])
 
-    
+
     return (
         <div className='Dashboard'>
+
 
             {settings && <ProfileModal />}
             <SideBar />

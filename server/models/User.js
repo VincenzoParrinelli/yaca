@@ -32,6 +32,11 @@ const userSchema = mongoose.Schema({
         default: "EMPTY"
     }],
 
+    friendRequestsPending: [{
+        type: String,
+        default: "EMPTY"
+    }],
+
     friendRequests: [{
         type: String,
         default: "EMPTY"

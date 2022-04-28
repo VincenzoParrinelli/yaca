@@ -34,18 +34,18 @@ export default function AddFriend() {
 
             <SearchBar />
 
-            <p className='users-text'>USERS</p>
+            <p className='users-text'> USERS </p>
 
 
-            {searchedUsers && searchedUsers.map((user, i) => {
+            {searchedUsers && searchedUsers.map((searchedUser, i) => {
 
                 return (
-                    <div key={user._id} data-index={i} className='users-container'>
+                    <div key={searchedUser._id} data-index={i} className='users-container'>
 
                         <div className='propic-container'>
 
 
-                            {user.proPicId ?
+                            {searchedUser.proPicId ?
                                 <img className='propic' />
                                 :
                                 <img src={defaultProPic} className='defaultpropic' />
@@ -54,9 +54,25 @@ export default function AddFriend() {
                         </div>
 
 
-                        <p className='username'>{user.username}</p>
+                        <p className='username'>{searchedUser.username}</p>
 
-                        <button className='send-request' onClick={() => handleSendFriendRequest(user)}>Send request</button>
+
+                        {
+                            //if user is already added or friend request has been already sent, 
+                            //render a button that doesn't allow the user to duplicate his request 
+                        }
+
+                        {user.friendList.includes(searchedUser._id) ?
+
+                            <button className='already-added-friend'>Friend added</button> :
+
+                            user.friendRequests.some(user => user["_id"] === searchedUser._id) || user.friendRequestsPending.includes(searchedUser._id) ?
+
+                            <button className='already-added-friend'>Request sent</button> :
+
+                            <button className='send-request' onClick={() => handleSendFriendRequest(searchedUser._id)}>Send request</button>
+
+                        }
 
                     </div>
                 )

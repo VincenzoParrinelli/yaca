@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { refuseFriendRequest } from '../Redux/socketSlice'
+import { acceptFriendRequest, refuseFriendRequest } from '../Redux/socketSlice'
 import notificationBell from "../Assets/Images/bell.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import acceptImage from "../Assets/Images/accept.png"

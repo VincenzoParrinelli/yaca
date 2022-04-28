@@ -70,6 +70,21 @@
             font: bold 12px sans-serif;
         }
 
+        .already-added-friend {
+            display: flex;
+            position: absolute;
+            align-items: center;
+            justify-content: center;
+            width: 8em;
+            height: 2.4em;
+            left: 155px;
+            color: white;
+            background-color: rgb(40, 40, 40);
+            border: none;
+            border-radius: 10px;
+            opacity: 0.6;
+        }
+
         .send-request {
             display: flex;
             position: absolute;
