@@ -1,6 +1,4 @@
-const mongoose = require("mongoose")
 const User = require("../models/User.js")
-var stringSimilarity = require("string-similarity")
 const { validateSocketToken } = require("../validators/tokenSocketValidators.js")
 const { registerOnlineUsers } = require("../helpers/registerOnlineUsers.js")
 
@@ -96,7 +94,9 @@ module.exports = io => {
         })
 
         socket.on("disconnect", async () => {
-            await User.findOneAndUpdate(socket.id, { socketID: "OFFLINE" }).catch(err => new Error(err.message))
+
+            await User.findOneAndUpdate({ socketID: socket.id }, { socketID: "OFFLINE" }).catch(err => new Error(err.message))
+
         })
     })
 

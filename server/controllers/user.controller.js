@@ -59,6 +59,18 @@ module.exports = {
         } else res.sendStatus(404)
     },
 
+    loadFriends: async (req, res) => {
+
+        var friendID = req.params.id
+
+        User.findById(friendID)
+        .select({"socketID": 1, "email": 1, "username": 1, "profilePicId": 1 })
+        .then(data => {
+            res.json(data)
+        }).catch(err => console.error(err.message))
+
+    },
+
     login: async (req, res) => {
         var data = res.locals.data
         var password = req.body.password

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux"
-import { loadUser } from '../Redux/userSlice';
+import { loadUser, loadFriends } from '../Redux/userSlice';
 import { connection } from '../Redux/socketSlice';
 import SideBar from "./SideBar"
 import ProfileModal from "./ProfileModal"
-import MainContent from "./MainContent"
+import ChatOpen from "./ChatOpen"
 import ChatList from './ChatList'
 import AddFriend from './AddFriendList';
 import Notifications from './Notifications';
@@ -19,15 +19,21 @@ export default function Dashboard() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-
     useEffect(() => {
 
         if (!isLogged || !errors.authorized) {
             navigate("/")
 
         } else {
-            dispatch(loadUser(user))
             dispatch(connection(user._id))
+            dispatch(loadUser(user))
+
+            user.friendList.forEach(friendListID => {
+
+                dispatch(loadFriends(friendListID))
+
+            })
+
         }
 
     }, [errors.authorized])
@@ -49,7 +55,7 @@ export default function Dashboard() {
 
             <div className='separator-vertical' />
 
-            <MainContent />
+            <ChatOpen />
 
         </div>
     )

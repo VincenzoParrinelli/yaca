@@ -4,7 +4,7 @@ import { auth, storage } from "../firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 import { ref, getDownloadURL } from "firebase/storage"
 
-import { deletePrevPic, updateProPic } from "./helpers/helpers"
+import { getProPic, deletePrevPic, updateProPic } from "./helpers/helpers"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
@@ -95,6 +95,19 @@ export const loadUser = createAsyncThunk(
 
 )
 
+export const loadFriends = createAsyncThunk(
+    "user/loadFriends",
+
+    async data => await axios.get(`${serverUrl}user/loadFriends/${data}`,
+
+        { withCredentials: true }
+
+    ).then(res => {
+
+        return res.data
+    }).catch(err => { throw Error(err) })
+)
+
 export const updateUser = createAsyncThunk(
     "user/updateUser",
     async data => await axios.post(`${serverUrl}user/update`,
@@ -145,6 +158,14 @@ export const userSlice = createSlice({
             state.user.friendRequestsPending.splice(action.payload, 1)
         },
 
+        getFriendProPic: (state, action) => {
+            //get index and proPic blob from payload
+            const proPicBlob = action.payload.proPicBlob
+            const i = action.payload.i
+
+            state.user.friendList[i].proPicBlob = proPicBlob
+        },
+
         reset: state => {
             state.emailSent = false
             state.errors.isPresent = false
@@ -183,6 +204,10 @@ export const userSlice = createSlice({
 
         [loadUser.fulfilled]: (state, action) => {
             state.user.proPicBlob = action.payload
+        },
+
+        [loadFriends.fulfilled]: (state, action) => {
+            state.user.friendList = [action.payload]
         },
 
         [login.fulfilled]: (state, action) => {

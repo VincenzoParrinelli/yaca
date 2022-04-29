@@ -6,7 +6,9 @@ const registerOnlineUsers = async (socket, next) => {
 
     if (!currentUserID) next(new Error("401"))
 
-    User.findByIdAndUpdate(currentUserID, { socketID: socket.id }).then(() => {
+    User.findByIdAndUpdate(currentUserID, { socketID: socket.id }).then(userData => {
+
+        
         next()
     }).catch(err => err && next(new Error("401")))
 }

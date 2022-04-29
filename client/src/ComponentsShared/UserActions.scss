@@ -54,6 +54,14 @@
             border-radius: 50%;
             background-color: rgb(40, 40, 40);
 
+            .propic {
+                position: relative;
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+
             .defaultpropic {
                 position: relative;
                 top: 4px;

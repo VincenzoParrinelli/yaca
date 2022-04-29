@@ -4,7 +4,7 @@ import { sendFriendRequest } from '../Redux/socketSlice'
 import SearchBar from '../ComponentsShared/SearchBar'
 import addFriendImage from "../Assets/Images/add-friend.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
-import "../ComponentsShared/UserActions.scss"
+import "./AddFriendList.scss"
 
 export default function AddFriend() {
 
@@ -22,11 +22,11 @@ export default function AddFriend() {
     }
 
     return (
-        <div className='UserActions'>
+        <div className='add-friend-List'>
 
-            <div className='actions-header'>
+            <div className='add-friend-list__header'>
 
-                <img src={addFriendImage} className="actions-icon" />
+                <img src={addFriendImage} className="add-friend-list__icon" />
 
                 Add new friend
 
@@ -34,27 +34,27 @@ export default function AddFriend() {
 
             <SearchBar />
 
-            <p className='users-text'> USERS </p>
+            <p className='add-friend-list__text'> USERS </p>
 
 
             {searchedUsers && searchedUsers.map((searchedUser, i) => {
 
                 return (
-                    <div key={searchedUser._id} data-index={i} className='users-container'>
+                    <div key={searchedUser._id} data-index={i} className='add-friend-list__users-container'>
 
-                        <div className='propic-container'>
+                        <div className='add-friend-list__users-propic-container'>
 
 
                             {searchedUser.proPicId ?
-                                <img className='propic' />
+                                <img className='add-friend-list__users-propic' />
                                 :
-                                <img src={defaultProPic} className='defaultpropic' />
+                                <img src={defaultProPic} className='add-friend-list__default-propic' />
                             }
 
                         </div>
 
 
-                        <p className='username'>{searchedUser.username}</p>
+                        <p className='add-friend-list__username'>{searchedUser.username}</p>
 
 
                         {
@@ -62,15 +62,15 @@ export default function AddFriend() {
                             //render a button that doesn't allow the user to duplicate his request 
                         }
 
-                        {user.friendList.includes(searchedUser._id) ?
+                        {user.friendList.some(user => user["_id"] === searchedUser._id) ?
 
-                            <button className='already-added-friend'>Friend added</button> :
+                            <button className='add-friend-list__btn add-friend-list__btn--request-already-added'>Friend added</button> :
 
                             user.friendRequests.some(user => user["_id"] === searchedUser._id) || user.friendRequestsPending.includes(searchedUser._id) ?
 
-                            <button className='already-added-friend'>Request sent</button> :
+                            <button className='add-friend-list__btn add-friend-list__btn--request-already-sent'>Request sent</button> :
 
-                            <button className='send-request' onClick={() => handleSendFriendRequest(searchedUser._id)}>Send request</button>
+                            <button className='add-friend-list__btn add-friend-list__btn--send-request' onClick={() => handleSendFriendRequest(searchedUser._id)}>Send request</button>
 
                         }
 
