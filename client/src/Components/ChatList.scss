@@ -34,21 +34,40 @@
         justify-content: left;
         align-items: center;
         position: relative;
-        left: 20px;
-        margin-top: 50px;
         font-size: 14px;
         color: white;
+        padding: 9px;
         font-family: arial;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #1E293A;
+        }
+
+        &[aria-checked=true] {
+            background-color: #1E293A;
+
+            &:before {
+                content: " ";
+                position: absolute;
+                left: 0;
+                justify-content: left;
+                align-items: left;
+                border-left: 2px solid #408ff4;
+                height: 8.7vh;
+            }
+        }
 
         &[data-index="0"] {
             margin-top: 30px;
         }
+
     }
 
     &__user-propic-container {
         display: flex;
-        justify-content: center;
-        align-items: center;
+        position: relative;
+        left: 10px;
         width: 3.2em;
         height: 3.2em;
         border-radius: 50%;
@@ -62,7 +81,7 @@
         height: 100%;
         border-radius: 50%;
     }
-    
+
     &__user-status {
         position: absolute;
         top: -1px;
@@ -70,7 +89,7 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        border: 2px solid black;  
+        border: 2px solid black;
 
         &--online {
             background-color: #2be831;
@@ -91,8 +110,8 @@
     &__username {
         display: flex;
         position: relative;
-        left: 18px;
-        bottom: 8px;
+        left: 26px;
+        bottom: 15px;
         font: bold 12px sans-serif;
     }
 }

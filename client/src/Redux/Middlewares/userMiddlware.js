@@ -1,15 +1,35 @@
 import { storage } from "../../firebase"
 import { ref, getDownloadURL } from "firebase/storage"
 
-const userMiddleware = store => next => action => {
+const userMiddleware = store => next => async action => {
 
-    if (action.type === "user/load/fulfilled") {
+    next(action)
 
-        let friendList = store.getState().user.user.friendList
+    if (action.type === "user/login/fulfilled") {
+
+        //load current user proPics
+        const user = store.getState().user.data
+
+        const userID = user._id
+        const userProfilePicId = user.profilePicId
+
+        const proPicRef = ref(storage, `proPics/${userID}/${userProfilePicId}`)
+
+        await getDownloadURL(proPicRef).then(proPicBlob => {
+
+            store.dispatch({
+                type: "user/loadProPic",
+                payload: proPicBlob
+            })
+        }) 
+
+        
+        //load friends proPics
+        const friendList = store.getState().user.data.friendList
 
         friendList.forEach(async (friend, i) => {
-            let friendID = friend._id
-            let friendProPic = friend.profilePicId
+            const friendID = friend._id
+            const friendProPic = friend.profilePicId
 
             const proPicRef = ref(storage, `proPics/${friendID}/${friendProPic}`)
 
@@ -18,7 +38,7 @@ const userMiddleware = store => next => action => {
                 let payload = { proPicBlob, i }
 
                 store.dispatch({
-                    type: "user/getFriendProPic",
+                    type: "user/loadFriendProPic",
                     payload
                 })
 
@@ -28,7 +48,6 @@ const userMiddleware = store => next => action => {
 
     }
 
-    next(action)
 }
 
 export default userMiddleware

@@ -18,11 +18,14 @@ module.exports = io => {
 
     io.on("connection", socket => {
 
-        socket.on("search-user", async username => {
+        socket.on("search-user", async payload => {
+
+            const { userID, username } = payload
 
             if (!username) return
 
-            await User.find({ username: { "$regex": username, "$options": "i" } })
+            //search for users matching username value and exclude current user
+            await User.find({ username: { "$regex": username, "$options": "i" }, _id: { "$ne": userID } })
                 .select({ "email": 1, "username": 1, "profilePicId": 1 })
                 .then(usersData => {
 
@@ -40,9 +43,9 @@ module.exports = io => {
                     .select(fieldsToExclude)
                     .then(currentUserData => {
 
-                        io.to(currentUserData.socketID).emit("receive-pending-friend-request", userToAddId)
+                        socket.to(currentUserData.socketID).emit("receive-pending-friend-request", userToAddId)
 
-                        io.to(userToAddData.socketID).emit("receive-friend-request", currentUserData)
+                        socket.to(userToAddData.socketID).emit("receive-friend-request", currentUserData)
 
                     }).catch(err => new Error(err.message))
 
@@ -52,17 +55,17 @@ module.exports = io => {
         socket.on("accept-friend-request", async usersID => {
             const { currentUserID, userToAcceptID } = usersID
 
-            await User.findByIdAndUpdate(currentUserID, { friendList: userToAcceptID, $pull: { friendRequests: userToAcceptID, friendRequestsPending: userToAcceptID } })
+            await User.findByIdAndUpdate(currentUserID, { $push: { friendList: [userToAcceptID], $pull: { friendRequests: [userToAcceptID], friendRequestsPending: [userToAcceptID] } } })
                 .select(fieldsToExclude)
                 .then(async currentUserData => {
 
-                    await User.findByIdAndUpdate(userToAcceptID, { friendList: currentUserID })
+                    await User.findByIdAndUpdate(userToAcceptID, { $push: { friendList: [currentUserID], $pull: { friendRequestsPending: [currentUserID] } } })
                         .select(fieldsToExclude)
                         .then(userToAcceptData => {
 
-                            io.to(currentUserData.socketID).emit("accept-friend-request", userToAcceptData)
+                            socket.to(currentUserData.socketID).emit("accept-friend-request", userToAcceptData)
 
-                            io.to(userToAcceptData.socketID).emit("accept-friend-request", currentUserData)
+                            socket.to(userToAcceptData.socketID).emit("accept-friend-request", currentUserData)
 
                         }).catch(err => new Error(err.message))
 
@@ -82,9 +85,9 @@ module.exports = io => {
                         .select(fieldsToExclude)
                         .then(userToRefuseData => {
 
-                            io.to(currentUserData.socketID).emit("delete-friend-request", userToRefuseData)
+                            socket.to(currentUserData.socketID).emit("delete-friend-request", userToRefuseData)
 
-                            io.to(userToRefuseData.socketID).emit("delete-friend-request", currentUserData)
+                            socket.to(userToRefuseData.socketID).emit("delete-friend-request", currentUserData)
 
                         }).catch(err => new Error(err.message))
 
@@ -95,7 +98,30 @@ module.exports = io => {
 
         socket.on("disconnect", async () => {
 
-            await User.findOneAndUpdate({ socketID: socket.id }, { socketID: "OFFLINE" }).catch(err => new Error(err.message))
+            await User.findOneAndUpdate({ socketID: socket.id }, { socketID: "OFFLINE" }, { new: true }).then(async userData => {
+
+                await User.find({ _id: userData.friendList }).then(friendsData => {
+
+                    friendsData.forEach(friend => {
+
+                        const { _id, socketID } = userData
+                        const friendSocketID = friend.socketID
+
+                        if (friendSocketID === "OFFLINE") return
+
+                        const payload = {
+                            _id,
+                            socketID: "OFFLINE"
+                        }
+
+                        socket.to(friendSocketID).emit("update-friend-status", payload)
+
+                    })
+
+
+                }).catch(err => new Error(err.message))
+
+            }).catch(err => new Error(err.message))
 
         })
     })

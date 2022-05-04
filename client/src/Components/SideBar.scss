@@ -10,13 +10,11 @@
 
         .user-icon {
             display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            background-color: white;
+            object-fit: cover;
             width: 3.5em;
             height: 3.5em;
             margin-top: 20px;
-            border-radius: 60px;
+            border-radius: 50%;
             background-color: grey;
             cursor: pointer;
         }

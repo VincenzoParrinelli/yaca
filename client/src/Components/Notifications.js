@@ -9,13 +9,13 @@ import "../ComponentsShared/UserActions.scss"
 
 export default function Notifications() {
 
-    const { user } = useSelector(state => state.user)
-    const { friendRequests } = useSelector(state => state.user.user)
+    const { data } = useSelector(state => state.user)
+    const { friendRequests } = useSelector(state => state.user.data)
 
     const dispatch = useDispatch()
 
     const handleAcceptFriendRequest = userToAcceptID => {
-        let currentUserID = user._id
+        let currentUserID = data._id
 
         let payload = { currentUserID, userToAcceptID }
 
@@ -24,7 +24,7 @@ export default function Notifications() {
 
 
     const handleRefuseFriendRequest = userToRefuseID => {
-        let currentUserID = user._id
+        let currentUserID = data._id
 
         let payload = { currentUserID, userToRefuseID }
 

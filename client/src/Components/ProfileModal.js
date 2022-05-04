@@ -10,7 +10,7 @@ export default function ProfileModal() {
     const [newProPic, setNewProPic] = useState(null)
     const [newProPicUrl, setNewProPicUrl] = useState(null)
 
-    const { user } = useSelector(state => state.user)
+    const { data } = useSelector(state => state.user)
     const { settings } = useSelector(state => state.modal)
     const dispatch = useDispatch()
     
@@ -30,7 +30,7 @@ export default function ProfileModal() {
             //in order to store it in firebase 
             const payload = {
                 payload: {
-                    newProPicUrl, _id: user._id
+                    newProPicUrl, _id: data._id
                 },
 
                 file: {
@@ -56,7 +56,7 @@ export default function ProfileModal() {
 
             >
                 <label className='proPic-container'>
-                    <img className='proPic' src={newProPicUrl ? newProPicUrl : user.proPicBlob} />
+                    <img className='proPic' src={newProPicUrl ? newProPicUrl : data.proPicBlob} />
 
                     <input
                         className='pic-changer'
@@ -66,8 +66,8 @@ export default function ProfileModal() {
                     />
                 </label>
 
-                <p className='email' type="text">{user.email}</p>
-                <p className='username' type="text">{user.username}</p>
+                <p className='email' type="text">{data.email}</p>
+                <p className='username' type="text">{data.username}</p>
 
                 <footer className='settings-footer'>
                     <button className='save-btn' onClick={() => updateProfile()}>

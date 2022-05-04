@@ -1,10 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { current, createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 import { auth, storage } from "../firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 import { ref, getDownloadURL } from "firebase/storage"
 
-import { getProPic, deletePrevPic, updateProPic } from "./helpers/helpers"
+import { deletePrevPic, updateProPic } from "./helpers/helpers"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
@@ -13,7 +13,7 @@ const initialState = {
     isLogged: false,
     emailSent: false,
 
-    user: {
+    data: {
         _id: null,
         socketID: null,
         proPicBlob: "",
@@ -65,9 +65,9 @@ export const login = createAsyncThunk(
         data,
         { withCredentials: true }
 
-    ).then(res => {
+    ).then(async res => {
 
-        signInWithEmailAndPassword(auth, res.data.user.email, res.data.user.password)
+        signInWithEmailAndPassword(auth, res.data.userData.email, res.data.userData.password)
 
         return res.data
 
@@ -93,19 +93,6 @@ export const loadUser = createAsyncThunk(
 
     }).catch(err => { throw Error(err) })
 
-)
-
-export const loadFriends = createAsyncThunk(
-    "user/loadFriends",
-
-    async data => await axios.get(`${serverUrl}user/loadFriends/${data}`,
-
-        { withCredentials: true }
-
-    ).then(res => {
-
-        return res.data
-    }).catch(err => { throw Error(err) })
 )
 
 export const updateUser = createAsyncThunk(
@@ -141,29 +128,51 @@ export const userSlice = createSlice({
 
     reducers: {
 
-        getFriendRequests: (state, action) => {
-            state.user.friendRequests = [...state.user.friendRequests, action.payload]
+        loadProPic: (state, action) => {
+            state.data.proPicBlob = action.payload
         },
 
-        getPendingFriendRequest: (state, action) => {
-            state.user.friendRequestsPending = [...state.user.friendRequestsPending, action.payload]
-        },
-
-        acceptFriendRequest: (state, action) => {
-            state.user.friendList = [...state.user.friendList, action.payload]
-        },
-
-        deleteFriendRequest: (state, action) => {
-            state.user.friendRequests.splice(action.payload, 1)
-            state.user.friendRequestsPending.splice(action.payload, 1)
-        },
-
-        getFriendProPic: (state, action) => {
+        loadFriendProPic: (state, action) => {
             //get index and proPic blob from payload
             const proPicBlob = action.payload.proPicBlob
             const i = action.payload.i
 
-            state.user.friendList[i].proPicBlob = proPicBlob
+            state.data.friendList[i].proPicBlob = proPicBlob
+        },
+
+        updateFriendStatus: (state, action) => {
+
+            const { _id, socketID } = action.payload
+
+            let friendListState = state.data.friendList
+
+            friendListState.forEach((friend, i) => {
+
+                if (friend._id === _id) {
+                    friendListState[i].socketID = socketID
+                }
+
+            })
+
+            state.data.friendList = friendListState
+
+        },
+
+        getFriendRequests: (state, action) => {
+            state.data.friendRequests = [...state.data.friendRequests, action.payload]
+        },
+
+        getPendingFriendRequest: (state, action) => {
+            state.data.friendRequestsPending = [...state.data.friendRequestsPending, action.payload]
+        },
+
+        acceptFriendRequest: (state, action) => {
+            state.data.friendList = [...state.data.friendList, action.payload]
+        },
+
+        deleteFriendRequest: (state, action) => {
+            state.data.friendRequests.splice(action.payload, 1)
+            state.data.friendRequestsPending.splice(action.payload, 1)
         },
 
         reset: state => {
@@ -203,15 +212,11 @@ export const userSlice = createSlice({
         },
 
         [loadUser.fulfilled]: (state, action) => {
-            state.user.proPicBlob = action.payload
-        },
-
-        [loadFriends.fulfilled]: (state, action) => {
-            state.user.friendList = [action.payload]
+            state.data.proPicBlob = action.payload
         },
 
         [login.fulfilled]: (state, action) => {
-            state.user = action.payload.user
+            state.data = action.payload.userData
             state.errors.isValid = action.payload.isValid
             state.errors.isPresent = action.payload.isPresent
             state.isLogged = action.payload.isLogged
@@ -221,16 +226,16 @@ export const userSlice = createSlice({
 
             deletePrevPic(state)
 
-            state.user.profilePicId = action.payload.profilePicId
+            state.data.profilePicId = action.payload.profilePicId
 
             updateProPic(state, action)
 
-            state.user.proPicBlob = URL.createObjectURL(action.meta.arg.file.proPic)
+            state.data.proPicBlob = URL.createObjectURL(action.meta.arg.file.proPic)
         },
 
         [logout.fulfilled]: (state, action) => {
             state.isLogged = false
-            state.user = initialState.user
+            state.data = initialState.data
         }
 
     }

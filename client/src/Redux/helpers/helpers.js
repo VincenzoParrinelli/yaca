@@ -2,8 +2,8 @@ import { storage } from "../../firebase"
 import { ref, uploadBytes, deleteObject } from "firebase/storage"
 
 export const deletePrevPic = async state => {
-    const userID = state.user._id
-    const prevPicId = state.user.profilePicId
+    const userID = state.data._id
+    const prevPicId = state.data.profilePicId
 
     if (!prevPicId) return
 
@@ -18,7 +18,7 @@ export const deletePrevPic = async state => {
 
 export const updateProPic = async (state, action) => {
 
-    const userID = state.user._id
+    const userID = state.data._id
 
     const proPicId = action.payload.profilePicId
 

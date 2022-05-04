@@ -8,13 +8,13 @@ import "./AddFriendList.scss"
 
 export default function AddFriend() {
 
-    const { user } = useSelector(state => state.user)
+    const { data } = useSelector(state => state.user)
     const { searchedUsers } = useSelector(state => state.sockets)
 
     const dispatch = useDispatch()
 
     const handleSendFriendRequest = userToAddId => {
-        let currentUserId = user._id
+        let currentUserId = data._id
 
         let payload = { currentUserId, userToAddId }
 
@@ -62,11 +62,11 @@ export default function AddFriend() {
                             //render a button that doesn't allow the user to duplicate his request 
                         }
 
-                        {user.friendList.some(user => user["_id"] === searchedUser._id) ?
+                        {data.friendList.some(user => user["_id"] === searchedUser._id) ?
 
                             <button className='add-friend-list__btn add-friend-list__btn--request-already-added'>Friend added</button> :
 
-                            user.friendRequests.some(user => user["_id"] === searchedUser._id) || user.friendRequestsPending.includes(searchedUser._id) ?
+                            data.friendRequests.some(user => user["_id"] === searchedUser._id) || data.friendRequestsPending.includes(searchedUser._id) ?
 
                             <button className='add-friend-list__btn add-friend-list__btn--request-already-sent'>Request sent</button> :
 

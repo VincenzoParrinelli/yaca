@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux"
-import { loadUser, loadFriends } from '../Redux/userSlice';
 import { connection } from '../Redux/socketSlice';
 import SideBar from "./SideBar"
 import ProfileModal from "./ProfileModal"
@@ -12,7 +11,7 @@ import Notifications from './Notifications';
 import "./Dashboard.scss"
 
 export default function Dashboard() {
-    const { user, isLogged } = useSelector(state => state.user)
+    const { data, isLogged } = useSelector(state => state.user)
     const { addFriend, settings, openNotifications } = useSelector(state => state.modal)
     const { errors } = useSelector(state => state.sockets)
 
@@ -25,15 +24,7 @@ export default function Dashboard() {
             navigate("/")
 
         } else {
-            dispatch(connection(user._id))
-            dispatch(loadUser(user))
-
-            user.friendList.forEach(friendListID => {
-
-                dispatch(loadFriends(friendListID))
-
-            })
-
+            dispatch(connection(data._id))
         }
 
     }, [errors.authorized])

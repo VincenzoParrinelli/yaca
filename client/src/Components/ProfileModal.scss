@@ -21,8 +21,7 @@
 
         .proPic {
             display: inline-flex;
-            justify-content: center;
-            align-items: center;
+            object-fit: cover;
             width: 6.5em;
             height: 6.5em;
             border-radius: 60px;

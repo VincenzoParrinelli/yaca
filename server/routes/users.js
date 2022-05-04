@@ -17,8 +17,6 @@ router.post("/login", validateLoginEmail, validateLoginPassword, userController.
 
 router.post("/load", validateToken, userController.load)
 
-router.get("/loadFriends/:id", validateToken, userController.loadFriends)
-
 router.post("/update", validateToken, userController.update)
 
 router.delete("/logout", userController.logout)

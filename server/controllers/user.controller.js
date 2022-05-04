@@ -59,25 +59,13 @@ module.exports = {
         } else res.sendStatus(404)
     },
 
-    loadFriends: async (req, res) => {
-
-        var friendID = req.params.id
-
-        User.findById(friendID)
-        .select({"socketID": 1, "email": 1, "username": 1, "profilePicId": 1 })
-        .then(data => {
-            res.json(data)
-        }).catch(err => console.error(err.message))
-
-    },
-
     login: async (req, res) => {
-        var data = res.locals.data
+        var userData = res.locals.data
         var password = req.body.password
 
-        if (await bcrypt.compare(password, data.password)) {
+        if (await bcrypt.compare(password, userData.password)) {
             //convert user object whose coming from mongoose to json
-            const userToJSON = data.toJSON()
+            const userToJSON = userData.toJSON()
 
             //create access and refresh token
             const accessToken = jwt.sign({ id: userToJSON._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
@@ -91,9 +79,17 @@ module.exports = {
                 httpOnly: true,
             })
 
-            const user = data
 
-            res.json({ isLogged: true, isValid: true, user })
+            await User.find({ _id: userData.friendList })
+                .select({ "socketID": 1, "email": 1, "username": 1, "profilePicId": 1 })
+                .then(friendData => {
+
+                    userToJSON.friendList = friendData
+
+                    res.json({ isLogged: true, isValid: true, userData: userToJSON })
+
+                }).catch(err => console.error(err.message))
+
         } else {
             res.json({ isLogged: false, isValid: false })
         }

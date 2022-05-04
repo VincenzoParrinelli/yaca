@@ -20,7 +20,7 @@ import './SideBar.scss'
 export default function SideBar() {
 
     const { dashboard, addFriend, buttonToolTip, notificationBell } = useSelector(state => state.modal)
-    const { user } = useSelector(state => state.user)
+    const { data } = useSelector(state => state.user)
 
     const dispatch = useDispatch()
 
@@ -29,7 +29,7 @@ export default function SideBar() {
         <div className='SideBar'>
 
             <div className='icons'>
-                <img src={user.proPicBlob} className='user-icon' onClick={() => dispatch(handleSettings())} />
+                <img src={data.proPicBlob} className='user-icon' onClick={() => dispatch(handleSettings())} />
             </div>
 
             <div className='user-actions-container'>

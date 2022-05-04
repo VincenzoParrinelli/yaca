@@ -1,3 +1,19 @@
-.MainContent {
+.chat-open {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+
+    &__header {
+        position: relative;
+        width: 100%;
+        height: 8vh;
+        font: arial, 14px;
+        color: white;
+        background-color: blue;
+
+    }
 
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from "react-redux"
 import home from "../Assets/Images/home.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
@@ -7,7 +7,9 @@ import "./ChatList.scss"
 
 export default function ChatList() {
 
-    const { user } = useSelector(state => state.user)
+    const [selectedItem, setSelectedItem] = useState(null)
+
+    const { data } = useSelector(state => state.user)
 
     return (
         <div className='chat-list'>
@@ -24,12 +26,16 @@ export default function ChatList() {
 
             <p className='chat-list__text'> DIRECT MESSAGES </p>
 
-            {user.friendList && user.friendList.map((friend, i) => {
-
-                console.log(friend.socketID)
+            {data.friendList && data.friendList.map((friend, i) => {
 
                 return (
-                    <div key={friend._id} data-index={i} className='chat-list__user-container'>
+                    <div
+                        key={friend._id}
+                        data-index={i}
+                        className='chat-list__user-container'
+                        aria-checked={selectedItem === i}
+                        onClick={() => setSelectedItem(i)}
+                    >
 
                         <div className='chat-list__user-propic-container'>
 
@@ -40,7 +46,7 @@ export default function ChatList() {
 
                                     {friend.socketID !== "OFFLINE" ?
 
-                                        <div className='chat-list__user-status chat-list__user-status--online'/>
+                                        <div className='chat-list__user-status chat-list__user-status--online' />
 
                                         :
 

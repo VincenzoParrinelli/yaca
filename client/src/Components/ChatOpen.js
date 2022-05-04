@@ -6,7 +6,11 @@ export default function MainContent() {
 
     return (
         <div className='chat-open'>
-          
+
+            <div className='chat-open__header'>
+                Select
+            </div>
+
         </div>
     )
 }

@@ -17,7 +17,7 @@ const socketMiddleware = store => next => action => {
         }
 
         socket = io(serverUrl, options)
-
+       
         socket.on("connect_error", err => {
 
             store.dispatch({
@@ -27,8 +27,16 @@ const socketMiddleware = store => next => action => {
 
         })
 
+        socket.on("update-friend-status", friend => {
+
+            store.dispatch({
+                type: "user/updateFriendStatus",
+                payload: friend
+            })
+        })
+
         socket.on("receive-searched-users", users => {
-            console.log(users)
+        
             store.dispatch({
                 type: "socket/getSearchedUsers",
                 payload: users
@@ -74,7 +82,15 @@ const socketMiddleware = store => next => action => {
     }
 
     if (action.type === "socket/searchUsers") {
-        socket.emit("search-user", action.payload)
+
+        const userID = store.getState().user.data._id
+
+        const payload = {
+            userID,
+            username: action.payload
+        }
+
+        socket.emit("search-user", payload)
     }
 
     if (action.type === "socket/sendFriendRequest") {
