@@ -7,6 +7,7 @@ const { validateToken } = require("../validators/tokenValidators")
 
 const { sendConfirmEmail } = require("../emails/confirmEmail")
 
+//import users controller
 const userController = require("../controllers/user.controller")
 
 router.post("/create-user", validateSignUpEmail, userController.createUser, sendConfirmEmail)

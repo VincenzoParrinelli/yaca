@@ -12,6 +12,7 @@ import "./Dashboard.scss"
 
 export default function Dashboard() {
     const { data, isLogged } = useSelector(state => state.user)
+    const { selectedUser } = useSelector(state => state.conversation)
     const { addFriend, settings, openNotifications } = useSelector(state => state.modal)
     const { errors } = useSelector(state => state.sockets)
 
@@ -46,7 +47,7 @@ export default function Dashboard() {
 
             <div className='separator-vertical' />
 
-            <ChatOpen />
+            {selectedUser && <ChatOpen />}
 
         </div>
     )

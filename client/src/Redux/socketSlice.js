@@ -1,12 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
-
 const initialState = {
-    
-    openSocket: false,
 
-    message: "",
+    openSocket: false,
 
     errors: {
         authorized: true
@@ -35,24 +31,21 @@ export const socketsSlice = createSlice({
             state.openSocket = false
         },
 
-        searchUsers: () => {
-           
-        },
+        searchUsers: () => { },
 
         getSearchedUsers: (state, action) => {
             state.searchedUsers = action.payload
         },
 
-        sendFriendRequest: (state) => {
+        sendFriendRequest: () => { },
 
-        },
+        acceptFriendRequest: () => { },
 
-        acceptFriendRequest: () => {
+        refuseFriendRequest: () => { },
 
-        },
-
-        refuseFriendRequest: (state, action) => {
-
+        //check socketMiddleware.js for message handling
+        sendMessage: state => {
+            state.message = ""
         }
 
     },
@@ -65,7 +58,9 @@ export const {
     searchUsers,
     sendFriendRequest,
     acceptFriendRequest,
-    refuseFriendRequest
+    refuseFriendRequest,
+    sendMessage
+    
 } = socketsSlice.actions
 
 export default socketsSlice.reducer

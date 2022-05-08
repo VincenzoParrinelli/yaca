@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { useSelector } from "react-redux"
+import React from 'react'
+import { useSelector, useDispatch } from "react-redux"
+import { setSelectedUser } from '../Redux/conversationSlice'
 import home from "../Assets/Images/home.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import SearchBar from '../ComponentsShared/SearchBar'
@@ -7,9 +8,10 @@ import "./ChatList.scss"
 
 export default function ChatList() {
 
-    const [selectedItem, setSelectedItem] = useState(null)
-
     const { data } = useSelector(state => state.user)
+    const { selectedUser } = useSelector(state => state.conversation)
+
+    const dispatch = useDispatch()
 
     return (
         <div className='chat-list'>
@@ -33,8 +35,8 @@ export default function ChatList() {
                         key={friend._id}
                         data-index={i}
                         className='chat-list__user-container'
-                        aria-checked={selectedItem === i}
-                        onClick={() => setSelectedItem(i)}
+                        aria-checked={friend._id === i}
+                        onClick={() => dispatch(setSelectedUser(friend))}
                     >
 
                         <div className='chat-list__user-propic-container'>
@@ -61,7 +63,6 @@ export default function ChatList() {
                         </div>
 
                         <p className='chat-list__username'>{friend.username}</p>
-
 
                     </div>
                 )

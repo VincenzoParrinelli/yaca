@@ -1,4 +1,5 @@
 const User = require("../models/User.js")
+const Conversation = require("../models/Conversation.js")
 const { validateSocketToken } = require("../validators/tokenSocketValidators.js")
 const { registerOnlineUsers } = require("../helpers/registerOnlineUsers.js")
 
@@ -35,6 +36,7 @@ module.exports = io => {
         })
 
         socket.on("send-friend-request", async usersID => {
+
             const { currentUserId, userToAddId } = usersID
 
             await User.findByIdAndUpdate(userToAddId, { friendRequests: currentUserId }).then(async userToAddData => {
@@ -53,6 +55,7 @@ module.exports = io => {
         })
 
         socket.on("accept-friend-request", async usersID => {
+
             const { currentUserID, userToAcceptID } = usersID
 
             await User.findByIdAndUpdate(currentUserID, { $push: { friendList: [userToAcceptID], $pull: { friendRequests: [userToAcceptID], friendRequestsPending: [userToAcceptID] } } })
@@ -75,24 +78,49 @@ module.exports = io => {
         })
 
         socket.on("refuse-friend-request", async usersID => {
+
             const { currentUserID, userToRefuseID } = usersID
 
-            await User.findByIdAndUpdate(currentUserID, { $pull: { friendRequests: userToRefuseID } })
-                .select(fieldsToExclude)
-                .then(async currentUserData => {
+            await User.findByIdAndUpdate(currentUserID,
+                
+                { $pull: { friendRequests: userToRefuseID } }
 
-                    await User.findByIdAndUpdate(userToRefuseID, { $pull: { friendRequestsPending: currentUserID } })
-                        .select(fieldsToExclude)
-                        .then(userToRefuseData => {
+            ).select(fieldsToExclude).then(async currentUserData => {
 
-                            socket.to(currentUserData.socketID).emit("delete-friend-request", userToRefuseData)
+                await User.findByIdAndUpdate(
+                    userToRefuseID,
+                    { $pull: { friendRequestsPending: currentUserID } }
 
-                            socket.to(userToRefuseData.socketID).emit("delete-friend-request", currentUserData)
+                ).select(fieldsToExclude).then(userToRefuseData => {
 
-                        }).catch(err => new Error(err.message))
+                    socket.to(currentUserData.socketID).emit("delete-friend-request", userToRefuseData)
 
+                    socket.to(userToRefuseData.socketID).emit("delete-friend-request", currentUserData)
 
                 }).catch(err => new Error(err.message))
+
+
+            }).catch(err => new Error(err.message))
+
+        })
+
+        socket.on("send-message", async payload => {
+
+            const { currentUserID, selectedUserID, selectedUserSocketID, message } = payload
+
+            await Conversation.findOneAndUpdate(
+
+                { firstUserID: currentUserID, secondUserID: selectedUserID },
+                { $push: { messages: { senderID: currentUserID, text: message } } },
+                { new: true }
+
+            ).then(conversation => {
+
+                console.log(selectedUserSocketID)
+
+                socket.to(selectedUserSocketID).emit("get-message", message)
+
+            }).catch(err => new Error(err.message))
 
         })
 
@@ -104,7 +132,7 @@ module.exports = io => {
 
                     friendsData.forEach(friend => {
 
-                        const { _id, socketID } = userData
+                        const { _id } = userData
                         const friendSocketID = friend.socketID
 
                         if (friendSocketID === "OFFLINE") return

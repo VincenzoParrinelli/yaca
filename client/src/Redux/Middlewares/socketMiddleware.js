@@ -8,7 +8,7 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 const socketMiddleware = store => next => action => {
 
     if (action.type === "socket/connection") {
-        
+
         var options = {
             withCredentials: true,
             auth: {
@@ -17,7 +17,7 @@ const socketMiddleware = store => next => action => {
         }
 
         socket = io(serverUrl, options)
-       
+
         socket.on("connect_error", err => {
 
             store.dispatch({
@@ -36,7 +36,7 @@ const socketMiddleware = store => next => action => {
         })
 
         socket.on("receive-searched-users", users => {
-        
+
             store.dispatch({
                 type: "socket/getSearchedUsers",
                 payload: users
@@ -44,7 +44,7 @@ const socketMiddleware = store => next => action => {
         })
 
         socket.on("receive-friend-request", user => {
-            
+
             store.dispatch({
                 type: "user/getFriendRequests",
                 payload: user
@@ -52,7 +52,7 @@ const socketMiddleware = store => next => action => {
         })
 
         socket.on("receive-pending-friend-request", user => {
-            
+
             store.dispatch({
                 type: "user/getPendingFriendRequest",
                 payload: user
@@ -60,7 +60,7 @@ const socketMiddleware = store => next => action => {
         })
 
         socket.on("accept-friend-request", userToAcceptID => {
-        
+
             store.dispatch({
                 type: "user/acceptFriendRequest",
                 payload: userToAcceptID
@@ -73,11 +73,15 @@ const socketMiddleware = store => next => action => {
         })
 
         socket.on("delete-friend-request", userToRefuseID => {
-         
+
             store.dispatch({
                 type: "user/deleteFriendRequest",
                 payload: userToRefuseID
             })
+        })
+
+        socket.on("get-message", newMessage => {
+            console.log(newMessage)
         })
     }
 
@@ -93,6 +97,8 @@ const socketMiddleware = store => next => action => {
         socket.emit("search-user", payload)
     }
 
+    //friend requests socket handlers
+
     if (action.type === "socket/sendFriendRequest") {
         socket.emit("send-friend-request", action.payload)
     }
@@ -105,6 +111,22 @@ const socketMiddleware = store => next => action => {
         socket.emit("refuse-friend-request", action.payload)
     }
 
+    //
+
+    if (action.type === "socket/sendMessage") {
+
+        const currentUserID = store.getState().user.data._id
+        const selectedUser = store.getState().conversation.selectedUser
+
+        const payload = {
+            currentUserID,
+            selectedUserID: selectedUser._id,
+            selectedUserSocketID: selectedUser.socketID,
+            message: action.payload
+        }
+
+        socket.emit("send-message", payload)
+    }
 
     next(action)
 }
