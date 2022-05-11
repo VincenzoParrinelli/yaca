@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { sendMessage } from '../Redux/socketSlice'
+import { v4 as uuidv4 } from "uuid"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import sendMessageIcon from "../Assets/Images/send-message.png"
 import "./ChatOpen.scss"
@@ -10,11 +11,15 @@ export default function MainContent() {
     const [message, setMessage] = useState("")
 
     const { data } = useSelector(state => state.user)
-    const { conversations, selectedUser } = useSelector(state => state.conversation)
+    const { conversationsData, selectedUserIndex } = useSelector(state => state.conversation)
+
+    console.log(conversationsData)
 
     const dispatch = useDispatch()
 
     const textAreaRef = useRef(null)
+
+    const selectedUser = data.friendList[selectedUserIndex]
 
     //automatically resize textarea
     useEffect(() => {
@@ -39,6 +44,16 @@ export default function MainContent() {
             setMessage("")
         }
 
+    }
+
+    const refactorDate = createdAt => {
+        const getClockTime = createdAt.split(",")[1]
+
+        const getHours = getClockTime.split(":")[0]
+
+        const getMinutes = getClockTime.split(":")[1]
+
+        return `${getHours}:${getMinutes}`
     }
 
 
@@ -91,9 +106,56 @@ export default function MainContent() {
 
             </div>
 
-            <div className='chat-open__chat-container'>
 
-            </div>
+
+            {conversationsData.map(conv => {
+
+                return (
+                    <div className='chat-container' key={conv._id}>
+                        {
+                            conv.messages.map(message => {
+
+                                if (message.senderID !== selectedUser._id) {
+
+                                    return (
+                                        <div className='message-container message-container--current-user' key={uuidv4()}>
+
+                                            <div className='metadata-container'>
+
+                                                <p className='metadata-container__created-at'>{refactorDate(message.createdAt)}</p>
+
+                                                <p className='metadata-container__text'>{message.text}</p>
+
+                                            </div>
+
+
+                                        </div>
+                                    )
+
+                                }
+
+                                return (
+                                    <div className='message-container message-container--sender-user' key={uuidv4()}>
+
+                                        <div className='metadata-container'>
+
+                                            <p className='metadata-container__created-at'>{refactorDate(message.createdAt)}</p>
+
+                                            <p className='metadata-container__text'>{message.text}</p>
+
+                                        </div>
+                                        
+                                    </div>
+                                )
+
+                            })
+                        }
+                    </div>
+                )
+
+            })}
+
+
 
             <textarea
                 ref={textAreaRef}
@@ -108,7 +170,7 @@ export default function MainContent() {
             <img
                 src={sendMessageIcon}
                 className='chat-open__send-message-icon'
-              
+
             />
 
         </div >

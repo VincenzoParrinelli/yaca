@@ -74,13 +74,57 @@
         border-bottom: 1px solid black;
     }
 
-    &__chat-container {
+    .chat-container {
         display: flex;
+        flex-direction: column;
         position: absolute;
         top: 5.1em;
         bottom: 0;
         width: 80%;
-        height: 80%;
+        height: 78%;
+        overflow: auto;
+
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            width: 20%;
+            margin-top: 40px;
+            color: white;
+            padding: 10px;
+
+            &--current-user {
+                background-color: #1D2736;
+                left: 74%;
+                border-radius: 10px 10px 0 10px;
+            }
+
+            &--sender-user {
+                background-color: #222226;
+                border-radius: 10px 10px 10px 0px;
+            }
+
+            .metadata-container {
+                display: flex;
+                width: 100%;
+                position: relative;
+                top: -15px;
+                margin: 5px;
+
+                &__created-at {
+                    position: relative;
+                    top: 35px;
+                    left: 145px;
+                    font: 12px "aeroportLight";
+                    opacity: 0.2;
+                }
+
+                &__text {
+                    position: absolute;
+                }
+            }
+        }
     }
 
     &__message-input {

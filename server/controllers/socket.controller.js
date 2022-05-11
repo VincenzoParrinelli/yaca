@@ -82,7 +82,7 @@ module.exports = io => {
             const { currentUserID, userToRefuseID } = usersID
 
             await User.findByIdAndUpdate(currentUserID,
-                
+
                 { $pull: { friendRequests: userToRefuseID } }
 
             ).select(fieldsToExclude).then(async currentUserData => {
@@ -110,15 +110,15 @@ module.exports = io => {
 
             await Conversation.findOneAndUpdate(
 
-                { firstUserID: currentUserID, secondUserID: selectedUserID },
+                { members: { $in: [currentUserID, selectedUserID] } },
                 { $push: { messages: { senderID: currentUserID, text: message } } },
                 { new: true }
 
             ).then(conversation => {
 
-                console.log(selectedUserSocketID)
+                const newMessage = conversation.messages[conversation.messages.length - 1]
 
-                socket.to(selectedUserSocketID).emit("get-message", message)
+                socket.to(selectedUserSocketID).emit("get-message", newMessage)
 
             }).catch(err => new Error(err.message))
 

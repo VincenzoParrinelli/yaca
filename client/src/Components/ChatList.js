@@ -9,7 +9,7 @@ import "./ChatList.scss"
 export default function ChatList() {
 
     const { data } = useSelector(state => state.user)
-    const { selectedUser } = useSelector(state => state.conversation)
+    const { selectedUserIndex } = useSelector(state => state.conversation)
 
     const dispatch = useDispatch()
 
@@ -35,8 +35,8 @@ export default function ChatList() {
                         key={friend._id}
                         data-index={i}
                         className='chat-list__user-container'
-                        aria-checked={friend._id === i}
-                        onClick={() => dispatch(setSelectedUser(friend))}
+                        aria-checked={selectedUserIndex === i}
+                        onClick={() => dispatch(setSelectedUser(i))}
                     >
 
                         <div className='chat-list__user-propic-container'>

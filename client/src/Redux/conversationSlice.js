@@ -4,11 +4,10 @@ import axios from "axios"
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
-
-    conversations: [],
-
-    selectedUser: null
-
+    
+    selectedUserIndex: null,
+    
+    conversationsData: [],
 }
 
 export const getConversation = createAsyncThunk(
@@ -30,14 +29,19 @@ export const conversationSlice = createSlice({
 
     reducers: {
         setSelectedUser: (state, action) => {
-            state.selectedUser = action.payload
+            state.selectedUserIndex = action.payload
         },
+
+        getMessage: (state, action) => {
+            console.log(action.payload)
+            state.conversationsData.messages.push(action.payload)
+        }
     },
 
     extraReducers: {
 
         [getConversation.fulfilled]: (state, action) => {
-            state.conversations.push(action.payload)
+            state.conversationsData.push(action.payload)
         }
     }
 })

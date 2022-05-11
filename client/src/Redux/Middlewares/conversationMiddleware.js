@@ -7,7 +7,7 @@ const conversationMiddleware = store => next => action => {
     if (action.type === "conversation/setSelectedUser") {
 
         const { friendList } = store.getState().user.data
-        const { conversations } = store.getState().conversation
+        const { conversationsData } = store.getState().conversation
         const { user, conversation } = store.getState()
 
         friendList.forEach((friend, i) => {
@@ -23,7 +23,7 @@ const conversationMiddleware = store => next => action => {
                 }
 
                 //check if a conversation has already been fetched by using friendID as check value
-                const conversationExists = conversations.some(conv => conv.secondUserID === friendID)
+                const conversationExists = conversationsData.some(conv => conv.secondUserID === friendID)
 
                 if (!conversationExists) store.dispatch(getConversation(payload))
             }

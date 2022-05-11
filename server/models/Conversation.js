@@ -2,13 +2,7 @@ const mongoose = require("mongoose")
 
 const conversationSchema = mongoose.Schema({
 
-    firstUserID: {
-        type: String,
-    },
-
-    secondUserID: {
-        type: String,
-    },
+    members: [String],
 
     messages: [{
         _id: mongoose.ObjectId,
@@ -17,7 +11,7 @@ const conversationSchema = mongoose.Schema({
 
         createdAt: {
             type: String,
-            default: new Date().toUTCString()
+            default: new Date().toLocaleString()
         }
     }]
 })
