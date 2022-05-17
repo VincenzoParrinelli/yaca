@@ -80,11 +80,11 @@ const socketMiddleware = store => next => action => {
             })
         })
 
-        socket.on("get-message", newMessage => {
+        socket.on("get-message", conversation => {
          
             store.dispatch({
                 type: "conversation/getMessage",
-                payload: newMessage
+                payload: conversation
             })
         })
     }

@@ -1,13 +1,16 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit"
 import axios from "axios"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
-    
+
     selectedUserIndex: null,
-    
+
     conversationsData: [],
+
+    selectedConversationID: null
+
 }
 
 export const getConversation = createAsyncThunk(
@@ -32,9 +35,35 @@ export const conversationSlice = createSlice({
             state.selectedUserIndex = action.payload
         },
 
+        setSelectedConv: (state, action) => {
+            state.selectedConversationID = action.payload
+        },
+
+        //get message from socket event
         getMessage: (state, action) => {
-            console.log(action.payload)
-            state.conversationsData.messages.push(action.payload)
+
+            const { conversationID, newMessage } = action.payload
+
+            state.conversationsData.map(conv => {
+                if (!conv._id === conversationID) return
+
+                conv.messages.push(newMessage)
+            })
+        },
+
+        //update chat from client 
+        updateChat: (state, action) => {
+
+            const { selectedConversationID, conversationsData } = state
+
+            conversationsData.map(conv => {
+                if (!conv._id === selectedConversationID) return
+
+                const currentDate = new Date().toLocaleString()
+
+                conv.messages.push({text: action.payload, createdAt: currentDate})
+            })
+
         }
     },
 
@@ -42,12 +71,16 @@ export const conversationSlice = createSlice({
 
         [getConversation.fulfilled]: (state, action) => {
             state.conversationsData.push(action.payload)
+
+            state.selectedConversationID = action.payload._id
         }
     }
 })
 
 export const {
-    setSelectedUser
+    setSelectedUser,
+    updateChat
+
 } = conversationSlice.actions
 
 export default conversationSlice.reducer

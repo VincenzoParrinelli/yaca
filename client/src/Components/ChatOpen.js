@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { sendMessage } from '../Redux/socketSlice'
+import { updateChat } from '../Redux/conversationSlice'
 import { v4 as uuidv4 } from "uuid"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import sendMessageIcon from "../Assets/Images/send-message.png"
@@ -11,13 +12,12 @@ export default function MainContent() {
     const [message, setMessage] = useState("")
 
     const { data } = useSelector(state => state.user)
-    const { conversationsData, selectedUserIndex } = useSelector(state => state.conversation)
-
-    console.log(conversationsData)
+    const { conversationsData, selectedUserIndex, selectedConversationID } = useSelector(state => state.conversation)
 
     const dispatch = useDispatch()
 
     const textAreaRef = useRef(null)
+    const chatRef = useRef(null)
 
     const selectedUser = data.friendList[selectedUserIndex]
 
@@ -42,11 +42,16 @@ export default function MainContent() {
             dispatch(sendMessage(message))
 
             setMessage("")
+
+            dispatch(updateChat(message))
+            
         }
 
     }
 
     const refactorDate = createdAt => {
+        //********refactor this using getHours getMinutes 
+
         const getClockTime = createdAt.split(",")[1]
 
         const getHours = getClockTime.split(":")[0]
@@ -108,17 +113,41 @@ export default function MainContent() {
 
 
 
-            {conversationsData.map(conv => {
+            {conversationsData.map((conv, i) => {
 
-                return (
-                    <div className='chat-container' key={conv._id}>
-                        {
-                            conv.messages.map(message => {
+                if (conv.members.includes(data._id) && conv.members.includes(selectedUser._id))
 
-                                if (message.senderID !== selectedUser._id) {
+                    return (
+                        <div className='chat-container' key={conv._id}>
+                            {
+                                conv.messages.map(message => {
+
+                                    if (message.senderID !== selectedUser._id) {
+
+                                        return (
+                                            <div ref={chatRef}
+                                                className={
+                                                    message.senderID !== selectedUser._id ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
+                                                }
+                                                key={uuidv4()}
+                                            >
+
+                                                <div className='metadata-container'>
+
+                                                    <p className='metadata-container__created-at'>{refactorDate(message.createdAt)}</p>
+
+                                                    <p className='metadata-container__text'>{message.text}</p>
+
+                                                </div>
+
+
+                                            </div>
+                                        )
+
+                                    }
 
                                     return (
-                                        <div className='message-container message-container--current-user' key={uuidv4()}>
+                                        <div className='message-container message-container--sender-user' key={uuidv4()}>
 
                                             <div className='metadata-container'>
 
@@ -128,30 +157,13 @@ export default function MainContent() {
 
                                             </div>
 
-
                                         </div>
                                     )
 
-                                }
-
-                                return (
-                                    <div className='message-container message-container--sender-user' key={uuidv4()}>
-
-                                        <div className='metadata-container'>
-
-                                            <p className='metadata-container__created-at'>{refactorDate(message.createdAt)}</p>
-
-                                            <p className='metadata-container__text'>{message.text}</p>
-
-                                        </div>
-                                        
-                                    </div>
-                                )
-
-                            })
-                        }
-                    </div>
-                )
+                                })
+                            }
+                        </div>
+                    )
 
             })}
 

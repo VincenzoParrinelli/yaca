@@ -118,7 +118,12 @@ module.exports = io => {
 
                 const newMessage = conversation.messages[conversation.messages.length - 1]
 
-                socket.to(selectedUserSocketID).emit("get-message", newMessage)
+                const payload = {
+                    conversationID: conversation._id,
+                    newMessage
+                }
+
+                socket.to(selectedUserSocketID).emit("get-message", payload)
 
             }).catch(err => new Error(err.message))
 

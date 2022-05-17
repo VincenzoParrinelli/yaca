@@ -133,9 +133,8 @@ export const userSlice = createSlice({
         },
 
         loadFriendProPic: (state, action) => {
-            //get index and proPic blob from payload
-            const proPicBlob = action.payload.proPicBlob
-            const i = action.payload.i
+
+            const { proPicBlob, i } = action.payload
 
             state.data.friendList[i].proPicBlob = proPicBlob
         },
@@ -144,35 +143,31 @@ export const userSlice = createSlice({
 
             const { _id, socketID } = action.payload
 
-            let friendListState = state.data.friendList
-
-            friendListState.forEach((friend, i) => {
+            state.data.friendList.map(friend => {
 
                 if (friend._id === _id) {
-                    friendListState[i].socketID = socketID
+                    friend.socketID = socketID
                 }
 
             })
 
-            state.data.friendList = friendListState
-
         },
 
         getFriendRequests: (state, action) => {
-            state.data.friendRequests = [...state.data.friendRequests, action.payload]
+            state.data.friendRequests.push(action.payload)
         },
 
         getPendingFriendRequest: (state, action) => {
-            state.data.friendRequestsPending = [...state.data.friendRequestsPending, action.payload]
+            state.data.friendRequestsPending.push(action.payload)
         },
 
         acceptFriendRequest: (state, action) => {
-            state.data.friendList = [...state.data.friendList, action.payload]
+            state.data.friendList.push(action.payload)
         },
 
         deleteFriendRequest: (state, action) => {
-            state.data.friendRequests.splice(action.payload, 1)
-            state.data.friendRequestsPending.splice(action.payload, 1)
+            state.data.friendRequests = state.data.friendRequests.filter(req => req !== action.payload)
+            state.data.friendRequestsPending = state.data.friendRequestsPending.filter(pend => pend !== action.payload)
         },
 
         reset: state => {

@@ -11,7 +11,9 @@ const conversationSchema = mongoose.Schema({
 
         createdAt: {
             type: String,
-            default: new Date().toLocaleString()
+            default: new Date().toLocaleString(),
+
+            timestamps: true
         }
     }]
 })
