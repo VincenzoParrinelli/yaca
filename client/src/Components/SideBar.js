@@ -4,8 +4,6 @@ import {
     handleDashboard,
     handleSettings,
     handleAddFriend,
-    openButtonToolTip,
-    closeButtonToolTip,
     openNotifications
 } from "../Redux/modalsSlice"
 import micImage from "../Assets/Images/mic.png"
@@ -14,60 +12,54 @@ import addFriendImage from "../Assets/Images/add-friend.png"
 import logout from "../Assets/Images/logout.png"
 import home from "../Assets/Images/home.png"
 import bellImage from "../Assets/Images/bell.png"
-import ButtonTooltip from './ButtonTooltip'
 import './SideBar.scss'
 
 export default function SideBar() {
 
-    const { dashboard, addFriend, buttonToolTip, notificationBell } = useSelector(state => state.modal)
+    const { dashboard, addFriend, notificationBell } = useSelector(state => state.modal)
     const { data } = useSelector(state => state.user)
 
     const dispatch = useDispatch()
 
 
     return (
-        <div className='SideBar'>
+        <div className='sidebar'>
 
-            <div className='icons'>
-                <img src={data.proPicBlob} className='user-icon' onClick={() => dispatch(handleSettings())} />
-            </div>
+            <img src={data.proPicBlob} className='sidebar__propic' onClick={() => dispatch(handleSettings())} />
 
-            <div className='user-actions-container'>
-                <img src={micImage} className='micImage' />
-                <img src={soundImage} className='soundImage' />
+            <div className='sidebar__actions-container'>
+                <img src={micImage} className='sidebar__mic-image' />
+                <img src={soundImage} className='sidebar__sound-image' />
 
             </div>
 
-            <div className='separator-wrapper'>
+            <div className='separator-container'>
 
                 <div className='separator' />
 
             </div>
 
-            <ul className='sidebar-icons' >
+            <ul className='sidebar__icons' >
 
                 <li>
                     <img
                         src={home}
-                        data-tooltiptext="Dashboard"
-                        className="home"
+                        className="sidebar__home"
                         value={dashboard}
                         onClick={() => dispatch(handleDashboard())}
-                        onMouseOver={() => dispatch(openButtonToolTip())}
-                        onMouseLeave={() => dispatch(closeButtonToolTip())}
                     />
+
+                    <span className='sidebar__tooltip'>Dashboard</span>
                 </li>
 
                 <li>
                     <img
                         src={bellImage}
-                        data-tooltiptext="Notifications"
-                        className='notificationBell'
+                        className='sidebar__notification-bell'
                         value={notificationBell} //parameter that keeps button opacity set to 1 while modal is open
                         onClick={() => dispatch(openNotifications())}
-                        onMouseOver={() => dispatch(openButtonToolTip())}
-                        onMouseLeave={() => dispatch(closeButtonToolTip())}
                     />
+                    <span className='sidebar__tooltip'>Notifications</span>
 
                 </li>
 
@@ -75,21 +67,23 @@ export default function SideBar() {
                 <li>
                     <img
                         src={addFriendImage}
-                        data-tooltiptext="Add friend"
-                        className="add-friend-icon"
+                        className="sidebar__add-friend"
                         value={addFriend} //parameter that keeps button opacity set to 1 while modal is open
                         onClick={() => dispatch(handleAddFriend())}
-                        onMouseOver={() => dispatch(openButtonToolTip())}
-                        onMouseLeave={() => dispatch(closeButtonToolTip())}
                     />
+
+                    <span className='sidebar__tooltip'>Add Friend</span>
+
                 </li>
-                <li><img src={logout} className="logout-icon" /></li>
+
+                <li>
+                    <img src={logout} className="sidebar__logout-icon" />
+
+                    <span className='sidebar__tooltip'>Logout</span>
+
+                </li>
 
             </ul>
-
-            {buttonToolTip &&
-                <ButtonTooltip />
-            }
 
         </div>
     )

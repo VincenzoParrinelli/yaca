@@ -33,9 +33,11 @@ const conversationMiddleware = store => next => action => {
 
                 if (conversationExists) {
 
-                    const conversationID = conversationsData.find(conv => {
+                    let conversationID
 
-                        if (conv.members.includes(friendID)) return conv._id
+                    conversationsData.map(conv => {
+
+                        if (conv.members.includes(friendID)) conversationID = conv._id
                               
                     })
 

@@ -106,11 +106,11 @@ module.exports = io => {
 
         socket.on("send-message", async payload => {
 
-            const { currentUserID, selectedUserID, selectedUserSocketID, message } = payload
+            const { conversationID, currentUserID, selectedUserSocketID, message } = payload
 
-            await Conversation.findOneAndUpdate(
+            await Conversation.findByIdAndUpdate(
 
-                { members: { $in: [currentUserID, selectedUserID] } },
+                conversationID,
                 { $push: { messages: { senderID: currentUserID, text: message } } },
                 { new: true }
 

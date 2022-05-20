@@ -11,10 +11,10 @@ const conversationSchema = mongoose.Schema({
 
         createdAt: {
             type: String,
-            default: new Date().toLocaleString(),
+            default: Date(),
 
-            timestamps: true
         }
+        
     }]
 })
 

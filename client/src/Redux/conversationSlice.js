@@ -45,7 +45,7 @@ export const conversationSlice = createSlice({
             const { conversationID, newMessage } = action.payload
 
             state.conversationsData.map(conv => {
-                if (!conv._id === conversationID) return
+                if (conv._id !== conversationID) return
 
                 conv.messages.push(newMessage)
             })
@@ -57,9 +57,9 @@ export const conversationSlice = createSlice({
             const { selectedConversationID, conversationsData } = state
 
             conversationsData.map(conv => {
-                if (!conv._id === selectedConversationID) return
+                if (conv._id !== selectedConversationID) return
 
-                const currentDate = new Date().toLocaleString()
+                const currentDate = Date()
 
                 conv.messages.push({text: action.payload, createdAt: currentDate})
             })

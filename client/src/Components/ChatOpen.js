@@ -44,19 +44,18 @@ export default function MainContent() {
             setMessage("")
 
             dispatch(updateChat(message))
-            
+
         }
 
     }
 
     const refactorDate = createdAt => {
-        //********refactor this using getHours getMinutes 
 
-        const getClockTime = createdAt.split(",")[1]
+        const stringToDate = new Date(createdAt)
+        
+        const getHours = stringToDate.getHours()
 
-        const getHours = getClockTime.split(":")[0]
-
-        const getMinutes = getClockTime.split(":")[1]
+        const getMinutes = stringToDate.getMinutes()
 
         return `${getHours}:${getMinutes}`
     }
@@ -115,7 +114,7 @@ export default function MainContent() {
 
             {conversationsData.map((conv, i) => {
 
-                if (conv.members.includes(data._id) && conv.members.includes(selectedUser._id))
+                if (conv._id !== selectedConversationID) return
 
                     return (
                         <div className='chat-container' key={conv._id}>
@@ -125,7 +124,8 @@ export default function MainContent() {
                                     if (message.senderID !== selectedUser._id) {
 
                                         return (
-                                            <div ref={chatRef}
+                                            <div
+                                                ref={chatRef}
                                                 className={
                                                     message.senderID !== selectedUser._id ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
                                                 }
