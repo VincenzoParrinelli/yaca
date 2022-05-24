@@ -51,14 +51,6 @@ module.exports = {
         }).catch(err => console.error(err.message))
     },
 
-    load: async (req, res) => {
-        var data = req.body
-
-        if (data) {
-            res.json(data)
-        } else res.sendStatus(404)
-    },
-
     login: async (req, res) => {
         var userData = res.locals.data
         var password = req.body.password

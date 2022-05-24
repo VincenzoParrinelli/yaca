@@ -1,4 +1,6 @@
 import io from 'socket.io-client'
+import { storage } from "../../firebase"
+import { ref, getDownloadURL } from "firebase/storage"
 
 var socket
 
@@ -37,9 +39,32 @@ const socketMiddleware = store => next => action => {
 
         socket.on("receive-searched-users", users => {
 
-            store.dispatch({
-                type: "socket/getSearchedUsers",
-                payload: users
+            //loadingUsers returns n promises based on how many users have been fetched
+            const loadingUsers = users.map(async user => {
+
+                const userID = user._id
+                const userProPic = user.profilePicId
+
+                const proPicRef = ref(storage, `proPics/${userID}/${userProPic}`)
+
+                //get user multimedia files from firebase and then return updated obj
+                return getDownloadURL(proPicRef).then(proPicBlob => {
+
+                    user.proPicBlob = proPicBlob
+
+                    return user
+                }).catch(() => { return user })
+
+            })
+
+            //await users loading 
+            Promise.all(loadingUsers).then(loadedUsers => {
+
+                store.dispatch({
+                    type: "socket/getSearchedUsers",
+                    payload: loadedUsers
+                })
+
             })
         })
 
@@ -81,7 +106,7 @@ const socketMiddleware = store => next => action => {
         })
 
         socket.on("get-message", conversation => {
-         
+
             store.dispatch({
                 type: "conversation/getMessage",
                 payload: conversation

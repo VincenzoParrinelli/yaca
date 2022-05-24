@@ -67,7 +67,10 @@
     &__home,
     &__notification-bell,
     &__add-friend,
+    &__create-server,
     &__logout-icon {
+        
+        transition: all .3s ease-out;
 
         opacity: 0.4;
 
@@ -84,14 +87,14 @@
     }
 
     &__tooltip {
-        width: 100px;
+        width: 110px;
         background-color: rgb(36, 35, 35);
         color: #fff;
         text-align: center;
         border-radius: 4px;
         padding: 5px 0;
         position: fixed;
-        left: 80px;
+        left: 100px;
         font-family: "arial";
         font-size: 14px;
         white-space: nowrap;
@@ -136,6 +139,16 @@
     }
 
     &__add-friend {
+        width: 2vw;
+        height: 2vw;
+        cursor: pointer;
+
+        &[value=true] {
+            opacity: 1;
+        }
+    }
+
+    &__create-server {
         width: 2vw;
         height: 2vw;
         cursor: pointer;

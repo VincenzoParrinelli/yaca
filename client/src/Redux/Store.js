@@ -3,10 +3,10 @@ import userReducer from "./userSlice"
 import conversationReducer from "./conversationSlice"
 import socketsReducer from "./socketSlice"
 import modalReducer from "./modalsSlice"
-import userMiddleware from "./Middlewares/userMiddlware"
+import userMiddleware from "./Middlewares/userMiddleware"
 import conversationMiddleware from "./Middlewares/conversationMiddleware"
 import socketMiddleware from "./Middlewares/socketMiddleware"
-import modalsMiddleware from "./Middlewares/modalsMiddleware"
+import modalMiddleware from "./Middlewares/modalMiddleware"
 
 const store = configureStore({
     reducer: {
@@ -21,7 +21,7 @@ const store = configureStore({
         userMiddleware,
         conversationMiddleware,
         socketMiddleware,
-        modalsMiddleware
+        modalMiddleware
     )
 
 })

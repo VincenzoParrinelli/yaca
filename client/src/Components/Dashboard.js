@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { connection } from '../Redux/socketSlice';
 import SideBar from "./SideBar"
 import ProfileModal from "./ProfileModal"
+import NewGroupModal from './NewGroupModal';
 import ChatOpen from "./ChatOpen"
 import ChatList from './ChatList'
 import AddFriend from './AddFriendList';
@@ -13,7 +14,7 @@ import "./Dashboard.scss"
 export default function Dashboard() {
     const { data, isLogged } = useSelector(state => state.user)
     const { selectedUserIndex } = useSelector(state => state.conversation)
-    const { addFriend, settings, openNotifications } = useSelector(state => state.modal)
+    const { addFriend, openNotifications } = useSelector(state => state.modal)
     const { errors } = useSelector(state => state.sockets)
 
     const dispatch = useDispatch()
@@ -35,7 +36,9 @@ export default function Dashboard() {
         <div className='Dashboard'>
 
 
-            {settings && <ProfileModal />}
+            <ProfileModal />
+            <NewGroupModal />
+
             <SideBar />
 
             <div className='separator-vertical' />

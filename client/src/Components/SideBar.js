@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux"
 import {
     handleDashboard,
     handleSettings,
+    openNewGroupModal,
     handleAddFriend,
     openNotifications
 } from "../Redux/modalsSlice"
 import micImage from "../Assets/Images/mic.png"
 import soundImage from "../Assets/Images/sound.png"
 import addFriendImage from "../Assets/Images/add-friend.png"
+import plus from "../Assets/Images/plus.png"
 import logout from "../Assets/Images/logout.png"
 import home from "../Assets/Images/home.png"
 import bellImage from "../Assets/Images/bell.png"
@@ -16,7 +18,7 @@ import './SideBar.scss'
 
 export default function SideBar() {
 
-    const { dashboard, addFriend, notificationBell } = useSelector(state => state.modal)
+    const { dashboard, addFriend, notifications, newGroupModal } = useSelector(state => state.modal)
     const { data } = useSelector(state => state.user)
 
     const dispatch = useDispatch()
@@ -56,7 +58,7 @@ export default function SideBar() {
                     <img
                         src={bellImage}
                         className='sidebar__notification-bell'
-                        value={notificationBell} //parameter that keeps button opacity set to 1 while modal is open
+                        value={notifications} //parameter that keeps button opacity set to 1 while modal is open
                         onClick={() => dispatch(openNotifications())}
                     />
                     <span className='sidebar__tooltip'>Notifications</span>
@@ -73,6 +75,18 @@ export default function SideBar() {
                     />
 
                     <span className='sidebar__tooltip'>Add Friend</span>
+
+                </li>
+
+                <li>
+                    <img
+                        src={plus}
+                        className="sidebar__create-server"
+                        value={newGroupModal}
+                        onClick={() => dispatch(openNewGroupModal())}
+                    />
+
+                    <span className='sidebar__tooltip'>Create Server</span>
 
                 </li>
 

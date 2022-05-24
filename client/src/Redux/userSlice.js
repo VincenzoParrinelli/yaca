@@ -74,27 +74,6 @@ export const login = createAsyncThunk(
     }).catch(err => { throw Error(err) })
 )
 
-export const loadUser = createAsyncThunk(
-    "user/load",
-
-    async data => await axios.post(`${serverUrl}user/load`,
-        data,
-        { withCredentials: true }
-
-    ).then(async res => {
-
-        const userID = res.data._id
-
-        const proPicId = ref(storage, `proPics/${userID}/${res.data.profilePicId}`)
-
-        const proPic = getDownloadURL(proPicId)
-
-        return proPic
-
-    }).catch(err => { throw Error(err) })
-
-)
-
 export const updateUser = createAsyncThunk(
     "user/updateUser",
     async data => await axios.post(`${serverUrl}user/update`,
@@ -204,10 +183,6 @@ export const userSlice = createSlice({
 
         [activateAccount.rejected]: (state, action) => {
             state.errors = initialState.errors
-        },
-
-        [loadUser.fulfilled]: (state, action) => {
-            state.data.proPicBlob = action.payload
         },
 
         [login.fulfilled]: (state, action) => {

@@ -45,8 +45,8 @@ export default function AddFriend() {
                         <div className='add-friend-list__users-propic-container'>
 
 
-                            {searchedUser.proPicId ?
-                                <img className='add-friend-list__users-propic' />
+                            {searchedUser.proPicBlob ?
+                                <img src={searchedUser.proPicBlob} className='add-friend-list__users-propic' />
                                 :
                                 <img src={defaultProPic} className='add-friend-list__default-propic' />
                             }

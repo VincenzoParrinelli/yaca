@@ -16,8 +16,6 @@ router.post("/activate-account", validateSignUpPassword, userController.activate
 
 router.post("/login", validateLoginEmail, validateLoginPassword, userController.login)
 
-router.post("/load", validateToken, userController.load)
-
 router.post("/update", validateToken, userController.update)
 
 router.delete("/logout", userController.logout)

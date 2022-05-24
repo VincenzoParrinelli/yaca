@@ -27,7 +27,7 @@ const userMiddleware = store => next => async action => {
         //load friends proPics
         const friendList = store.getState().user.data.friendList
 
-        friendList.forEach(async (friend, i) => {
+        friendList.map(async (friend, i) => {
             const friendID = friend._id
             const friendProPic = friend.profilePicId
 

@@ -4,12 +4,12 @@ const initialState = {
     dashboard: true,
     settings: false,
     addFriend: false,
-    buttonToolTip: false,
-    openNotifications: false,
+    newGroupModal: false,
+    notifications: false,
 }
 
 export const modalsSlice = createSlice({
-    name: "modals",
+    name: "modal",
 
     initialState,
 
@@ -45,15 +45,15 @@ export const modalsSlice = createSlice({
         },
 
         openNotifications: state => {
-            state.openNotifications = !state.openNotifications
+            state.notifications = !state.notifications
         },
 
-        openButtonToolTip: state => {
-            state.buttonToolTip = true
+        openNewGroupModal: state => {
+            state.newGroupModal = true
         },
 
-        closeButtonToolTip: state => {
-            state.buttonToolTip = false
+        closeNewGroupModal: state => {
+            state.newGroupModal = false
         },
 
         handleAddFriend: state => {
@@ -66,9 +66,9 @@ export const modalsSlice = createSlice({
 export const {
     handleDashboard,
     handleSettings,
-    openButtonToolTip,
-    closeButtonToolTip,
     openNotifications,
+    openNewGroupModal,
+    closeNewGroupModal,
     handleAddFriend,
 } = modalsSlice.actions
 
