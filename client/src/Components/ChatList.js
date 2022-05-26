@@ -10,6 +10,7 @@ export default function ChatList() {
 
     const { data } = useSelector(state => state.user)
     const { selectedUserIndex } = useSelector(state => state.conversation)
+    const { groupData } = useSelector(state => state.group)
 
     const dispatch = useDispatch()
 
@@ -64,6 +65,37 @@ export default function ChatList() {
 
                         <p className='chat-list__username'>{friend.username}</p>
 
+                    </div>
+                )
+            })}
+
+            <p className='chat-list__text'> GROUP MESSAGES </p>
+
+
+            {groupData && groupData.map((group, i) => {
+                return (
+                    <div
+                        key={group._id}
+                        data-index={i}
+
+                    >
+
+
+                        <div className='chat-list__user-propic-container'>
+
+                            {group.picBlob ?
+
+                                <>
+                                    <img src={group.picBlob} className='chat-list__user-propic' />
+
+                                </>
+                                :
+                                <img src={defaultProPic} className='chat-list__default-propic' />
+                            }
+
+                        </div>
+
+                        <p className='chat-list__username'>{group.groupName}</p>
                     </div>
                 )
             })}

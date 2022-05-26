@@ -68,15 +68,58 @@
         background-color: #e3e5e8;
     }
 
+    &__group-pro-pic-container {
+        display: flex;
+        position: absolute;
+        top: 42%;
+        left: 50%;
+        width: 5.2em;
+        height: 5.2em;
+        transform: translate(-50%, -50%);
+    }
+
+    &__group-pro-pic {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    &__new-group-pic {
+        display: none;
+    }
+
     &__footer {
         position: absolute;
         bottom: 0;
         width: 100%;
         height: 15%;
         background-color: #f2f3f5;
+        border-radius: 0 0 5px 5px;
     }
 
-    &__create-group-button {}
+    &__create-group-button {
+        position: absolute;
+        width: 22%;
+        height: 65%;
+        bottom: 12px;
+        right: 15px;
+        border: solid;
+        border-radius: 5px;
+        background-color: #5865f2;
+        font: bold 12px "aeroportLight";
+        color: white;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgb(62, 77, 239);
+        }
+
+        &:active {
+            background-color: rgb(47, 57, 164);
+        }
+    }
 }
 
 
@@ -112,8 +155,8 @@
         height: 50vh;
     }
 
-    to {    
+    to {
         width: 30vw;
-        height: 60vh; 
+        height: 60vh;
     }
 }

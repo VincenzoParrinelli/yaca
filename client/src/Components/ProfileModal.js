@@ -13,7 +13,7 @@ export default function ProfileModal() {
     const { data } = useSelector(state => state.user)
     const { settings } = useSelector(state => state.modal)
     const dispatch = useDispatch()
-    
+
 
     const handleNewProPic = e => {
         setNewProPic(e.target.files[0])
@@ -30,7 +30,8 @@ export default function ProfileModal() {
             //in order to store it in firebase 
             const payload = {
                 payload: {
-                    newProPicUrl, _id: data._id
+                    newProPicUrl,
+                    _id: data._id
                 },
 
                 file: {

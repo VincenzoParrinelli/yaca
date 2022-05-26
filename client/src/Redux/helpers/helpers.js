@@ -1,6 +1,7 @@
 import { storage } from "../../firebase"
 import { ref, uploadBytes, deleteObject } from "firebase/storage"
 
+//userSlice helpers
 export const deletePrevPic = async state => {
     const userID = state.data._id
     const prevPicId = state.data.profilePicId
@@ -29,3 +30,23 @@ export const updateProPic = async (state, action) => {
     await uploadBytes(proPicRef, proPicFile).catch(err => { throw err })
 
 }
+///
+
+
+//groupSlice helpers
+
+export const updateGroupPic = async action => {
+
+    const groupID = action.payload._id
+
+    const groupPicID = action.payload.groupPicId
+
+    const groupPicFile = action.meta.arg.file.groupPic
+
+    const groupPicRef = ref(storage, `groupPics/${groupID}/${groupPicID}`)
+
+    await uploadBytes(groupPicRef, groupPicFile).catch(err => { throw err })
+
+}
+
+///
