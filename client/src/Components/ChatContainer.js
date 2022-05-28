@@ -6,13 +6,9 @@ import "./ChatContainer.scss"
 
 export default function ChatContainer() {
 
-    const { data } = useSelector(state => state.user)
-    const { conversationsData, selectedUserIndex, selectedConversationID } = useSelector(state => state.conversation)
+    const { conversationList, selectedFriendID, selectedConversationID } = useSelector(state => state.conversation)
 
     const chatRef = useRef(null)
-
-    const selectedUser = data.friendList[selectedUserIndex]
-
     
     const refactorDate = createdAt => {
 
@@ -28,7 +24,7 @@ export default function ChatContainer() {
 
 
     return (
-        conversationsData.map((conv, i) => {
+        conversationList.map((conv, i) => {
 
             if (conv._id !== selectedConversationID) return
 
@@ -37,13 +33,13 @@ export default function ChatContainer() {
                     {
                         conv.messages.map(message => {
 
-                            if (message.senderID !== selectedUser._id) {
+                            if (message.senderID !== selectedFriendID) {
 
                                 return (
                                     <div
                                         ref={chatRef}
                                         className={
-                                            message.senderID !== selectedUser._id ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
+                                            message.senderID !== selectedFriendID ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
                                         }
                                         key={uuidv4()}
                                     >

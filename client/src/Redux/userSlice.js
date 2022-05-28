@@ -2,7 +2,6 @@ import { current, createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 import { auth, storage } from "../firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
-import { ref, getDownloadURL } from "firebase/storage"
 
 import { deletePrevPic, updateProPic } from "./helpers/helpers"
 

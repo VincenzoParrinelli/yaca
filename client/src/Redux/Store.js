@@ -6,6 +6,7 @@ import modalReducer from "./modalsSlice"
 import groupReducer from "./groupSlice"
 import userMiddleware from "./Middlewares/userMiddleware"
 import conversationMiddleware from "./Middlewares/conversationMiddleware"
+import resetSelectedIDsMiddleware from "./Middlewares/groupMiddleware"
 import socketMiddleware from "./Middlewares/socketMiddleware"
 import modalMiddleware from "./Middlewares/modalMiddleware"
 
@@ -22,6 +23,7 @@ const store = configureStore({
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(
         userMiddleware,
         conversationMiddleware,
+        resetSelectedIDsMiddleware,
         socketMiddleware,
         modalMiddleware
     )

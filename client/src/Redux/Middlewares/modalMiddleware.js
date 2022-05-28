@@ -6,10 +6,12 @@ const modalsMiddleware = store => next => async action => {
 
     //second if check prevents an infinite loop
     if (sliceName === "modal" && sliceAction !== "reset" && sliceAction !== "openButtonToolTip" && sliceAction !== "closeButtonToolTip" && sliceAction !== "closeNewGroupModal") {
+       
         store.dispatch({
             type: "modal/reset",
             payload: sliceAction
         })
+        
     }
 
 

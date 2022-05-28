@@ -21,9 +21,9 @@ const userMiddleware = store => next => async action => {
                 type: "user/loadProPic",
                 payload: proPicBlob
             })
-        }) 
+        })
 
-        
+
         //load friends proPics
         const friendList = store.getState().user.data.friendList
 
@@ -46,6 +46,40 @@ const userMiddleware = store => next => async action => {
 
         })
 
+        //load conversations last messages
+        const convData = action.payload.convData
+
+        store.dispatch({
+            type: "conversation/getLastMessage",
+            payload: convData
+        })
+
+        //load groups proPics
+        const groupList = action.payload.groupList
+
+        const loadGroups = groupList.map(async group => {
+
+            const { _id, groupPicId } = group
+
+            if (!groupPicId) return
+
+            const proPicRef = ref(storage, `groupPics/${_id}/${groupPicId}`)
+
+            return getDownloadURL(proPicRef).then(proPicBlob => {
+                group.proPicBlob = proPicBlob
+
+                return group
+            }).catch(() => { return group })
+
+        })
+
+        Promise.all(loadGroups).then(data => {
+
+            store.dispatch({
+                type: "group/loadGroups",
+                payload: data
+            })
+        })
     }
 
 }

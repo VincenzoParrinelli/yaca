@@ -5,7 +5,10 @@ import axios from "axios"
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
-    groupData: [],
+    groupList: [],
+
+    selectedGroupID: ""
+
 }
 
 export const createGroup = createAsyncThunk(
@@ -21,6 +24,18 @@ export const createGroup = createAsyncThunk(
     })
 )
 
+export const getGroup = createAsyncThunk(
+    "group/getGroup",
+
+    async payload => await axios.get(`${serverUrl}group/get-group/${payload}`,
+
+        { withCredentials: true }
+    ).then(res => {
+
+        return res.data
+    })
+)
+
 const groupSlice = createSlice({
     name: "group",
 
@@ -28,20 +43,37 @@ const groupSlice = createSlice({
 
     reducers: {
 
+        loadGroups: (state, action) => {
+            state.groupList = action.payload
+        },
+
+        resetSelectedGroupID: state => {
+            state.selectedGroupID = ""
+        },
+
+        setSelectedGroupID: (state, action) => {
+            state.selectedGroupID = action.payload
+        }
     },
 
     extraReducers: {
+
         [createGroup.fulfilled]: (state, action) => {
 
             updateGroupPic(action)
 
-            state.groupData.push(action.payload)
+            state.groupList.push(action.payload)
+        },
+
+        [getGroup.fulfilled]: (state, action) => {
+
         }
     }
 })
 
 
 export const {
+    setSelectedGroupID,
 
 } = groupSlice.actions
 

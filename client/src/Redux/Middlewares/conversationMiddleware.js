@@ -4,51 +4,43 @@ const conversationMiddleware = store => next => action => {
 
     next(action)
 
-    if (action.type === "conversation/setSelectedUser") {
+    if (action.type === "conversation/setSelectedFriendID") {
 
-        const { friendList } = store.getState().user.data
-        const { selectedUserIndex, conversationsData } = store.getState().conversation
-        const { user, conversation } = store.getState()
+        const { selectedFriendID, conversationList } = store.getState().conversation
+        const { user } = store.getState()
 
-        friendList.map((friend, i) => {
+        const currentID = user.data._id
+        const friendID = selectedFriendID
 
-            if (selectedUserIndex === i) {
+        const payload = {
+            currentID,
+            friendID
+        }
 
-                const currentID = user.data._id
-                const friendID = friend._id
+        //check if a conversation has already been fetched by using friendID as check value
 
-                const payload = {
-                    currentID,
-                    friendID
-                }
+        const conversationExists = conversationList.some(conv => conv.members.includes(friendID))
 
-                //check if a conversation has already been fetched by using friendID as check value
+        if (!conversationExists) store.dispatch(getConversation(payload))
 
-                const conversationExists = conversationsData.some(conv => conv.members.includes(friendID))
+        //if the conversation has the selected friend in his members array return the conv id 
+        //and dispatch it into redux state
 
-                if (!conversationExists) store.dispatch(getConversation(payload))
+        if (conversationExists) {
 
-                //if the conversation has the selected friend in his members array return the conv id 
-                //and dispatch it into redux state
+            conversationList.map(conv => {
 
-                if (conversationExists) {
+                if (!conv.members.includes(friendID)) return
 
-                    let conversationID
+                store.dispatch({
+                    type: "conversation/setSelectedConv",
+                    payload: conv._id
+                })
 
-                    conversationsData.map(conv => {
+            })
 
-                        if (conv.members.includes(friendID)) conversationID = conv._id
-                              
-                    })
+        }
 
-                    store.dispatch({
-                        type: "conversation/setSelectedConv",
-                        payload: conversationID
-                    })
-
-                }
-            }
-        })
     }
 }
 

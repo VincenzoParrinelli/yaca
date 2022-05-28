@@ -1,25 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { sendMessage } from '../Redux/socketSlice'
 import { updateChat } from '../Redux/conversationSlice'
-import defaultProPic from "../Assets/Images/user-icon-2.png"
 import sendMessageIcon from "../Assets/Images/send-message.png"
 import ChatContainer from './ChatContainer'
+import ChatHeader from "./ChatHeader"
 import "./ChatOpen.scss"
 
 export default function MainContent() {
 
     const [message, setMessage] = useState("")
 
-    const { data } = useSelector(state => state.user)
-    const { selectedUserIndex } = useSelector(state => state.conversation)
-
     const dispatch = useDispatch()
 
     const textAreaRef = useRef(null)
-
-    const selectedUser = data.friendList[selectedUserIndex]
-
 
     //automatically resize textarea
     useEffect(() => {
@@ -52,55 +46,9 @@ export default function MainContent() {
     return (
         <div className='chat-open'>
 
-            <div className='chat-open__header'>
-
-                {selectedUser.proPicBlob ?
-
-                    <div className='chat-open__user-propic-container' >
-
-                        <img src={selectedUser.proPicBlob} className='chat-open__user-propic' />
-
-                        {selectedUser.socketID !== "OFFLINE" ?
-
-                            <div className='chat-open__user-status chat-open__user-status--online' />
-
-                            :
-
-                            <div className='chat-open__user-status chat-open__user-status--offline' />
-                        }
-
-                    </div>
-
-                    :
-
-                    <img src={defaultProPic} className='chat-open__default-propic' />
-
-                }
-
-                <p className='chat-open__username'>{selectedUser.username}</p>
-
-                {
-                    selectedUser.socketID !== "OFFLINE" ?
-
-                        <p className='chat-open__user-status-text chat-open__user-status-text--online' >
-                            Online
-                        </p>
-
-                        :
-
-                        <p className='chat-open__user-status-text chat-open__user-status-text--offline' >
-                            Offline
-                        </p>
-
-                }
-
-                <div className='chat-open__separator-horizontal'></div>
-
-            </div>
-
+            <ChatHeader />
 
             <ChatContainer />
-
 
             <textarea
                 ref={textAreaRef}

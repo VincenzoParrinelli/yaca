@@ -21,6 +21,7 @@ const validateLoginEmail = async (req, res, next) => {
 
     var loginEmail = req.body.loginEmail
 
+    //*******bad
     if (!validator.isEmail(loginEmail)) {
         res.json({ isValid: false })
 

@@ -1,4 +1,6 @@
 const User = require("../models/User.js")
+const Conversation = require("../models/Conversation.js")
+const Group = require("../models/Groups.js")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
@@ -72,15 +74,37 @@ module.exports = {
             })
 
 
-            await User.find({ _id: userData.friendList })
-                .select({ "socketID": 1, "email": 1, "username": 1, "profilePicId": 1 })
-                .then(friendData => {
+            // await for all the promises to fullfill then send logged user data among with his friends, groups
+            // and last message sent to the respective conversation so we can display it without fetching all the messages
+            const getFriends = await User.find({ _id: userData.friendList })
+                .select({ "socketID": 1, "username": 1, "profilePicId": 1 })
 
-                    userToJSON.friendList = friendData
+            const getGroups = await Group.find({ members: [userData._id] })
+            
 
-                    res.json({ isLogged: true, isValid: true, userData: userToJSON })
+            const getConversations = await Conversation.aggregate([
+                { $match: { $expr: { members: userData._id } } },
+                { $project: { members: 1, messages: { $slice: ["$messages", -1] } } },
+                { $project: { messages: { senderID: 0 }, __v: 0 } },
+            ])
 
-                }).catch(err => console.error(err.message))
+
+            Promise.all(getFriends).then(async friendsData => {
+
+                Promise.all(getGroups).then(async groupsData => {
+
+                    Promise.all(getConversations).then(convData => {
+
+                        userToJSON.friendList = friendsData
+
+                        res.json({ isLogged: true, isValid: true, userData: userToJSON, groupList: groupsData, convData })
+
+                    })
+
+                })
+
+            }).catch(err => console.error(err.message))
+
 
         } else {
             res.json({ isLogged: false, isValid: false })

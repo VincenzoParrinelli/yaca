@@ -14,7 +14,7 @@ import "./Dashboard.scss"
 export default function Dashboard() {
     const { data, isLogged } = useSelector(state => state.user)
     const { selectedUserIndex } = useSelector(state => state.conversation)
-    const { addFriend, openNotifications } = useSelector(state => state.modal)
+    const { addFriend, notifications } = useSelector(state => state.modal)
     const { errors } = useSelector(state => state.sockets)
 
     const dispatch = useDispatch()
@@ -45,7 +45,7 @@ export default function Dashboard() {
 
             {
                 addFriend ? <AddFriend /> :
-                    openNotifications ? <Notifications /> : <ChatList />
+                    notifications ? <Notifications /> : <ChatList />
             }
 
             <div className='separator-vertical' />

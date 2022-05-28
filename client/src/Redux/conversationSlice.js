@@ -5,9 +5,9 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
 
-    selectedUserIndex: null,
+    selectedFriendID: "",
 
-    conversationsData: [],
+    conversationList: [],
 
     selectedConversationID: null
 
@@ -16,9 +16,10 @@ const initialState = {
 export const getConversation = createAsyncThunk(
     "conversation/getConversation",
 
-    async data => await axios.get(`${serverUrl}conversation/get-conversation/${data.currentID}/${data.friendID}`,
+    async payload => await axios.get(`${serverUrl}conversation/get-conversation/${payload.currentID}/${payload.friendID}`,
 
         { withCredentials: true }
+
     ).then(res => {
 
         return res.data
@@ -31,12 +32,22 @@ export const conversationSlice = createSlice({
     initialState,
 
     reducers: {
-        setSelectedUser: (state, action) => {
-            state.selectedUserIndex = action.payload
+
+        getLastMessage: (state, action) => {
+            state.conversationList = action.payload
+        },
+
+        setSelectedFriendID: (state, action) => {
+            state.selectedFriendID = action.payload
         },
 
         setSelectedConv: (state, action) => {
             state.selectedConversationID = action.payload
+        },
+
+        resetSelectedConv: state => {
+            state.selectedFriendID = ""
+            state.selectedConversationID = ""
         },
 
         //get message from socket event
@@ -44,7 +55,7 @@ export const conversationSlice = createSlice({
 
             const { conversationID, newMessage } = action.payload
 
-            state.conversationsData.map(conv => {
+            state.conversationList.map(conv => {
                 if (conv._id !== conversationID) return
 
                 conv.messages.push(newMessage)
@@ -54,14 +65,14 @@ export const conversationSlice = createSlice({
         //update chat from client 
         updateChat: (state, action) => {
 
-            const { selectedConversationID, conversationsData } = state
+            const { selectedConversationID, conversationList: conversationsData } = state
 
             conversationsData.map(conv => {
                 if (conv._id !== selectedConversationID) return
 
                 const currentDate = Date()
 
-                conv.messages.push({text: action.payload, createdAt: currentDate})
+                conv.messages.push({ text: action.payload, createdAt: currentDate })
             })
 
         }
@@ -70,7 +81,7 @@ export const conversationSlice = createSlice({
     extraReducers: {
 
         [getConversation.fulfilled]: (state, action) => {
-            state.conversationsData.push(action.payload)
+            state.conversationList.push(action.payload)
 
             state.selectedConversationID = action.payload._id
         }
@@ -78,7 +89,7 @@ export const conversationSlice = createSlice({
 })
 
 export const {
-    setSelectedUser,
+    setSelectedFriendID,
     updateChat
 
 } = conversationSlice.actions

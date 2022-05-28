@@ -9,4 +9,6 @@ router.use(validateToken)
 
 router.post("/create-group", groupController.createGroup)
 
+router.get("/get-group/:userID", groupController.getGroup)
+
 module.exports = router
