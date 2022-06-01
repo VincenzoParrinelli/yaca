@@ -1,19 +1,18 @@
-import React, { useRef } from 'react'
-import { useSelector, useDispatch } from "react-redux"
+import React from 'react'
+import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
-import "./ChatContainer.scss"
+import "./ConversationContainer.scss"
 
 
 export default function ChatContainer() {
 
     const { conversationList, selectedFriendID, selectedConversationID } = useSelector(state => state.conversation)
 
-    const chatRef = useRef(null)
-    
+
     const refactorDate = createdAt => {
 
         const stringToDate = new Date(createdAt)
-        
+
         const getHours = stringToDate.getHours()
 
         const getMinutes = stringToDate.getMinutes()
@@ -22,14 +21,13 @@ export default function ChatContainer() {
     }
 
 
-
     return (
-        conversationList.map((conv, i) => {
+        conversationList.map(conv => {
 
             if (conv._id !== selectedConversationID) return
 
             return (
-                <div className='chat-container' key={conv._id}>
+                <div className='conversation-container' key={conv._id}>
                     {
                         conv.messages.map(message => {
 
@@ -37,7 +35,7 @@ export default function ChatContainer() {
 
                                 return (
                                     <div
-                                        ref={chatRef}
+
                                         className={
                                             message.senderID !== selectedFriendID ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
                                         }
@@ -46,9 +44,9 @@ export default function ChatContainer() {
 
                                         <div className='metadata-container'>
 
-                                            <p className='metadata-container__created-at'>{refactorDate(message.createdAt)}</p>
+                                            <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
 
-                                            <p className='metadata-container__text'>{message.text}</p>
+                                            <span className='metadata-container__text'>{message.text}</span>
 
                                         </div>
 
@@ -62,10 +60,9 @@ export default function ChatContainer() {
                                 <div className='message-container message-container--sender-user' key={uuidv4()}>
 
                                     <div className='metadata-container'>
+                                        <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
 
-                                        <p className='metadata-container__created-at'>{refactorDate(message.createdAt)}</p>
-
-                                        <p className='metadata-container__text'>{message.text}</p>
+                                        <span className='metadata-container__text'>{message.text}</span>
 
                                     </div>
 

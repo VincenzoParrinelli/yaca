@@ -49,13 +49,22 @@ const userMiddleware = store => next => async action => {
         //load conversations last messages
         const convData = action.payload.convData
 
+        //for each conversation set an isFullyFetched flag to false since we are only fetching the last messages for now
+        convData.forEach(conv => {
+            conv.isFullyFetched = false
+        })
+
         store.dispatch({
-            type: "conversation/getLastMessage",
+            type: "conversation/getLastMessages",
             payload: convData
         })
 
         //load groups proPics
         const groupList = action.payload.groupList
+
+        groupList.forEach(group => {
+            group.isFullyFetched = false
+        })
 
         const loadGroups = groupList.map(async group => {
 

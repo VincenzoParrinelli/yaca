@@ -6,7 +6,7 @@ module.exports = {
 
         const { groupName, groupPicId, userID } = req.body
 
-        await Group.create({ groupName, groupPicId, members: [userID] }).then(async group => {
+        await Group.create({ groupName, groupPicId, members: [userID] }).then(group => {
 
             res.json(group)
 
@@ -16,6 +16,12 @@ module.exports = {
 
     getGroup: async (req, res) => {
 
-        console.log(req.params)
+        const { selectedGroupID } = req.query
+
+        await Group.findById(selectedGroupID).select({ "messages": 1, "members": 1}).then(group => {
+
+
+            res.json(group)
+        }).catch(err => console.error(err.message))
     }
 }

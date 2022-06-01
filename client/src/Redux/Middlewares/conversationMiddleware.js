@@ -17,9 +17,9 @@ const conversationMiddleware = store => next => action => {
             friendID
         }
 
-        //check if a conversation has already been fetched by using friendID as check value
+        //check if a conversation has already been fetched using the isFullyFetched flag
 
-        const conversationExists = conversationList.some(conv => conv.members.includes(friendID))
+        const conversationExists = conversationList.some(conv => conv.isFullyFetched)
 
         if (!conversationExists) store.dispatch(getConversation(payload))
 

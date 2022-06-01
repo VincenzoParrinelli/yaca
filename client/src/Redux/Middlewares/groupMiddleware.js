@@ -2,6 +2,8 @@ import { getGroup } from "../groupSlice"
 
 const resetSelectedIDsMiddleware = store => next => action => {
 
+    next(action)
+
     if (action.type === "conversation/setSelectedConv") {
 
         store.dispatch({
@@ -17,21 +19,13 @@ const resetSelectedIDsMiddleware = store => next => action => {
         })
 
         const { groupList, selectedGroupID } = store.getState().group
-        const { data } = store.getState().user
 
-        const groupExists = groupList.some(group => group._id.includes(selectedGroupID))
+        const groupExists = groupList.some(group => group.isFullyFetched)
 
-        if (!groupExists) {
-
-            store.dispatch(getGroup(data._id))
-
-        } else {
-
-        }
+        if (!groupExists) store.dispatch(getGroup({selectedGroupID}))
 
     }
 
-    next(action)
 }
 
 export default resetSelectedIDsMiddleware

@@ -33,7 +33,8 @@ export const conversationSlice = createSlice({
 
     reducers: {
 
-        getLastMessage: (state, action) => {
+        //get only last messages on login, so we can display them after user has logged in
+        getLastMessages: (state, action) => {
             state.conversationList = action.payload
         },
 
@@ -65,9 +66,9 @@ export const conversationSlice = createSlice({
         //update chat from client 
         updateChat: (state, action) => {
 
-            const { selectedConversationID, conversationList: conversationsData } = state
+            const { selectedConversationID, conversationList } = state
 
-            conversationsData.map(conv => {
+            conversationList.map(conv => {
                 if (conv._id !== selectedConversationID) return
 
                 const currentDate = Date()
@@ -81,7 +82,19 @@ export const conversationSlice = createSlice({
     extraReducers: {
 
         [getConversation.fulfilled]: (state, action) => {
-            state.conversationList.push(action.payload)
+
+            //serach for selected conversation overwrite it and set isFullyFetched flag to true
+            state.conversationList.map((conv, i) => {
+
+                if (conv._id !== action.payload._id) return
+
+                conv = action.payload
+
+                conv.isFullyFetched = true
+
+                state.conversationList[i] = conv
+            })
+
 
             state.selectedConversationID = action.payload._id
         }

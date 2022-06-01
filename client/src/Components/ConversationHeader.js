@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from "react-redux"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
-import "./ChatHeader.scss"
+import "./ConversationHeader.scss"
 
 export default function ChatHeader() {
 
@@ -20,7 +20,6 @@ export default function ChatHeader() {
                     <div
                         key={friend._id}
                         className='chat-header__user-propic-container'
-                        data-username={friend.username}
                     >
 
                         {friend.proPicBlob ?

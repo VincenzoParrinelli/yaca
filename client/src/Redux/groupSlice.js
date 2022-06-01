@@ -21,19 +21,19 @@ export const createGroup = createAsyncThunk(
     ).then(res => {
 
         return res.data
-    })
+    }).catch(err => { throw Error(err) })
 )
 
 export const getGroup = createAsyncThunk(
     "group/getGroup",
 
-    async payload => await axios.get(`${serverUrl}group/get-group/${payload}`,
+    async groupID => await axios.get(`${serverUrl}group/get-group`,
 
-        { withCredentials: true }
+        { withCredentials: true, params: groupID }
     ).then(res => {
 
         return res.data
-    })
+    }).catch(err => { throw Error(err) })
 )
 
 const groupSlice = createSlice({
@@ -66,6 +66,19 @@ const groupSlice = createSlice({
         },
 
         [getGroup.fulfilled]: (state, action) => {
+
+            state.groupList.map((group, i) => {
+
+                if (group._id !== action.payload._id) return
+
+                group.messages = action.payload.messages
+
+                group.members = action.payload.members
+
+                group.isFullyFetched = true
+
+                state.groupList[i] = group
+            })
 
         }
     }

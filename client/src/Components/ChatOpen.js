@@ -1,15 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { sendMessage } from '../Redux/socketSlice'
 import { updateChat } from '../Redux/conversationSlice'
 import sendMessageIcon from "../Assets/Images/send-message.png"
-import ChatContainer from './ChatContainer'
-import ChatHeader from "./ChatHeader"
+import ConversationHeader from "./ConversationHeader"
+import ConversationContainer from './ConversationContainer'
+import GroupHeader from './GroupHeader'
+import GroupContainer from './GroupContainer'
 import "./ChatOpen.scss"
 
 export default function MainContent() {
 
     const [message, setMessage] = useState("")
+
+    const { selectedConversationID } = useSelector(state => state.conversation)
+    const { selectedGroupID } = useSelector(state => state.group)
 
     const dispatch = useDispatch()
 
@@ -46,9 +51,25 @@ export default function MainContent() {
     return (
         <div className='chat-open'>
 
-            <ChatHeader />
+            {selectedConversationID &&
 
-            <ChatContainer />
+                <>
+                    <ConversationHeader />
+
+                    <ConversationContainer />
+                </>
+
+            }
+
+            {selectedGroupID &&
+
+                <>
+                    <GroupHeader />
+
+                    <GroupContainer />
+                </>
+            }
+
 
             <textarea
                 ref={textAreaRef}

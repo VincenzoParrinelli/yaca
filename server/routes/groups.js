@@ -9,6 +9,6 @@ router.use(validateToken)
 
 router.post("/create-group", groupController.createGroup)
 
-router.get("/get-group/:userID", groupController.getGroup)
+router.get("/get-group", groupController.getGroup)
 
 module.exports = router
