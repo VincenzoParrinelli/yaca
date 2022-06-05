@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux"
 import { connection } from '../Redux/socketSlice';
 import SideBar from "./SideBar"
-import ProfileModal from "./ProfileModal"
-import NewGroupModal from './NewGroupModal';
+import ProfileModal from "../Modals/ProfileModal"
+import NewGroupModal from '../Modals/NewGroupModal';
+import AddGroupMembersModal from '../Modals/AddGroupMembersModal';
 import ChatOpen from "./ChatOpen"
 import ChatList from './ChatList'
 import AddFriend from './AddFriendList';
@@ -38,6 +39,7 @@ export default function Dashboard() {
 
             <ProfileModal />
             <NewGroupModal />
+            <AddGroupMembersModal />
 
             <SideBar />
 

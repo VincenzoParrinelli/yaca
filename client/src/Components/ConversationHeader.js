@@ -62,7 +62,7 @@ export default function ChatHeader() {
                 )
 
             })}
-            <div className='chat-header__separator-horizontal'></div>
+            <div className='chat-header__separator-horizontal' />
         </div>
     )
 }

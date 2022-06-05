@@ -5,6 +5,7 @@ const initialState = {
     settings: false,
     addFriend: false,
     newGroupModal: false,
+    addGroupMembers: false,
     notifications: false,
 }
 
@@ -56,9 +57,17 @@ export const modalsSlice = createSlice({
             state.newGroupModal = false
         },
 
+        openAddGroupMembers: state => {
+            state.addGroupMembers = true
+        },
+
+        closeAddGroupMembers: state => {
+            state.addGroupMembers = false
+        },
+
         handleAddFriend: state => {
             state.addFriend = true
-        }
+        },
 
     }
 })
@@ -69,6 +78,8 @@ export const {
     openNotifications,
     openNewGroupModal,
     closeNewGroupModal,
+    openAddGroupMembers,
+    closeAddGroupMembers,
     handleAddFriend,
 } = modalsSlice.actions
 

@@ -18,10 +18,15 @@ module.exports = {
 
         const { selectedGroupID } = req.query
 
-        await Group.findById(selectedGroupID).select({ "messages": 1, "members": 1}).then(group => {
+        await Group.findById(selectedGroupID).select({ "messages": 1, "members": 1 }).then(async group => {
 
+            //find group members metadata and send them to client along with group data
+            await User.find({ _id: [group.members] }).select({ "username": 1, "email": 1, "profilePicId": 1, "socketID": 1 })
+                .then(members => {
 
-            res.json(group)
+                    res.json({group, members})
+                }).catch(err => console.error(err.message))
+
         }).catch(err => console.error(err.message))
     }
 }

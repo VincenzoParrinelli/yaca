@@ -7,6 +7,8 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 const initialState = {
     groupList: [],
 
+    membersMetadata: [],
+
     selectedGroupID: ""
 
 }
@@ -69,16 +71,18 @@ const groupSlice = createSlice({
 
             state.groupList.map((group, i) => {
 
-                if (group._id !== action.payload._id) return
+                if (group._id !== action.payload.group._id) return
 
-                group.messages = action.payload.messages
+                group.messages = action.payload.group.messages
 
-                group.members = action.payload.members
+                group.members = action.payload.group.members
 
                 group.isFullyFetched = true
 
                 state.groupList[i] = group
             })
+
+            state.membersMetadata = action.payload.members
 
         }
     }

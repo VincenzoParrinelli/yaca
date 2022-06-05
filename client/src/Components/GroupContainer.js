@@ -41,6 +41,8 @@ export default function GroupContainer() {
 
                                     <div className='metadata-container'>
 
+                                        <span className='metadata-container__sender-username'></span>
+
                                         <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
 
                                         <span className='metadata-container__text'>{message.text}</span>

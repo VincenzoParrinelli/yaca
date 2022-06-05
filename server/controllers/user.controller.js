@@ -82,12 +82,6 @@ module.exports = {
             const getGroups = await Group.find({ members: [userData._id] }, { messages: { $slice: - 1 } })
 
 
-            /*const getConversations = await Conversation.aggregate([
-                { $match: { $expr: { members: userData._id } } },
-                { $project: { members: 1, messages: { $slice: ["$messages", -1] } } },
-                { $project: { messages: { senderID: 0 }, __v: 0 } },
-            ])*/
-
             const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } })
 
 

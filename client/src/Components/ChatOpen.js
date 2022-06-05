@@ -34,6 +34,7 @@ export default function MainContent() {
     const handleSendMessage = e => {
 
         if (e.key === "Enter" && !e.shiftKey) {
+            
             e.preventDefault()
 
             if (!message) return

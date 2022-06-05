@@ -1,11 +1,16 @@
 import React from 'react'
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { openAddGroupMembers } from '../Redux/modalsSlice'
 import defaultProPic from "../Assets/Images/user-icon-2.png"
+import addFriend from "../Assets/Images/add-friend.png"
 import "./GroupHeader.scss"
 
 export default function GroupHeader() {
 
     const { groupList, selectedGroupID } = useSelector(state => state.group)
+    const { addGroupMembers } = useSelector(state => state.modal)
+
+    const dispatch = useDispatch()
 
     return (
         <div className='group-header'>
@@ -37,13 +42,22 @@ export default function GroupHeader() {
                         <p className='group-header__groupname'>{group.groupName}</p>
 
 
+
                     </div>
                 )
 
             })}
-            <div className='group-header__separator-horizontal'></div>
+
+            <img
+                src={addFriend}
+                className='group-header__add-friend-icon'
+                value={addGroupMembers}
+                onClick={() => dispatch(openAddGroupMembers())}
+            />
+
+            <div className='group-header__separator-horizontal' />
 
         </div>
     )
-    
+
 }

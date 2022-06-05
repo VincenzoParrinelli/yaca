@@ -60,6 +60,7 @@ export default function ChatContainer() {
                                 <div className='message-container message-container--sender-user' key={uuidv4()}>
 
                                     <div className='metadata-container'>
+                                        
                                         <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
 
                                         <span className='metadata-container__text'>{message.text}</span>
