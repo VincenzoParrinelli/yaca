@@ -18,18 +18,32 @@ export default function AddGroupMembersModal() {
     const dispatch = useDispatch()
 
 
+    const getGroupName = () => {
+
+        const group = groupList.find(group => group._id === selectedGroupID)
+
+        if (!group) return
+
+        return (
+            <span className='add-group-members-modal__header-text'>Add friends in <b>{group.groupName}</b></span>
+        )
+
+    }
+
+
     //controller that conditionally returns jsx
     const renderSearchedFriends = () => {
-        
+
         return data.friendList.map(friend => {
-            
+
             //if we have no user to search, render whole friendlist
             if (!userToSearch) return defaultRenderJSX(friend)
-            
+
             //else check for string similarity and return friend based on float value 
             const result = stringSimilarity.compareTwoStrings(friend.username, userToSearch)
 
             if (result > 0.67) return defaultRenderJSX(friend)
+
         })
 
     }
@@ -73,14 +87,7 @@ export default function AddGroupMembersModal() {
 
             <header className='add-group-members-modal__header'>
 
-                {groupList.map(group => {
-                    if (group._id !== selectedGroupID) return
-
-                    return (
-                        <span className='add-group-members-modal__header-text'>Add friends in <b>{group.groupName}</b></span>
-                    )
-                })}
-
+                {getGroupName()}
 
                 <input
                     className='add-group-members-modal__header-input'
@@ -100,6 +107,8 @@ export default function AddGroupMembersModal() {
             {renderSearchedFriends()}
 
             <div className='add-group-members-modal__separator-horizontal--end' />
+
+            <span className='add-group-members-modal__invite-text'>OR, INVITE VIA SERVER LINK</span>
 
         </Modal>
     )
