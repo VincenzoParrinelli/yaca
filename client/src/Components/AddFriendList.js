@@ -32,7 +32,7 @@ export default function AddFriend() {
 
             </div>
 
-            <SearchBar />
+            
 
             <p className='add-friend-list__text'> USERS </p>
 
@@ -68,9 +68,9 @@ export default function AddFriend() {
 
                             data.friendRequests.some(user => user["_id"] === searchedUser._id) || data.friendRequestsPending.includes(searchedUser._id) ?
 
-                            <button className='add-friend-list__btn add-friend-list__btn--request-already-sent'>Request sent</button> :
+                                <button className='add-friend-list__btn add-friend-list__btn--request-already-sent'>Request sent</button> :
 
-                            <button className='add-friend-list__btn add-friend-list__btn--send-request' onClick={() => handleSendFriendRequest(searchedUser._id)}>Send request</button>
+                                <button className='add-friend-list__btn add-friend-list__btn--send-request' onClick={() => handleSendFriendRequest(searchedUser._id)}>Send request</button>
 
                         }
 

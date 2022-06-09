@@ -5,7 +5,7 @@ import notificationBell from "../Assets/Images/bell.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import acceptImage from "../Assets/Images/accept.png"
 import refuseImage from "../Assets/Images/refuse.png"
-import "../ComponentsShared/UserActions.scss"
+import "./Notifications.scss"
 
 export default function Notifications() {
 
@@ -33,11 +33,11 @@ export default function Notifications() {
 
 
     return (
-        <div className='UserActions'>
+        <div className='notifications'>
 
-            <div className='actions-header'>
+            <div className='notifications__header'>
 
-                <img src={notificationBell} className="actions-icon" />
+                <img src={notificationBell} className="notifications__icon" />
 
                 Notifications
             </div>
@@ -45,28 +45,26 @@ export default function Notifications() {
             {friendRequests && friendRequests.map((friendRequest, i) => {
 
                 return (
-                    <div key={friendRequest._id} data-index={i} className='users-container'>
+                    <div key={friendRequest._id} data-index={i} className='notifications__users-container'>
 
-                        <div className='propic-container'>
+                        <div className='notifications__propic-container'>
 
-
-                            {friendRequest.proPicId ?
-                                <img className='propic' />
-                                :
-                                <img src={defaultProPic} className='defaultpropic' />
-                            }
+                            <img
+                                src={friendRequest.proPicBlob ? friendRequest.proPicBlob : defaultProPic}
+                                className={friendRequest.proPicBlob ? 'notifications__propic' : "notifications__default-propic"}
+                            />
 
                         </div>
 
 
-                        <p className='username'>{friendRequest.username}</p>
+                        <p className='notifications__username'>{friendRequest.username}</p>
 
-                        <div className='accept-request-container' onClick={() => handleAcceptFriendRequest(friendRequest._id)}>
-                            <img src={acceptImage} className="accept-request" />
+                        <div className='notifications__request-container notifications__request-container--accept' onClick={() => handleAcceptFriendRequest(friendRequest._id)}>
+                            <img src={acceptImage} className="notifications__request notifications__request--accept" />
                         </div>
 
-                        <div className='refuse-request-container' onClick={() => handleRefuseFriendRequest(friendRequest._id)}>
-                            <img src={refuseImage} className="refuse-request" />
+                        <div className='notifications__request-container notifications__request-container--refuse' onClick={() => handleRefuseFriendRequest(friendRequest._id)}>
+                            <img src={refuseImage} className="notifications__request notifications__request--refuse" />
                         </div>
 
                     </div>

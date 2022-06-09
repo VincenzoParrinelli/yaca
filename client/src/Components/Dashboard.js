@@ -34,7 +34,7 @@ export default function Dashboard() {
 
 
     return (
-        <div className='Dashboard'>
+        <div className='dashboard'>
 
 
             <ProfileModal />
@@ -43,14 +43,18 @@ export default function Dashboard() {
 
             <SideBar />
 
-            <div className='separator-vertical' />
+            <div className='dashboard__separator-vertical' />
 
-            {
-                addFriend ? <AddFriend /> :
-                    notifications ? <Notifications /> : <ChatList />
-            }
+            <div className='dashboard__lists-container'>
+                {
+                    addFriend ? <AddFriend /> :
+                        notifications ? <Notifications /> : <ChatList />
+                }
 
-            <div className='separator-vertical' />
+            </div>
+
+
+            <div className='dashboard__separator-vertical' />
 
             {selectedUserIndex !== null && <ChatOpen />}
 

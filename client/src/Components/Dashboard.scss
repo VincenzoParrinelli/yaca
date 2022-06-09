@@ -2,14 +2,20 @@ body {
     background: linear-gradient(#1B2121, #17181C, #17181C);
 }
 
-.Dashboard {
+.dashboard {
     display: flex;
     position: relative;
     
-    .separator-vertical {
+    &__separator-vertical {
         border-left: 1px solid black;
         height: 100vh;
         opacity: 0.8;
+    }
+
+    &__lists-container {
+        display: flex;
+        width: 26vw;
+        height: 100vh;
     }
 
 }

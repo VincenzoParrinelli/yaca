@@ -107,7 +107,9 @@ export const userSlice = createSlice({
     reducers: {
 
         loadProPic: (state, action) => {
+
             state.data.proPicBlob = action.payload
+
         },
 
         loadFriendProPic: (state, action) => {
@@ -115,6 +117,12 @@ export const userSlice = createSlice({
             const { proPicBlob, i } = action.payload
 
             state.data.friendList[i].proPicBlob = proPicBlob
+        },
+
+        loadRequestProPic: (state, action) => {
+
+            state.data.friendRequests = action.payload
+
         },
 
         updateFriendStatus: (state, action) => {
@@ -132,27 +140,37 @@ export const userSlice = createSlice({
         },
 
         getFriendRequests: (state, action) => {
+
             state.data.friendRequests.push(action.payload)
+
         },
 
         getPendingFriendRequest: (state, action) => {
+
             state.data.friendRequestsPending.push(action.payload)
+
         },
 
         acceptFriendRequest: (state, action) => {
+
             state.data.friendList.push(action.payload)
+
         },
 
         deleteFriendRequest: (state, action) => {
+
             state.data.friendRequests = state.data.friendRequests.filter(req => req !== action.payload)
             state.data.friendRequestsPending = state.data.friendRequestsPending.filter(pend => pend !== action.payload)
+
         },
 
         reset: state => {
+
             state.emailSent = false
             state.errors.isPresent = false
             state.errors.isValid = true
             state.errors.isMatch = true
+            
         },
     },
 

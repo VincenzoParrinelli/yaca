@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken")
 
 module.exports = {
     createUser: async (req, res, next) => {
-        var email = req.body.email
+        const email = req.body.email
 
         await User.create({ email }).then(async data => {
 
@@ -18,9 +18,9 @@ module.exports = {
 
 
     activateAccount: async (req, res) => {
-        var id = req.body.id
-        var username = req.body.username
-        var password = req.body.password
+        const id = req.body.id
+        const username = req.body.username
+        const password = req.body.password
 
         await User.findById(id).then(async data => {
             if (data) {
@@ -54,8 +54,8 @@ module.exports = {
     },
 
     login: async (req, res) => {
-        var userData = res.locals.data
-        var password = req.body.password
+        const userData = res.locals.userData
+        const password = req.body.password
 
         if (await bcrypt.compare(password, userData.password)) {
             //convert user object whose coming from mongoose to json
@@ -79,8 +79,9 @@ module.exports = {
             const getFriends = await User.find({ _id: userData.friendList })
                 .select({ "socketID": 1, "username": 1, "profilePicId": 1 })
 
-            const getGroups = await Group.find({ members: [userData._id] }, { messages: { $slice: - 1 } })
+            const friendRequests = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicId": 1 })
 
+            const getGroups = await Group.find({ members: userData._id }, { messages: { $slice: - 1 } })
 
             const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } })
 
@@ -89,11 +90,15 @@ module.exports = {
 
                 Promise.all(getGroups).then(async groupsData => {
 
-                    Promise.all(getConversations).then(convData => {
+                    Promise.all(friendRequests).then(async requestsData => {
 
-                        userToJSON.friendList = friendsData
+                        Promise.all(getConversations).then(convData => {
 
-                        res.json({ isLogged: true, isValid: true, userData: userToJSON, groupList: groupsData, convData })
+                            userToJSON.friendList = friendsData
+
+                            res.json({ isLogged: true, isValid: true, userData: userToJSON, requestsData, groupList: groupsData, convData })
+
+                        })
 
                     })
 
@@ -108,8 +113,8 @@ module.exports = {
     },
 
     update: async (req, res) => {
-        var newProPicId = req.body.newProPicUrl.split("/")[3]
-        var id = req.body._id
+        const newProPicId = req.body.newProPicUrl.split("/")[3]
+        const id = req.body._id
 
         if (newProPicId) {
             await User.findByIdAndUpdate(id, {

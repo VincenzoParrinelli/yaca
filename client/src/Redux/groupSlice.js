@@ -55,7 +55,9 @@ const groupSlice = createSlice({
 
         setSelectedGroupID: (state, action) => {
             state.selectedGroupID = action.payload
-        }
+        },
+
+        sendGroupInvite: () => { }
     },
 
     extraReducers: {
@@ -91,6 +93,7 @@ const groupSlice = createSlice({
 
 export const {
     setSelectedGroupID,
+    sendGroupInvite
 
 } = groupSlice.actions
 

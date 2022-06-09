@@ -3,7 +3,9 @@ import Modal from "react-modal"
 import stringSimilarity from "string-similarity"
 import { useSelector, useDispatch } from 'react-redux'
 import { closeAddGroupMembers } from '../Redux/modalsSlice'
+import { sendGroupInvite } from '../Redux/groupSlice'
 import lens from "../Assets/Images/search-lens.png"
+import cross from "../Assets/Images/x.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import "./AddGroupMembersModal.scss"
 
@@ -16,7 +18,6 @@ export default function AddGroupMembersModal() {
     const { data } = useSelector(state => state.user)
 
     const dispatch = useDispatch()
-
 
     const getGroupName = () => {
 
@@ -34,7 +35,7 @@ export default function AddGroupMembersModal() {
     //controller that conditionally returns jsx
     const renderSearchedFriends = () => {
 
-        return data.friendList.map(friend => {
+        const renderFriends = data.friendList.map(friend => {
 
             //if we have no user to search, render whole friendlist
             if (!userToSearch) return defaultRenderJSX(friend)
@@ -45,6 +46,16 @@ export default function AddGroupMembersModal() {
             if (result > 0.67) return defaultRenderJSX(friend)
 
         })
+
+        //if searched user in renderFriends array doesn't exist, return no result error, else render results
+        if (renderFriends.every(friend => !friend)) return (
+
+            <div className='add-group-members-modal__no-result-error-text'>
+                NO RESULT
+            </div>
+        )
+
+        return renderFriends
 
     }
 
@@ -63,7 +74,7 @@ export default function AddGroupMembersModal() {
 
                 <button
                     className='add-group-members-modal__friend-invite'
-
+                    onClick={() => dispatch(sendGroupInvite({ socketID: friend.socketID, groupID: selectedGroupID }))}
                 >
                     Invite
 
@@ -97,16 +108,32 @@ export default function AddGroupMembersModal() {
 
                 />
 
-                <img className='add-group-members-modal__lens' src={lens} />
+
+                {userToSearch ?
+
+                    <img
+                        className={"add-group-members-modal__header-input-icon add-group-members-modal__header-input-icon--cross"}
+                        src={cross}
+                        onClick={() => setUserToSearch("")}
+                    />
+
+                    :
+
+                    <img
+                        className={'add-group-members-modal__header-input-icon add-group-members-modal__header-input-icon--lens'}
+                        src={lens}
+                    />
+
+                }
 
 
             </header>
 
-            <div className='add-group-members-modal__separator-horizontal--start' />
+            <div className='add-group-members-modal__separator-horizontal add-group-members-modal__separator-horizontal--start' />
 
             {renderSearchedFriends()}
 
-            <div className='add-group-members-modal__separator-horizontal--end' />
+            <div className='add-group-members-modal__separator-horizontal add-group-members-modal__separator-horizontal--end' />
 
             <span className='add-group-members-modal__invite-text'>OR, INVITE VIA SERVER LINK</span>
 

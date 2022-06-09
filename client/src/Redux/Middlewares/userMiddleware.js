@@ -28,6 +28,7 @@ const userMiddleware = store => next => async action => {
         const friendList = store.getState().user.data.friendList
 
         friendList.map(async (friend, i) => {
+
             const friendID = friend._id
             const friendProPic = friend.profilePicId
 
@@ -35,7 +36,7 @@ const userMiddleware = store => next => async action => {
 
             await getDownloadURL(proPicRef).then(proPicBlob => {
 
-                let payload = { proPicBlob, i }
+                const payload = { proPicBlob, i }
 
                 store.dispatch({
                     type: "user/loadFriendProPic",
@@ -44,6 +45,34 @@ const userMiddleware = store => next => async action => {
 
             })
 
+        })
+
+        //load friendRequests data
+        const friendRequestsData = action.payload.requestsData
+
+        const loadRequests = friendRequestsData.map(async request => {
+
+            const { _id, profilePicId } = request
+
+            if (!profilePicId) return
+
+            const proPicRef = ref(storage, `proPics/${_id}/${profilePicId}`)
+
+            return getDownloadURL(proPicRef).then(proPicBlob => {
+
+                request.proPicBlob = proPicBlob
+
+                return request
+            }).catch(() => { return request })
+        })
+
+
+        Promise.all(loadRequests).then(requests => {
+
+            store.dispatch({
+                type: "user/loadRequestProPic",
+                payload: requests
+            })
         })
 
         //load conversations last messages

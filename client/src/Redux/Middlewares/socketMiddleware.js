@@ -70,6 +70,8 @@ const socketMiddleware = store => next => action => {
 
         socket.on("receive-friend-request", user => {
 
+            console.log(user)
+
             store.dispatch({
                 type: "user/getFriendRequests",
                 payload: user
@@ -141,6 +143,10 @@ const socketMiddleware = store => next => action => {
     }
 
     //
+
+    if (action.type === "group/sendGroupInvite") {
+        socket.emit("send-group-invite", action.payload)
+    }
 
     if (action.type === "socket/sendMessage") {
         const conversationID = store.getState().conversation.selectedConversationID

@@ -4,26 +4,21 @@ const validateSignUpPassword = async (req, res, next) => {
     var password = req.body.password
     var password2 = req.body.password2
 
-    if (!validator.isStrongPassword(password)) {
+    if (!validator.isStrongPassword(password)) return res.json({ isValid: false })
 
-        res.json({ isValid: false })
+    if (password !== password2) return res.json({ isValid: true, isMatch: false })
 
-    } else if (password !== password2) {
-
-        res.json({ isValid: true, isMatch: false })
-
-    } else next()
+    next()
 
 }
 
 const validateLoginPassword = async (req, res, next) => {
     var password = req.body.password
+    
+    if (!validator.isStrongPassword(password)) return res.json({ isValid: false })
 
-    if (!validator.isStrongPassword(password)) {
-        res.json({ isValid: false })
-    } else {
-        next()
-    }
+    next()
+
 }
 
 module.exports = { validateSignUpPassword, validateLoginPassword }

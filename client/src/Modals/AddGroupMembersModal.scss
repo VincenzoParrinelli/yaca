@@ -52,13 +52,28 @@
     }
 
 
-    &__lens {
+    &__header-input-icon {
         position: absolute;
-        top: 55px;
-        right: 31px;
-        width: 18px;
         opacity: 0.8;
+        top: 55px;
+        right: 26px;
+
+        &--lens {
+            width: 17px;
+            animation: rotateLensIcon .1s;
+            cursor: text;
+        }
+
+        &--cross {
+            width: 10px;
+            top: 59px;
+            right: 29px;
+            animation: rotateCrossIcon .1s;
+            cursor: pointer;
+        }
+
     }
+
 
     &__separator-horizontal {
 
@@ -74,6 +89,14 @@
             margin-top: 15px;
             border-bottom: 1px solid rgba(51, 53, 58);
         }
+    }
+
+    &__no-result-error-text {
+        color: white;
+        font: 18px "aeroportLight";
+        opacity: 0.8;
+        text-align: center;
+        margin-top: 15px;
     }
 
     &__friend-data-container {
@@ -133,6 +156,11 @@
         &:hover {
             background-color: #215b32 !important;
         }
+
+        &:active {
+            background-color: rgb(31, 80, 45) !important;
+            border: none;
+        }
     }
 
     &__invite-text {
@@ -140,7 +168,7 @@
         top: 10px;
         left: 20px;
         color: white;
-        font: 14px "aeroportLight";  
+        font: 14px "aeroportLight";
         opacity: 0.7;
     }
 }
@@ -180,5 +208,29 @@
     to {
         width: 28vw;
         height: 60vh;
+    }
+}
+
+@keyframes rotateLensIcon {
+    from {
+        transform: rotate(-60deg);
+        opacity: 0.1;
+    }
+
+    to {
+        transform: rotate(20deg);
+        opacity: 0.5;
+    }
+}
+
+@keyframes rotateCrossIcon {
+    from {
+        transform: rotate(60deg);
+        opacity: 0.1;
+    }
+
+    to {
+        transform: rotate(-20deg);
+        opacity: 0.5;
     }
 }
