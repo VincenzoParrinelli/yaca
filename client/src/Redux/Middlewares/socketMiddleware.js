@@ -70,12 +70,20 @@ const socketMiddleware = store => next => action => {
 
         socket.on("receive-friend-request", user => {
 
-            console.log(user)
+            const proPicRef = ref(storage, `proPics/${user._id}/${user.profilePicId}`)
 
-            store.dispatch({
-                type: "user/getFriendRequests",
-                payload: user
+            getDownloadURL(proPicRef).then(proPicBlob => {
+
+                user.proPicBlob = proPicBlob
+
+                store.dispatch({
+                    type: "user/getFriendRequests",
+                    payload: user
+                })
+             
             })
+
+       
         })
 
         socket.on("receive-pending-friend-request", user => {

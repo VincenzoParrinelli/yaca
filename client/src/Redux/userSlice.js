@@ -159,7 +159,7 @@ export const userSlice = createSlice({
 
         deleteFriendRequest: (state, action) => {
 
-            state.data.friendRequests = state.data.friendRequests.filter(req => req !== action.payload)
+            state.data.friendRequests = state.data.friendRequests.filter(req => req._id !== action.payload)
             state.data.friendRequestsPending = state.data.friendRequestsPending.filter(pend => pend !== action.payload)
 
         },

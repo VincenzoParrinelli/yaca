@@ -32,7 +32,7 @@ export default function AddFriend() {
 
             </div>
 
-            
+            <SearchBar />
 
             <p className='add-friend-list__text'> USERS </p>
 
