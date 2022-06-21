@@ -3,7 +3,7 @@ import axios from "axios"
 import { auth, storage } from "../firebase"
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
 
-import { deletePrevPic, updateProPic } from "./helpers/helpers"
+import { deletePrevPic, updateProPic } from "./helpers/firebase.helpers"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 

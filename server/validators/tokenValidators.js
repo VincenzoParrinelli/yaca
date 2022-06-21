@@ -4,7 +4,7 @@ const validateToken = (req, res, next) => {
     const authHeader = req.headers.cookie 
     const accessToken = authHeader && authHeader.split(" ")[0].split("=")[1].split(";")[0]
 
-    if (!accessToken) res.sendStatus(401)
+    if (!accessToken) return res.sendStatus(401)
 
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
 
@@ -12,7 +12,7 @@ const validateToken = (req, res, next) => {
         if (err && err.name === "TokenExpiredError") {
 
             refreshToken
-        } else if (err) res.sendStatus(403)
+        } else if (err) return res.sendStatus(403)
 
         else next()
     })
@@ -22,10 +22,10 @@ const refreshToken = (req, res, next) => {
     const authHeader = req.headers.cookie
     const refreshToken = authHeader && authHeader.split(" ")[1].split("=")[1].split(";")[0]
 
-    if (!refreshToken) res.sendStatus(401)
+    if (!refreshToken) return res.sendStatus(401)
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err) res.sendStatus(403)
+        if (err) return res.sendStatus(403)
 
         const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
         const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET)

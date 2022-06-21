@@ -75,6 +75,7 @@ export default function ChatList() {
                         {conversationList.map(conv => {
 
                             if (!conv.members.includes(friend._id)) return
+                            if (!conv.messages.text) return
 
                             return (
                                 <span className='chat-list__last-message' key={conv._id}>{conv.messages[conv.messages.length - 1].text}</span>
@@ -91,6 +92,8 @@ export default function ChatList() {
             {/*logic that handles the rendering of the group list*/}
 
             {groupList && groupList.map(group => {
+
+                if (!group) return
 
                 return (
                     <div

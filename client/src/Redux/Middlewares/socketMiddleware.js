@@ -6,7 +6,6 @@ var socket
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
-
 const socketMiddleware = store => next => action => {
 
     if (action.type === "socket/connection") {

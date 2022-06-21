@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { updateGroupPic } from "./helpers/helpers"
+import { updateGroupPic } from "./helpers/firebase.helpers"
 import axios from "axios"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL

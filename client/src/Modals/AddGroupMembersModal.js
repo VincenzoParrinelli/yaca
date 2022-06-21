@@ -20,11 +20,11 @@ export default function AddGroupMembersModal() {
     const dispatch = useDispatch()
 
     const getGroupName = () => {
-
-        const group = groupList.find(group => group._id === selectedGroupID)
-
+        
+        const group = groupList.find(group => group?._id === selectedGroupID)
+        
         if (!group) return
-
+        
         return (
             <span className='add-group-members-modal__header-text'>Add friends in <b>{group.groupName}</b></span>
         )

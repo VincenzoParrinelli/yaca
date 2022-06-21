@@ -99,7 +99,7 @@ const userMiddleware = store => next => async action => {
 
             const { _id, groupPicId } = group
 
-            if (!groupPicId) return
+            if (!groupPicId) return group
 
             const proPicRef = ref(storage, `groupPics/${_id}/${groupPicId}`)
 
@@ -111,11 +111,13 @@ const userMiddleware = store => next => async action => {
 
         })
 
-        Promise.all(loadGroups).then(data => {
+        Promise.all(loadGroups).then(groups => {
+
+            console.log(groups)
 
             store.dispatch({
                 type: "group/loadGroups",
-                payload: data
+                payload: groups
             })
         })
     }

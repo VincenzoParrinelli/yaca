@@ -28,7 +28,7 @@ export default function NewGroupModal() {
 
     }, [newGroupModal])
 
-    //if user selects an image for his group, change border radius 
+    //if user selects an image for his group, add border radius 
     useEffect(() => {
 
         if (!groupPicUrl) return
@@ -47,7 +47,7 @@ export default function NewGroupModal() {
 
     const handleNewGroup = () => {
 
-        const groupPicId = groupPicUrl.split("/")[3]
+        const groupPicId = groupPicUrl?.split("/")[3]
 
         const payload = {
             data: {
