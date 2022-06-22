@@ -24,6 +24,15 @@
         border-radius: 50%;
     }
 
+    &__default-propic {
+        position: relative;
+        top: 10px;
+        left: 6px;
+        width: 75%;
+        height: 75%;
+        border-radius: 30%;
+    }
+
     &__user-status {
         position: absolute;
         top: -1px;

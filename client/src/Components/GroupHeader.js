@@ -12,41 +12,37 @@ export default function GroupHeader() {
 
     const dispatch = useDispatch()
 
+    const renderGroup = group => {
+
+        return (
+            <>
+                <div
+                    key={group._id}
+                    className='group-header__group-propic-container'
+
+                >
+
+                    {group.proPicBlob ?
+
+                        <img src={group.proPicBlob} className='group-header__group-propic' />
+                        :
+                        <img src={defaultProPic} className='group-header__default-propic' />
+
+                    }
+
+                    <p className='group-header__groupname'>{group.groupName}</p>
+
+                </div>
+
+            </>
+
+        )
+    }
+
     return (
         <div className='group-header'>
 
-            {groupList.map(group => {
-
-                if (group._id !== selectedGroupID) return
-
-
-                return (
-                    <div
-                        key={group._id}
-                        className='group-header__group-propic-container'
-
-                    >
-
-                        {group.proPicBlob ?
-
-                            <img src={group.proPicBlob} className='group-header__group-propic' />
-
-                            :
-
-                            <img src={defaultProPic} className='group-header__default-propic' />
-
-
-                        }
-
-
-                        <p className='group-header__groupname'>{group.groupName}</p>
-
-
-
-                    </div>
-                )
-
-            })}
+            {renderGroup(groupList.find(group => group._id === selectedGroupID))}
 
             <img
                 src={addFriend}

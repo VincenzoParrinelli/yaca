@@ -5,8 +5,7 @@
     height: 6vh;
     font: arial, 14px;
     color: white;
-
-
+   
     &__group-propic-container {
         display: flex;
         position: relative;
@@ -25,10 +24,20 @@
         border-radius: 50%;
     }
 
+    &__default-propic {
+        position: relative;
+        top: 10px;
+        left: 6px;
+        width: 75%;
+        height: 75%;
+        border-radius: 30%;
+    }
+
     &__groupname {
         display: flex;
         position: relative;
-        left: 18px;
+        white-space: nowrap;
+        left: 31px;
         bottom: 5px;
         font: bold 14px sans-serif;
     }
