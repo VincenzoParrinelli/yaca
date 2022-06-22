@@ -43,7 +43,7 @@ export default function AddGroupMembersModal() {
             //else check for string similarity and return friend based on float value 
             const result = stringSimilarity.compareTwoStrings(friend.username, userToSearch)
 
-            if (result > 0.67) return defaultRenderJSX(friend)
+            if (result > 0.4) return defaultRenderJSX(friend)
 
         })
 

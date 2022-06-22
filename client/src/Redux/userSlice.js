@@ -106,23 +106,22 @@ export const userSlice = createSlice({
 
     reducers: {
 
-        loadProPic: (state, action) => {
-
+        loadUserProPic: (state, action) => {
             state.data.proPicBlob = action.payload
-
         },
 
         loadFriendProPic: (state, action) => {
 
-            const { proPicBlob, i } = action.payload
+            state.data.friendList.map(friend => {
 
-            state.data.friendList[i].proPicBlob = proPicBlob
+                friend.proPicBlob = action.payload
+                
+            }) 
+
         },
 
         loadRequestProPic: (state, action) => {
-
             state.data.friendRequests = action.payload
-
         },
 
         updateFriendStatus: (state, action) => {
@@ -131,46 +130,34 @@ export const userSlice = createSlice({
 
             state.data.friendList.map(friend => {
 
-                if (friend._id === _id) {
-                    friend.socketID = socketID
-                }
-
+                if (friend._id === _id) friend.socketID = socketID
+    
             })
 
         },
 
         getFriendRequests: (state, action) => {
-
             state.data.friendRequests.push(action.payload)
-
         },
 
         getPendingFriendRequest: (state, action) => {
-
             state.data.friendRequestsPending.push(action.payload)
-
         },
 
         acceptFriendRequest: (state, action) => {
-
             state.data.friendList.push(action.payload)
-
         },
 
         deleteFriendRequest: (state, action) => {
-
             state.data.friendRequests = state.data.friendRequests.filter(req => req._id !== action.payload)
             state.data.friendRequestsPending = state.data.friendRequestsPending.filter(pend => pend !== action.payload)
-
         },
 
         reset: state => {
-
             state.emailSent = false
             state.errors.isPresent = false
             state.errors.isValid = true
             state.errors.isMatch = true
-            
         },
     },
 

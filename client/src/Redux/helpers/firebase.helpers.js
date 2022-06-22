@@ -1,5 +1,5 @@
 import { storage } from "../../firebase"
-import { ref, uploadBytes, deleteObject } from "firebase/storage"
+import { ref, getDownloadURL, uploadBytes, deleteObject } from "firebase/storage"
 
 //userSlice helpers
 
@@ -55,6 +55,20 @@ export const updateGroupPic = async action => {
 
 //loadProfilePictures
 
-export const loadProPics = () => {
-    
+export const loadProPics = async list => {
+
+    if (!list.profilePicId) return list
+    if (list.groupName && !list.groupPicId) return list
+
+    const _id = list._id
+    const profilePicId = list.profilePicId ?? list.groupPicID
+
+    const proPicRef = ref(storage, `${list.profilePicId ? "proPics" : "groupPics"}/${_id}/${profilePicId}`)
+
+    return await getDownloadURL(proPicRef).then(proPicBlob => {
+
+        return proPicBlob
+    })
+
+
 }
