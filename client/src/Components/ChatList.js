@@ -38,6 +38,8 @@ export default function ChatList() {
                 return (
                     <div
                         key={friend._id}
+                        id={friend._id}
+                        data-type = "friend"
                         className='chat-list__container'
                         aria-checked={selectedFriendID === friend._id}
                         onClick={() => dispatch(setSelectedFriendID(friend._id))}
@@ -98,6 +100,8 @@ export default function ChatList() {
                 return (
                     <div
                         key={group._id}
+                        id={group._id}
+                        data-type = "group"
                         aria-checked={selectedGroupID === group._id}
                         className='chat-list__container'
                         onClick={() => dispatch(setSelectedGroupID(group._id))}

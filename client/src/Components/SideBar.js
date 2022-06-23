@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux"
 import {
     handleDashboard,
@@ -22,7 +22,6 @@ export default function SideBar() {
     const { data } = useSelector(state => state.user)
 
     const dispatch = useDispatch()
-
 
     return (
         <div className='sidebar'>

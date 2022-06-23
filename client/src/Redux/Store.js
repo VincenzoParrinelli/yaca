@@ -2,8 +2,9 @@ import { configureStore } from "@reduxjs/toolkit"
 import userReducer from "./userSlice"
 import conversationReducer from "./conversationSlice"
 import socketsReducer from "./socketSlice"
-import modalReducer from "./modalsSlice"
 import groupReducer from "./groupSlice"
+import modalReducer from "./modalsSlice"
+import settingsReducer from "./settingsSlice"
 import userMiddleware from "./Middlewares/userMiddleware"
 import conversationMiddleware from "./Middlewares/conversationMiddleware"
 import resetSelectedIDsMiddleware from "./Middlewares/groupMiddleware"
@@ -14,9 +15,10 @@ const store = configureStore({
     reducer: {
         user: userReducer,
         conversation: conversationReducer,
+        group: groupReducer,
         sockets: socketsReducer,
         modal: modalReducer,
-        group: groupReducer
+        settings: settingsReducer
 
     },
 

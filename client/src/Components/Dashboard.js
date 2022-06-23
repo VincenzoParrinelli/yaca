@@ -10,13 +10,16 @@ import ChatOpen from "./ChatOpen"
 import ChatList from './ChatList'
 import AddFriend from './AddFriendList';
 import Notifications from './Notifications';
+import Menus from "./Settings/ChatListContextMenus"
+import GroupSettings from './Settings/GroupSettings';
 import "./Dashboard.scss"
 
 export default function Dashboard() {
+    const { errors } = useSelector(state => state.sockets)
     const { data, isLogged } = useSelector(state => state.user)
     const { selectedUserIndex } = useSelector(state => state.conversation)
     const { addFriend, notifications } = useSelector(state => state.modal)
-    const { errors } = useSelector(state => state.sockets)
+    const { settings } = useSelector(state => state)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -34,30 +37,42 @@ export default function Dashboard() {
 
 
     return (
-        <div className='dashboard'>
+        <>
+            {settings.groupSettings && <GroupSettings />}
+
+            {/* if no setting menu/modal is open render dashboard */}
+
+            {
+                Object.values(settings).every(state => !state) &&
+
+                <div className='dashboard'>
+
+                    <ProfileModal />
+                    <NewGroupModal />
+                    <AddGroupMembersModal />
+
+                    <SideBar />
+
+                    <div className='dashboard__separator-vertical' />
+
+                    <div className='dashboard__lists-container'>
+                        {
+                            addFriend ? <AddFriend /> :
+                                notifications ? <Notifications /> : <ChatList />
+                        }
+
+                    </div>
 
 
-            <ProfileModal />
-            <NewGroupModal />
-            <AddGroupMembersModal />
+                    <div className='dashboard__separator-vertical' />
 
-            <SideBar />
+                    {selectedUserIndex !== null && <ChatOpen />}
 
-            <div className='dashboard__separator-vertical' />
+                    <Menus />
 
-            <div className='dashboard__lists-container'>
-                {
-                    addFriend ? <AddFriend /> :
-                        notifications ? <Notifications /> : <ChatList />
-                }
+                </div>
+            }
 
-            </div>
-
-
-            <div className='dashboard__separator-vertical' />
-
-            {selectedUserIndex !== null && <ChatOpen />}
-
-        </div>
+        </>
     )
 }

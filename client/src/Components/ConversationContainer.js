@@ -21,61 +21,60 @@ export default function ChatContainer() {
     }
 
 
-    return (
-        conversationList.map(conv => {
 
-            if (conv._id !== selectedConversationID) return
+    conversationList.map(conv => {
 
-            return (
-                <div className='conversation-container' key={conv._id}>
-                    {
-                        conv.messages.map(message => {
+        if (conv._id !== selectedConversationID) return
 
-                            if (message.senderID !== selectedFriendID) {
+        return (
+            <div className='conversation-container' key={conv._id}>
+                {
+                    conv.messages.map(message => {
 
-                                return (
-                                    <div
-
-                                        className={
-                                            message.senderID !== selectedFriendID ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
-                                        }
-                                        key={uuidv4()}
-                                    >
-
-                                        <div className='metadata-container'>
-
-                                            <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
-
-                                            <span className='metadata-container__text'>{message.text}</span>
-
-                                        </div>
-
-
-                                    </div>
-                                )
-
-                            }
+                        if (message.senderID !== selectedFriendID) {
 
                             return (
-                                <div className='message-container message-container--sender-user' key={uuidv4()}>
+                                <div
+
+                                    className={
+                                        message.senderID !== selectedFriendID ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
+                                    }
+                                    key={uuidv4()}
+                                >
 
                                     <div className='metadata-container'>
-                                        
+
                                         <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
 
                                         <span className='metadata-container__text'>{message.text}</span>
 
                                     </div>
 
+
                                 </div>
                             )
 
-                        })
-                    }
-                </div>
-            )
+                        }
 
-        })
+                        return (
+                            <div className='message-container message-container--sender-user' key={uuidv4()}>
 
-    )
+                                <div className='metadata-container'>
+
+                                    <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
+
+                                    <span className='metadata-container__text'>{message.text}</span>
+
+                                </div>
+
+                            </div>
+                        )
+
+                    })
+                }
+            </div>
+
+        )
+
+    })
 }

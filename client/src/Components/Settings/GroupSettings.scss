@@ -1,0 +1,68 @@
+.group-settings {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    color: white;
+    z-index: 1;
+    transition: all 0.2 ease-in-out;
+    font-family: "aeroportLight";
+
+    &__sidebar {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        position: relative;
+        width: 30%;
+        height: 100%;
+        background-color: #2f3136;
+    }
+
+    &__server-name {
+        position: relative;
+        text-align: right;
+        margin: 40px 60px 10px 0;
+        font-weight: bold;
+        opacity: 0.5;
+    }
+
+    &__settings-btns {
+        position: relative;
+        width: 40%;
+        height: 4%;
+        background-color: transparent;
+        margin: 1px 12px;
+        padding-left: 10px;
+        text-align: left;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        opacity: 0.6;
+        cursor: pointer;
+        font: 16px "aeroportLight";
+
+        &:hover {
+            background-color: #3c3f45;
+            opacity: 0.9;
+        }
+
+        &:active {
+            background-color: #42464d;
+            opacity: 1;
+        }
+
+    }
+
+    &__content {
+
+    }
+
+    &__overview {
+
+    }
+}
+
+
+@font-face {
+    font-family: "aeroportLight";
+    src: url(../../Assets/Fonts/AeroportLight.otf);
+}

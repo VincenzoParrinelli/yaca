@@ -1,0 +1,44 @@
+@mixin menusButtonsBoilerplate {
+
+    &>* {
+        display: flex;
+        position: relative;
+        color: white;
+        background-color: transparent;
+        border: none;
+        padding: 10px 20px;
+        opacity: 0.7;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 3px;
+        margin: 0 5px;
+
+        &:nth-child(1) {
+            margin-top: 10px;
+        }
+
+        &:hover {
+            background-color: #4752c4;
+            opacity: 1;
+        }
+    }
+}
+
+
+.chat-list-menus {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    width: 14vw;
+    height: 30vh;
+    background-color: #18191c;
+    border-radius: 8px;
+
+    &--friend-settings {
+        @include menusButtonsBoilerplate;
+    }
+
+    &--group-settings {
+        @include menusButtonsBoilerplate;
+    }
+}

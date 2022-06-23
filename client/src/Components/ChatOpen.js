@@ -23,10 +23,12 @@ export default function MainContent() {
     //automatically resize textarea
     useEffect(() => {
 
+        if(!textAreaRef.current) return
+
         if (!message) textAreaRef.current.style.height = "2%"
 
         textAreaRef.current.style.height = "2%";
-        textAreaRef.current.style.height = (textAreaRef.current.scrollHeight - 28) + "px";
+        textAreaRef.current.style.height = (textAreaRef.current.scrollHeight - 29) + "px";
 
     }, [message])
 
@@ -34,7 +36,7 @@ export default function MainContent() {
     const handleSendMessage = e => {
 
         if (e.key === "Enter" && !e.shiftKey) {
-            
+
             e.preventDefault()
 
             if (!message) return
@@ -58,6 +60,22 @@ export default function MainContent() {
                     <ConversationHeader />
 
                     <ConversationContainer />
+
+                    <textarea
+                        ref={textAreaRef}
+                        className='chat-open__message-input'
+                        placeholder='Write a message...'
+                        spellCheck="false"
+                        value={message}
+                        onChange={e => setMessage(e.target.value)}
+                        onKeyDown={e => handleSendMessage(e)}
+                    />
+
+                    <img
+                        src={sendMessageIcon}
+                        className='chat-open__send-message-icon'
+
+                    />
                 </>
 
             }
@@ -71,22 +89,6 @@ export default function MainContent() {
                 </>
             }
 
-
-            <textarea
-                ref={textAreaRef}
-                className='chat-open__message-input'
-                placeholder='Write a message...'
-                spellCheck="false"
-                value={message}
-                onChange={e => setMessage(e.target.value)}
-                onKeyDown={e => handleSendMessage(e)}
-            />
-
-            <img
-                src={sendMessageIcon}
-                className='chat-open__send-message-icon'
-
-            />
 
         </div >
     )
