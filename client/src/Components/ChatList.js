@@ -15,9 +15,20 @@ export default function ChatList() {
     const { conversationList, selectedFriendID } = useSelector(state => state.conversation)
     const { groupList, selectedGroupID } = useSelector(state => state.group)
 
-    const scrollbarRef = document.querySelector(".chat-list__scrollbar-thumb-vertical")
 
     const dispatch = useDispatch()
+
+    const showScrollBar = () => {
+        const scrollbarRef = document.querySelector(".chat-list__scrollbar-thumb-vertical")
+
+        scrollbarRef.style.visibility = "visible"
+    }
+
+    const hideScrollBar = () => {
+        const scrollbarRef = document.querySelector(".chat-list__scrollbar-thumb-vertical")
+
+        scrollbarRef.style.visibility = "hidden"
+    }
 
     return (
         <div className='chat-list'>
@@ -34,14 +45,14 @@ export default function ChatList() {
 
 
             <div className='chat-list__container'
-                onMouseEnter={() => scrollbarRef.style.visibility = "visible"}  //show scrollbar when chat-list hovered
-                onMouseLeave={() => scrollbarRef.style.visibility = "hidden"}  //hide scrollbar when chat-list is not hovered
+                onMouseEnter={() => showScrollBar()}  //show scrollbar when chat-list hovered
+                onMouseLeave={() => hideScrollBar()}  //hide scrollbar when chat-list is not hovered
             >
 
                 <Scrollbars
                     renderTrackVertical={props => <div {...props} className="chat-list__scrollbar-track-vertical" />}
                     renderThumbVertical={props => <div {...props} className="chat-list__scrollbar-thumb-vertical" />}
-                    
+
                     renderView={props => <div {...props} className="chat-list__view" />}  //we need this to remove horizontal scrollbar
                 >
 
