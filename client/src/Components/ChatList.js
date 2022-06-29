@@ -2,9 +2,11 @@ import React from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { setSelectedFriendID } from '../Redux/conversationSlice'
 import { setSelectedGroupID } from '../Redux/groupSlice'
+import { Scrollbars } from 'react-custom-scrollbars-2';
 import home from "../Assets/Images/home.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import SearchBar from '../ComponentsShared/SearchBar'
+
 import "./ChatList.scss"
 
 export default function ChatList() {
@@ -12,6 +14,8 @@ export default function ChatList() {
     const { data } = useSelector(state => state.user)
     const { conversationList, selectedFriendID } = useSelector(state => state.conversation)
     const { groupList, selectedGroupID } = useSelector(state => state.group)
+
+    const scrollbarRef = document.querySelector(".chat-list__scrollbar-thumb-vertical")
 
     const dispatch = useDispatch()
 
@@ -29,102 +33,114 @@ export default function ChatList() {
             <SearchBar />
 
 
-            <p className='chat-list__text'> DIRECT MESSAGES </p>
+            <div className='chat-list__container'
+                onMouseEnter={() => scrollbarRef.style.visibility = "visible"}  //show scrollbar when chat-list hovered
+                onMouseLeave={() => scrollbarRef.style.visibility = "hidden"}  //hide scrollbar when chat-list is not hovered
+            >
 
-            {/*logic that handles the rendering of the friend list*/}
+                <Scrollbars
+                    renderTrackVertical={props => <div {...props} className="chat-list__scrollbar-track-vertical" />}
+                    renderThumbVertical={props => <div {...props} className="chat-list__scrollbar-thumb-vertical" />}
+                    
+                    renderView={props => <div {...props} className="chat-list__view" />}  //we need this to remove horizontal scrollbar
+                >
 
-            {data.friendList && data.friendList.map(friend => {
+                    <p className='chat-list__text'> DIRECT MESSAGES </p>
 
-                return (
-                    <div
-                        key={friend._id}
-                        id={friend._id}
-                        data-type = "friend"
-                        className='chat-list__container'
-                        aria-checked={selectedFriendID === friend._id}
-                        onClick={() => dispatch(setSelectedFriendID(friend._id))}
-                    >
+                    {/*logic that handles the rendering of the friend list*/}
 
-                        <div className='chat-list__propic-container'>
+                    {data.friendList && data.friendList.map(friend => {
 
-                            {friend.proPicBlob ?
+                        return (
+                            <div
+                                key={friend._id}
+                                id={friend._id}
+                                data-type="friend"
+                                className='chat-list__element-container'
+                                aria-checked={selectedFriendID === friend._id}
+                                onClick={() => dispatch(setSelectedFriendID(friend._id))}
+                            >
 
-                                <>
-                                    <img src={friend.proPicBlob} className='chat-list__propic' />
+                                <div className='chat-list__propic-container'>
 
-                                    {friend.socketID !== "OFFLINE" ?
+                                    {friend.proPicBlob ?
 
-                                        <div className='chat-list__user-status chat-list__user-status--online' />
+                                        <>
+                                            <img src={friend.proPicBlob} className='chat-list__propic' />
 
+                                            {friend.socketID !== "OFFLINE" ?
+
+                                                <div className='chat-list__user-status chat-list__user-status--online' />
+
+                                                :
+
+                                                <div className='chat-list__user-status chat-list__user-status--offline' />
+                                            }
+
+                                        </>
                                         :
-
-                                        <div className='chat-list__user-status chat-list__user-status--offline' />
+                                        <img src={defaultProPic} className='chat-list__default-propic' />
                                     }
 
-                                </>
-                                :
-                                <img src={defaultProPic} className='chat-list__default-propic' />
-                            }
+                                </div>
 
-                        </div>
+                                <p className='chat-list__name'>{friend.username}</p>
 
-                        <p className='chat-list__name'>{friend.username}</p>
+                                {
+                                    /*display last message */
+                                }
 
-                        {
-                            /*display last message */
-                        }
+                                {conversationList.map(conv => {
 
-                        {conversationList.map(conv => {
+                                    if (!conv.members.includes(friend._id)) return
+                                    if (!conv.messages.text) return
 
-                            if (!conv.members.includes(friend._id)) return
-                            if (!conv.messages.text) return
+                                    return (
+                                        <span className='chat-list__last-message' key={conv._id}>{conv.messages[conv.messages.length - 1].text}</span>
+                                    )
+                                })}
 
-                            return (
-                                <span className='chat-list__last-message' key={conv._id}>{conv.messages[conv.messages.length - 1].text}</span>
-                            )
-                        })}
+                            </div>
+                        )
+                    })}
 
-                    </div>
-                )
-            })}
-
-            <p className='chat-list__text'> GROUP MESSAGES </p>
+                    <p className='chat-list__text chat-list__text--group-messages'> GROUP MESSAGES </p>
 
 
-            {/*logic that handles the rendering of the group list*/}
+                    {/*logic that handles the rendering of the group list*/}
 
-            {groupList && groupList.map(group => {
+                    {groupList && groupList.map(group => {
 
-                if (!group) return
+                        if (!group) return
 
-                return (
-                    <div
-                        key={group._id}
-                        id={group._id}
-                        data-type = "group"
-                        aria-checked={selectedGroupID === group._id}
-                        className='chat-list__container'
-                        onClick={() => dispatch(setSelectedGroupID(group._id))}
+                        return (
+                            <div
+                                key={group._id}
+                                id={group._id}
+                                data-type="group"
+                                aria-checked={selectedGroupID === group._id}
+                                className='chat-list__element-container'
+                                onClick={() => dispatch(setSelectedGroupID(group._id))}
 
-                    >
+                            >
 
-                        <div className='chat-list__propic-container'>
+                                <div className='chat-list__propic-container'>
 
-                            {group.proPicBlob ?
+                                    {group.proPicBlob ?
 
-                                <img src={group.proPicBlob} className='chat-list__propic' />
-                                :
-                                <img src={defaultProPic} className='chat-list__default-propic' />
-                            }
+                                        <img src={group.proPicBlob} className='chat-list__propic' />
+                                        :
+                                        <img src={defaultProPic} className='chat-list__default-propic' />
+                                    }
 
-                        </div>
+                                </div>
 
-                        <p className='chat-list__name'>{group.groupName}</p>
-                    </div>
-                )
-            })}
-
-
+                                <p className='chat-list__name'>{group.groupName}</p>
+                            </div>
+                        )
+                    })}
+                </Scrollbars>
+            </div>
         </div>
     )
 }

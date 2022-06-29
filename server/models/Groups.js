@@ -6,6 +6,8 @@ const groupSchema = mongoose.Schema({
 
     groupPicId: String,
 
+    founder: String,
+    moderators: [String],
     members: [String],
 
     messages: [{

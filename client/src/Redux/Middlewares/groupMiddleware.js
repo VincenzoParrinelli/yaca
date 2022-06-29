@@ -1,6 +1,7 @@
 import { getGroup } from "../groupSlice"
+import { loadProPics } from "../helpers/firebase.helpers"
 
-const resetSelectedIDsMiddleware = store => next => action => {
+const groupMiddleware = store => next => action => {
 
     next(action)
 
@@ -22,10 +23,10 @@ const resetSelectedIDsMiddleware = store => next => action => {
 
         const groupExists = groupList.some(group => group.isFullyFetched)
 
-        if (!groupExists) store.dispatch(getGroup({selectedGroupID}))
+        if (!groupExists) store.dispatch(getGroup({ selectedGroupID }))
 
     }
 
 }
 
-export default resetSelectedIDsMiddleware
+export default groupMiddleware

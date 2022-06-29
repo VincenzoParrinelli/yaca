@@ -53,22 +53,29 @@ export const updateGroupPic = async action => {
 
 ///
 
-//loadProfilePictures
+//load ProfilePictures
 
 export const loadProPics = async list => {
 
-    if (!list.profilePicId) return list
-    if (list.groupName && !list.groupPicId) return list
+    //check if the user or the group has a profile pic then download it from firebase
+    if (list.profilePicId || list.groupPicId) {
 
-    const _id = list._id
-    const profilePicId = list.profilePicId ?? list.groupPicID
+        const _id = list._id
+        const profilePicId = list.profilePicId ?? list.groupPicId
 
-    const proPicRef = ref(storage, `${list.profilePicId ? "proPics" : "groupPics"}/${_id}/${profilePicId}`)
+        const proPicRef = ref(storage, `${list.profilePicId ? "proPics" : "groupPics"}/${_id}/${profilePicId}`)
 
-    return await getDownloadURL(proPicRef).then(proPicBlob => {
+        return await getDownloadURL(proPicRef).then(proPicBlob => {
+            
+            if (!list.groupPicId) return proPicBlob
+            
+            //make a new list since we cannot modify list object 
+            const updatedList = { ...list, proPicBlob }
 
-        return proPicBlob
-    })
+            return updatedList
 
+        })
+
+    } return list
 
 }

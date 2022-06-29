@@ -19,7 +19,7 @@ const userMiddleware = store => next => async action => {
         //load friends proPics
         const friendList = store.getState().user.data.friendList
 
-        const loadFriendsProPics = friendList.map(async (friend, i) => await loadProPics(friend, store, i))
+        const loadFriendsProPics = friendList.map(async friend => await loadProPics(friend))
 
         Promise.all(loadFriendsProPics).then(friendProPicBlob => {
 
@@ -58,19 +58,21 @@ const userMiddleware = store => next => async action => {
         })
 
 
-        //load groups proPics
+        //load groups data
         const groupList = action.payload.groupList
 
         groupList.forEach(group => {
             group.isFullyFetched = false
         })
 
-        const loadGroups = await loadProPics(groupList)
+        //load groups proPics
+     
+        const loadGroups = groupList.map(async group => await loadProPics(group))
 
         Promise.all(loadGroups).then(groups => {
 
             store.dispatch({
-                type: "group/loadGroups",
+                type: "group/loadGroupsProPics",
                 payload: groups
             })
         })

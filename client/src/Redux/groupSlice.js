@@ -7,8 +7,6 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 const initialState = {
     groupList: [],
 
-    membersMetadata: [],
-
     selectedGroupID: ""
 
 }
@@ -45,7 +43,7 @@ const groupSlice = createSlice({
 
     reducers: {
 
-        loadGroups: (state, action) => {
+        loadGroupsProPics: (state, action) => {
             state.groupList = action.payload
         },
 
@@ -66,25 +64,28 @@ const groupSlice = createSlice({
 
             updateGroupPic(action)
 
-            state.groupList.push(action.payload)
+            const newGroup = action.payload
+
+            newGroup.proPicBlob = action.meta.arg.proPicBlob
+           
+            state.groupList.push(newGroup)
         },
 
         [getGroup.fulfilled]: (state, action) => {
+
 
             state.groupList.map((group, i) => {
 
                 if (group._id !== action.payload.group._id) return
 
-                group.messages = action.payload.group.messages
-
-                group.members = action.payload.group.members
+                state.founder = action.payload.group.founder
+                state.moderators = action.payload.group.moderators
+                state.members = action.payload.group.members
 
                 group.isFullyFetched = true
 
-                state.groupList[i] = group
             })
 
-            state.membersMetadata = action.payload.members
 
         }
     }

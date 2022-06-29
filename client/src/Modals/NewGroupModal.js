@@ -13,7 +13,7 @@ export default function NewGroupModal() {
     const [groupPicUrl, setGroupPicUrl] = useState(null)
 
     const picRef = useRef(null)
-    
+
     const { data } = useSelector(state => state.user)
     const { newGroupModal } = useSelector(state => state.modal)
 
@@ -39,7 +39,7 @@ export default function NewGroupModal() {
 
 
     const handleNewGroupPic = e => {
-        
+
         setGroupPic(e.target.files[0])
         setGroupPicUrl(URL.createObjectURL(e.target.files[0]))
     }
@@ -48,17 +48,21 @@ export default function NewGroupModal() {
     const handleNewGroup = () => {
 
         const groupPicId = groupPicUrl?.split("/")[3]
+        const proPicBlob = URL.createObjectURL(groupPic)
 
         const payload = {
             data: {
                 userID: data._id,
                 groupName,
-                groupPicId
+                groupPicId,
             },
 
             file: {
                 groupPic
-            }
+            },
+
+            proPicBlob
+
         }
 
         dispatch(createGroup(payload))

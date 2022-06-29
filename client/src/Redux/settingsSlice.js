@@ -8,6 +8,8 @@ const initialState = {
     appSettings: false,
     friendSettings: false,
     groupSettings: false,
+
+    
 }
 
 

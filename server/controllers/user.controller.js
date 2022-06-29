@@ -81,7 +81,7 @@ module.exports = {
 
             const friendRequests = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicId": 1 })
 
-            const getGroups = await Group.find({ members: userData._id }, { messages: { $slice: - 1 } })
+            const getGroups = await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }, { messages: { $slice: - 1 } })
 
             const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } })
 
