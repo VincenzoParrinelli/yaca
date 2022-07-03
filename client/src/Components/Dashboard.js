@@ -11,7 +11,7 @@ import ChatList from './ChatList'
 import AddFriend from './AddFriendList';
 import Notifications from './Notifications';
 import Menus from "./Settings/ChatListContextMenus"
-import GroupSettings from './Settings/GroupSettings';
+import GroupSettings from './Settings/GroupSettingsContainer';
 import "./Dashboard.scss"
 
 export default function Dashboard() {
@@ -38,12 +38,12 @@ export default function Dashboard() {
 
     return (
         <>
-            {settings.groupSettings && <GroupSettings />}
+            {settings.isOpenFlag.groupSettings && <GroupSettings />}
 
-            {/* if no setting menu/modal is open render dashboard */}
+            {/* if no settings menu or modal is open, render dashboard */}
 
             {
-                Object.values(settings).every(state => !state) &&
+                Object.values(settings.groupSettings).every(state => !state) &&
 
                 <div className='dashboard'>
 

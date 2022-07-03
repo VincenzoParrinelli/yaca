@@ -5,6 +5,7 @@ import socketsReducer from "./socketSlice"
 import groupReducer from "./groupSlice"
 import modalReducer from "./modalsSlice"
 import settingsReducer from "./settingsSlice"
+import settingsOverviewReducer from "./settingsOverviewSlice" 
 import userMiddleware from "./Middlewares/userMiddleware"
 import conversationMiddleware from "./Middlewares/conversationMiddleware"
 import groupMiddleware from "./Middlewares/groupMiddleware"
@@ -18,7 +19,8 @@ const store = configureStore({
         group: groupReducer,
         sockets: socketsReducer,
         modal: modalReducer,
-        settings: settingsReducer
+        settings: settingsReducer,
+        settingsOverview: settingsOverviewReducer,
 
     },
 

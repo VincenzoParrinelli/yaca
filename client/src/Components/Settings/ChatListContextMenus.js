@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { handleGroupSettings } from '../../Redux/settingsSlice'
+import { handleOpenGroupSettings } from '../../Redux/settingsSlice'
 import "./ChatListContextMenus.scss"
 
 export default function ChatListMenus() {
@@ -66,7 +66,7 @@ export default function ChatListMenus() {
                     <nav className='chat-list-menus chat-list-menus--group-settings' style={{ position: "absolute", top: anchorPoint.y, left: anchorPoint.x }}>
                         <button
                             className='chat-list-menus--group-settings__group-settings-btn'
-                            onClick={() => dispatch(handleGroupSettings(selectedID))}
+                            onClick={() => dispatch(handleOpenGroupSettings(selectedID))}
                         > Group Settings
                         </button>
                     </nav>

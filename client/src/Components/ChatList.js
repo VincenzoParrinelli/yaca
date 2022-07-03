@@ -52,8 +52,9 @@ export default function ChatList() {
                 <Scrollbars
                     renderTrackVertical={props => <div {...props} className="chat-list__scrollbar-track-vertical" />}
                     renderThumbVertical={props => <div {...props} className="chat-list__scrollbar-thumb-vertical" />}
+                    renderTrackHorizontal={({ style, ...props }) => <div {...props} style={{ ...style, display: "none" }} />} //we need this to remove horizontal scrollbar
 
-                    renderView={props => <div {...props} className="chat-list__view" />}  //we need this to remove horizontal scrollbar
+                    renderView={props => <div {...props} className="chat-list__view" />}  //we need this to remove horizontal overflow
                 >
 
                     <p className='chat-list__text'> DIRECT MESSAGES </p>

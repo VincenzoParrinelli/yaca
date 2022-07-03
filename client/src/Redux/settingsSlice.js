@@ -5,11 +5,18 @@ const initialState = {
     selectedFriendID: "",
     selectedGroupID: "",
 
-    appSettings: false,
-    friendSettings: false,
-    groupSettings: false,
+    //defines if a settings container is open
+    isOpenFlag: {
+        appSettings: false,
+        friendSettings: false,
+        groupSettings: false,
+    },
 
-    
+    //defines wich settings content to render
+    groupSettings: {
+        overview: false,
+        roles: false
+    }
 }
 
 
@@ -21,9 +28,10 @@ export const settingsSlice = createSlice({
 
     reducers: {
 
-        handleGroupSettings: (state, action) => {
+        handleOpenGroupSettings: (state, action) => {
             state.selectedGroupID = action.payload
-            state.groupSettings = !state.groupSettings
+            state.groupSettings.overview = !state.groupSettings.overview
+            state.isOpenFlag.groupSettings = !state.isOpenFlag.groupSettings
         },
     }
 
@@ -31,7 +39,7 @@ export const settingsSlice = createSlice({
 
 
 export const {
-    handleGroupSettings,
+    handleOpenGroupSettings
 } = settingsSlice.actions
 
 
