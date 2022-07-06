@@ -16,7 +16,9 @@ const initialState = {
     groupSettings: {
         overview: false,
         roles: false
-    }
+    },
+
+    unsavedChangesAlert: false,
 }
 
 
@@ -33,13 +35,21 @@ export const settingsSlice = createSlice({
             state.groupSettings.overview = !state.groupSettings.overview
             state.isOpenFlag.groupSettings = !state.isOpenFlag.groupSettings
         },
+
+        openUnsavedChangesAlert: state => {
+            state.unsavedChangesAlert = true
+        },
+
+        closeUnsavedChangesAlert: state => {
+            state.unsavedChangesAlert = false
+        },
     }
 
 })
 
 
 export const {
-    handleOpenGroupSettings
+    handleOpenGroupSettings,
 } = settingsSlice.actions
 
 

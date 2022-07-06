@@ -9,11 +9,13 @@ const initialState = {
 
 export const settingsOverviewSlice = createSlice({
 
-    name: "settingsOverview",
+    name: "resetOverviewSettings",
 
     initialState,
 
     reducers: {
+
+        reset: () =>  initialState,
 
         setNewPicBlob: (state, action) => {
             state.newPicBlob = action.payload
@@ -25,14 +27,13 @@ export const settingsOverviewSlice = createSlice({
 
         setNewGroupName: (state, action) => {
             state.newGroupName = action.payload
-        },
-
-        
+        },  
     }
 })
 
 
 export const {
+    reset,
     setNewPicBlob,
     resetNewPicBlob,
     setNewGroupName,

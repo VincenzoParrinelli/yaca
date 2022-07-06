@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { setNewPicBlob, resetNewPicBlob, setNewGroupName } from '../../Redux/settingsOverviewSlice'
+import { reset, setNewPicBlob, resetNewPicBlob, setNewGroupName } from '../../Redux/settingsOverviewSlice'
 import "./GroupSettingsOverview.scss"
 
 export default function GroupSettingsOverview() {
@@ -13,6 +13,10 @@ export default function GroupSettingsOverview() {
     const { newPicBlob, newGroupName } = useSelector(state => state.settingsOverview)
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(reset())
+    }, [])
 
     const handleNewPic = e => {
 

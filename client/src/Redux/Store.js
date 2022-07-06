@@ -11,6 +11,7 @@ import conversationMiddleware from "./Middlewares/conversationMiddleware"
 import groupMiddleware from "./Middlewares/groupMiddleware"
 import socketMiddleware from "./Middlewares/socketMiddleware"
 import modalMiddleware from "./Middlewares/modalMiddleware"
+import unsavedChangesMiddleware from "./Middlewares/unsavedChangesMiddleware"
 
 const store = configureStore({
     reducer: {
@@ -29,7 +30,8 @@ const store = configureStore({
         conversationMiddleware,
         groupMiddleware,
         socketMiddleware,
-        modalMiddleware
+        modalMiddleware,
+        unsavedChangesMiddleware
     )
 
 })

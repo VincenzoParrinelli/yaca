@@ -2,13 +2,13 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { handleOpenGroupSettings } from '../../Redux/settingsSlice'
 import GroupSettingsOverview from './GroupSettingsOverview'
+import UnsavedChangesAlert from './UnsavedChangesAlert'
 import "./GroupSettingsContainer.scss"
 
 export default function GroupSettingsContainer() {
 
-    const { selectedGroupID } = useSelector(state => state.settings)
+    const { selectedGroupID, groupSettings, unsavedChangesAlert } = useSelector(state => state.settings)
     const { groupList } = useSelector(state => state.group)
-    const { groupSettings } = useSelector(state => state.settings)
 
     const dispatch = useDispatch()
 
@@ -51,6 +51,7 @@ export default function GroupSettingsContainer() {
                     {groupSettings.overview && <GroupSettingsOverview />}
                 </div>
 
+                {unsavedChangesAlert && <UnsavedChangesAlert />}
             </div>
         )
     }
