@@ -47,7 +47,7 @@
         }
 
         &:active,
-        &[aria-selected] {
+        &[aria-selected=true] {
             background-color: #42464d;
             opacity: 1;
         }

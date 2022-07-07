@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { reset, setNewPicBlob, resetNewPicBlob, setNewGroupName } from '../../Redux/settingsOverviewSlice'
+import { resetOverviewState, setNewPicBlob, resetNewPicBlob, setNewGroupName } from '../../Redux/settingsOverviewSlice'
 import "./GroupSettingsOverview.scss"
 
 export default function GroupSettingsOverview() {
@@ -15,7 +15,7 @@ export default function GroupSettingsOverview() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(reset())
+       return () => dispatch(resetOverviewState())
     }, [])
 
     const handleNewPic = e => {
@@ -66,7 +66,7 @@ export default function GroupSettingsOverview() {
 
                     </label>
 
-                    {newPicFile &&
+                    {newPicBlob &&
 
                         <button
                             className='group-settings-overview__remove-btn'

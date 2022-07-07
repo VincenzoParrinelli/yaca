@@ -13,8 +13,8 @@ const initialState = {
     },
 
     //defines wich settings content to render
-    groupSettings: {
-        overview: false,
+    groupSettingsContent: {
+        overview: true,
         roles: false
     },
 
@@ -32,7 +32,6 @@ export const settingsSlice = createSlice({
 
         handleOpenGroupSettings: (state, action) => {
             state.selectedGroupID = action.payload
-            state.groupSettings.overview = !state.groupSettings.overview
             state.isOpenFlag.groupSettings = !state.isOpenFlag.groupSettings
         },
 
@@ -50,6 +49,7 @@ export const settingsSlice = createSlice({
 
 export const {
     handleOpenGroupSettings,
+    closeUnsavedChangesAlert
 } = settingsSlice.actions
 
 

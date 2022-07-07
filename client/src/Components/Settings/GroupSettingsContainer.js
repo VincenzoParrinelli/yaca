@@ -7,18 +7,11 @@ import "./GroupSettingsContainer.scss"
 
 export default function GroupSettingsContainer() {
 
-    const { selectedGroupID, groupSettings, unsavedChangesAlert } = useSelector(state => state.settings)
+    const { selectedGroupID, groupSettingsContent } = useSelector(state => state.settings)
+    
     const { groupList } = useSelector(state => state.group)
 
     const dispatch = useDispatch()
-
-    //close settings when user presses Escape key
-    const closeGroupSettings = e => {
-
-        if (e.key !== "Escape") return
-
-        dispatch(handleOpenGroupSettings())
-    }
 
     useEffect(() => {
         window.addEventListener("keydown", closeGroupSettings)
@@ -28,7 +21,17 @@ export default function GroupSettingsContainer() {
         }
     }, [])
 
-    const groupSettingsController = () => {
+    //close settings when user presses Escape key
+    const closeGroupSettings = e => {
+
+        if (e.key !== "Escape") return
+
+        dispatch(handleOpenGroupSettings())
+    }
+
+
+
+    const renderGroupSettings = () => {
 
         const selectedGroup = groupList.find(group => group._id === selectedGroupID)
 
@@ -39,22 +42,22 @@ export default function GroupSettingsContainer() {
 
                     <span className='group-settings-container__server-name'> {selectedGroup.groupName.toUpperCase()} </span>
 
-                    <button className='group-settings-container__settings-btns' aria-selected={groupSettings.overview}>Overview</button>
+                    <button className='group-settings-container__settings-btns' aria-selected={groupSettingsContent.overview}>Overview</button>
 
-                    <button className='group-settings-container__settings-btns'>Roles</button>
+                    <button className='group-settings-container__settings-btns' aria-selected={groupSettingsContent.roles}>Roles</button>
 
                     <button className='group-settings-container__settings-btns'>Delete Server</button>
 
                 </nav>
 
                 <div className='group-settings-container__element'>
-                    {groupSettings.overview && <GroupSettingsOverview />}
+                    {groupSettingsContent.overview && <GroupSettingsOverview />}
                 </div>
 
-                {unsavedChangesAlert && <UnsavedChangesAlert />}
+                <UnsavedChangesAlert />
             </div>
         )
     }
 
-    return groupSettingsController()
+    return renderGroupSettings()
 }

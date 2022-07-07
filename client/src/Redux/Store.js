@@ -31,7 +31,7 @@ const store = configureStore({
         groupMiddleware,
         socketMiddleware,
         modalMiddleware,
-        unsavedChangesMiddleware
+        unsavedChangesMiddleware,
     )
 
 })
