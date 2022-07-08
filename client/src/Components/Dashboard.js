@@ -10,7 +10,7 @@ import ChatOpen from "./ChatOpen"
 import ChatList from './ChatList'
 import AddFriend from './AddFriendList';
 import Notifications from './Notifications';
-import Menus from "./Settings/ChatListContextMenus"
+import ChatListContextMenus from "./Settings/ChatListContextMenus"
 import GroupSettingsContainer from './Settings/GroupSettingsContainer';
 import "./Dashboard.scss"
 
@@ -68,7 +68,7 @@ export default function Dashboard() {
 
                     {selectedUserIndex !== null && <ChatOpen />}
 
-                    <Menus />
+                    <ChatListContextMenus />
 
                 </div>
             }

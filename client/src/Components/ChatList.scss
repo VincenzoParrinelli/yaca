@@ -147,6 +147,7 @@
         left: 26px;
         bottom: 15px;
         font: bold 12px sans-serif;
+        pointer-events: none;
     }
 
     &__last-message {

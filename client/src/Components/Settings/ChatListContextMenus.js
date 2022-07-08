@@ -19,6 +19,8 @@ export default function ChatListMenus() {
 
         e.preventDefault()
 
+        if (menuRef.current && menuRef.current.contains(e.target)) return
+        
         setAnchorPoint({ x: e.pageX, y: e.pageY })
         setSelectedID(e.target.id)
         setSelectedType(e.target.dataset.type)
@@ -55,7 +57,7 @@ export default function ChatListMenus() {
 
             case selectedType === "friend":
                 return (
-                    <nav className='chat-list-menus chat-list-menus--friend-settings' style={{ position: "absolute", top: anchorPoint.y, left: anchorPoint.x }}>
+                    <nav className='chat-list-menus chat-list-menus--friend-settings' ref={menuRef} style={{ position: "absolute", top: anchorPoint.y, left: anchorPoint.x }}>
                         <button className='chat-list-menus--friend-settings__delete-friend-btn'> Delete Friend </button>
                     </nav>
                 )
@@ -63,7 +65,7 @@ export default function ChatListMenus() {
             case selectedType === "group":
 
                 return (
-                    <nav className='chat-list-menus chat-list-menus--group-settings' style={{ position: "absolute", top: anchorPoint.y, left: anchorPoint.x }}>
+                    <nav className='chat-list-menus chat-list-menus--group-settings' ref={menuRef} style={{ position: "absolute", top: anchorPoint.y, left: anchorPoint.x }}>
                         <button
                             className='chat-list-menus--group-settings__group-settings-btn'
                             onClick={() => dispatch(handleOpenGroupSettings(selectedID))}
@@ -76,8 +78,7 @@ export default function ChatListMenus() {
         }
     }
 
-    return (
-        //check to avoid displaying menu on first render
-        isOpen && listController()
-    )
+    //check to avoid displaying menu on first
+    return isOpen && listController()
+
 }
