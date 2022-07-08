@@ -36,17 +36,23 @@ export default function ChatListMenus() {
         }
     }, [])
 
-    //close menu when clicking outside
+    //close menu when clicking outside or pressing escape key
     const closeMenu = e => {
         if (menuRef.current && !menuRef.current.contains(e.target)) setIsOpen(false)
+    }
+
+    const closeMenuOnEsc = e => {
+        if (e.key === "Escape") setIsOpen(false)
     }
 
     useEffect(() => {
 
         document.addEventListener("mousedown", closeMenu)
+        document.addEventListener("keydown", closeMenuOnEsc)
 
         return () => {
             document.removeEventListener("mousedown", closeMenu)
+            document.removeEventListener("keydown", closeMenuOnEsc)
         }
     }, [menuRef])
 
