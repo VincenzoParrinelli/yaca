@@ -79,10 +79,10 @@ const socketMiddleware = store => next => action => {
                     type: "user/getFriendRequests",
                     payload: user
                 })
-             
+
             })
 
-       
+
         })
 
         socket.on("receive-pending-friend-request", user => {
@@ -137,23 +137,19 @@ const socketMiddleware = store => next => action => {
 
     //friend requests socket handlers
 
-    if (action.type === "socket/sendFriendRequest") {
-        socket.emit("send-friend-request", action.payload)
-    }
+    if (action.type === "socket/sendFriendRequest") socket.emit("send-friend-request", action.payload)
 
-    if (action.type === "socket/acceptFriendRequest") {
-        socket.emit("accept-friend-request", action.payload)
-    }
+    if (action.type === "socket/acceptFriendRequest") socket.emit("accept-friend-request", action.payload)
 
-    if (action.type === "socket/refuseFriendRequest") {
-        socket.emit("refuse-friend-request", action.payload)
-    }
+    if (action.type === "socket/refuseFriendRequest") socket.emit("refuse-friend-request", action.payload)
 
     //
 
-    if (action.type === "group/sendGroupInvite") {
-        socket.emit("send-group-invite", action.payload)
-    }
+    //group socket handlers
+
+    if (action.type === "group/sendGroupInvite") socket.emit("send-group-invite", action.payload)
+
+    ///
 
     if (action.type === "socket/sendMessage") {
         const conversationID = store.getState().conversation.selectedConversationID
@@ -171,6 +167,25 @@ const socketMiddleware = store => next => action => {
         }
 
         socket.emit("send-message", payload)
+    }
+
+    if (action.type === "group/updateGroupSettings") {
+
+        const userID = store.getState().user.data._id
+        const { selectedGroupID, groupSettingsContent } = store.getState().settings
+
+        const openContentKey = Object.keys(groupSettingsContent).find(content => groupSettingsContent[content])
+
+
+        if (openContentKey === "overview") {
+            const settingsOverview = store.getState().settingsOverview
+
+            //filter settingsOverview by removing null values
+            const newSettings = Object.fromEntries(Object.entries(settingsOverview).filter(([_, value]) => value !== null))
+
+            socket.emit("update-group-settings", { userID, selectedGroupID, newSettings })
+
+        }
     }
 
     next(action)

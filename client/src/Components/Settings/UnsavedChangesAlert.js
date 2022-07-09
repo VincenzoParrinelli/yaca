@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { resetOverviewState } from '../../Redux/settingsOverviewSlice'
+import { updateGroupSettings } from "../../Redux/groupSlice"
 import "./UnsavedChangesAlert.scss"
 
 export default function UnsavedChangesAlert() {
@@ -28,7 +29,7 @@ export default function UnsavedChangesAlert() {
         //get key of open content and reset his state
         const openContentKey = Object.keys(groupSettingsContent).find(content => groupSettingsContent[content])
 
-        openContentKey === "overview" && dispatch(resetOverviewState())
+        if (openContentKey === "overview") dispatch(resetOverviewState())
 
     }
 
@@ -47,6 +48,7 @@ export default function UnsavedChangesAlert() {
 
                 <button
                     className='unsaved-changes-alert__save-changes-btn'
+                    onClick={() => dispatch(updateGroupSettings())}
                 >
                     Save Changes
                 </button>

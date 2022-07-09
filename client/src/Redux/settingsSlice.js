@@ -8,11 +8,11 @@ const initialState = {
     //defines if a settings container is open
     isOpenFlag: {
         appSettings: false,
-        friendSettings: false,
+        userSettings: false,
         groupSettings: false,
     },
 
-    //defines wich settings content to render
+    //defines wich group settings content to render
     groupSettingsContent: {
         overview: true,
         roles: false

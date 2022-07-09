@@ -29,6 +29,7 @@ const unsavedChangesMiddleware = store => next => action => {
         if (removeNullValues.every(value => Object.values(selectedGroup).includes(value))) store.dispatch({ type: "settings/closeUnsavedChangesAlert" })
 
     }
+
 }
 
 export default unsavedChangesMiddleware

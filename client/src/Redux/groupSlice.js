@@ -55,7 +55,9 @@ const groupSlice = createSlice({
             state.selectedGroupID = action.payload
         },
 
-        sendGroupInvite: () => { }
+        sendGroupInvite: () => { },
+
+        updateGroupSettings: () => { },
     },
 
     extraReducers: {
@@ -67,7 +69,7 @@ const groupSlice = createSlice({
             const newGroup = action.payload
 
             newGroup.proPicBlob = action.meta.arg.proPicBlob
-           
+
             state.groupList.push(newGroup)
         },
 
@@ -94,7 +96,8 @@ const groupSlice = createSlice({
 
 export const {
     setSelectedGroupID,
-    sendGroupInvite
+    sendGroupInvite,
+    updateGroupSettings,
 
 } = groupSlice.actions
 

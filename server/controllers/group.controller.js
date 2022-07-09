@@ -4,9 +4,9 @@ const User = require("../models/User.js")
 module.exports = {
     createGroup: async (req, res) => {
 
-        const { groupName, groupPicId, userID } = req.body
+        const { groupName, groupPicID, userID } = req.body
 
-        await Group.create({ groupName, groupPicId, founder: userID }).then(group => {
+        await Group.create({ groupName, groupPicID, founder: userID }).then(group => {
 
             res.json(group)
 
@@ -30,7 +30,7 @@ module.exports = {
 
             //find founder metadata and store it in payload, afterwards if members exist get their metadata,
             //do the same thing for moderators, finally send payload
-            await User.find({ _id: group.founder }).select({ "username": 1, "email": 1, "profilePicId": 1, "socketID": 1 })
+            await User.find({ _id: group.founder }).select({ "username": 1, "email": 1, "profilePicID": 1, "socketID": 1 })
                 .then(founder => {
 
                     payload.founder = founder[0] //specify 0 as index in order to get only the object
@@ -38,7 +38,7 @@ module.exports = {
 
             if (group.members) {
 
-                await User.find({ _id: group.members }).select({ "username": 1, "email": 1, "profilePicId": 1, "socketID": 1 })
+                await User.find({ _id: group.members }).select({ "username": 1, "email": 1, "profilePicID": 1, "socketID": 1 })
                     .then(members => {
 
                         payload.members.push(members)
@@ -47,7 +47,7 @@ module.exports = {
 
             if (group.moderators) {
 
-                await User.find({ _id: group.moderators }).select({ "username": 1, "email": 1, "profilePicId": 1, "socketID": 1 })
+                await User.find({ _id: group.moderators }).select({ "username": 1, "email": 1, "profilePicID": 1, "socketID": 1 })
                     .then(moderators => {
 
                         payload.moderators.push(moderators)

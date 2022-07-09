@@ -47,14 +47,14 @@ export default function NewGroupModal() {
 
     const handleNewGroup = () => {
 
-        const groupPicId = groupPicUrl?.split("/")[3]
+        const groupPicID = groupPicUrl?.split("/")[3]
         const proPicBlob = URL.createObjectURL(groupPic)
 
         const payload = {
             data: {
                 userID: data._id,
                 groupName,
-                groupPicId,
+                groupPicID,
             },
 
             file: {

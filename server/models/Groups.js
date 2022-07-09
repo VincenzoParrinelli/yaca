@@ -4,7 +4,7 @@ const groupSchema = mongoose.Schema({
 
     groupName: String,
 
-    groupPicId: String,
+    groupPicID: String,
 
     founder: String,
     moderators: [String],

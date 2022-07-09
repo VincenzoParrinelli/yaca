@@ -59,8 +59,8 @@ export const {
     sendFriendRequest,
     acceptFriendRequest,
     refuseFriendRequest,
-    sendMessage
-    
+    sendMessage,
+
 } = socketsSlice.actions
 
 export default socketsSlice.reducer

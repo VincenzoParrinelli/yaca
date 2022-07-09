@@ -3,13 +3,14 @@ import { createSlice } from "@reduxjs/toolkit"
 const initialState = {
 
     newPicBlob: null,
+    newGroupPicID: null,
     newGroupName: null,
 
 }
 
 export const settingsOverviewSlice = createSlice({
 
-    name: "settingsOverviewSettings",
+    name: "settingsOverview",
 
     initialState,
 
@@ -17,12 +18,14 @@ export const settingsOverviewSlice = createSlice({
 
         resetOverviewState: () => initialState,
 
-        setNewPicBlob: (state, action) => {
+        setNewPic: (state, action) => {
             state.newPicBlob = action.payload
+            state.newGroupPicID = action.payload.split("/")[3]
         },
-
-        resetNewPicBlob: state => {
+   
+        resetNewPic: state => {
             state.newPicBlob = initialState.newPicBlob
+            state.newGroupPicID = initialState.newGroupPicID
         },
 
         setNewGroupName: (state, action) => {
@@ -34,8 +37,8 @@ export const settingsOverviewSlice = createSlice({
 
 export const {
     resetOverviewState,
-    setNewPicBlob,
-    resetNewPicBlob,
+    setNewPic,
+    resetNewPic,
     setNewGroupName,
 } = settingsOverviewSlice.actions
 

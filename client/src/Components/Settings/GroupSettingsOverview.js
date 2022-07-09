@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { resetOverviewState, setNewPicBlob, resetNewPicBlob, setNewGroupName } from '../../Redux/settingsOverviewSlice'
+import { resetOverviewState, setNewPic, resetNewPic, setNewGroupName } from '../../Redux/settingsOverviewSlice'
 import "./GroupSettingsOverview.scss"
 
 export default function GroupSettingsOverview() {
 
     const [showChangePicText, setShowChangePicText] = useState(false)
-    const [newPicFile, setNewPicFile] = useState(null)
 
     const { selectedGroupID } = useSelector(state => state.settings)
     const { groupList } = useSelector(state => state.group)
@@ -15,22 +14,18 @@ export default function GroupSettingsOverview() {
     const dispatch = useDispatch()
 
     useEffect(() => {
-       return () => dispatch(resetOverviewState())
+        return () => dispatch(resetOverviewState())
     }, [])
 
     const handleNewPic = e => {
 
-        setNewPicFile(e.target.files[0])
-
-        dispatch(setNewPicBlob(URL.createObjectURL(e.target.files[0])))
+        dispatch(setNewPic(URL.createObjectURL(e.target.files[0])))
 
     }
 
     const clearPreviousPic = () => {
 
-        setNewPicFile(null)
-
-        dispatch(resetNewPicBlob(null))
+        dispatch(resetNewPic())
 
     }
 
