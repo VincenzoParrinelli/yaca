@@ -1,7 +1,7 @@
 const User = require("../../models/User.js")
 const Group = require("../../models/Groups.js")
 
-module.exports = group => {
+module.exports = (group, io) => {
 
     group.on("send-group-invite", async payload => {
 
@@ -14,20 +14,32 @@ module.exports = group => {
 
         const { userID, selectedGroupID, newSettings } = payload
 
-        //modify key names to resemble db group model keys
-        const groupModelkeyNames = Object.keys(newSettings).map(setting => {
+        //modify key names to resemble db group model key names
+        Object.keys(newSettings).forEach(setting => {
 
-            const keyWithoutNew = setting.split("new")[1]
+            const keyWithoutNewText = setting.split("new")[1]
 
-            return keyWithoutNew.charAt(0).toLowerCase() + keyWithoutNew.slice(1)
+            const newKeyName = keyWithoutNewText.charAt(0).toLowerCase() + keyWithoutNewText.slice(1)
+
+            delete Object.assign(newSettings, { [newKeyName]: newSettings[setting] })[setting]
 
         })
 
-        await Group.findById(selectedGroupID).then(data => {
+        await Group.findById(selectedGroupID).then(async data => {
+            const { founder } = data
 
-            if (userID !== data.founder) return
+            if (userID !== founder) return
 
+            //overwrite modified data
+            Object.assign(data, newSettings)
 
+            await data.save().then(updatedGroupData => {
+
+                const idToJSON = updatedGroupData._id.toJSON()
+
+                io.in(idToJSON).emit("send-updated-group-settings", updatedGroupData)
+
+            }).catch(err => new Error(err.message))
 
         }).catch(err => new Error(err.message))
 

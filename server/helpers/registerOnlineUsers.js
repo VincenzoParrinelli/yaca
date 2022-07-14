@@ -2,12 +2,13 @@ const User = require("../models/User.js")
 
 const registerOnlineUsers = async (socket, next) => {
 
-    var currentUserID = socket.handshake.auth.currentUserID
+    const currentUserID = socket.handshake.auth.currentUserID
 
     if (!currentUserID) next(new Error("401"))
 
     await User.findByIdAndUpdate(currentUserID, { socketID: socket.id }, { new: true }).then(async userData => {
 
+        //***************MAY NOT WORK IF USER HAS MULTIPLE FRIENDS*/
         await User.find({ _id: userData.friendList }).then(friendsData => {
 
             friendsData.forEach(friend => {

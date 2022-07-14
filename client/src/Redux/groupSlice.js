@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit"
 import { updateGroupPic } from "./helpers/firebase.helpers"
 import axios from "axios"
 
@@ -58,6 +58,16 @@ const groupSlice = createSlice({
         sendGroupInvite: () => { },
 
         updateGroupSettings: () => { },
+
+        getUpdatedGroupSettings: (state, action) => {
+
+            state.groupList = state.groupList.map(group => {
+
+                if (group._id !== action.payload._id) return group
+
+                return Object.assign(group, action.payload)
+            })
+        }
     },
 
     extraReducers: {
@@ -80,9 +90,9 @@ const groupSlice = createSlice({
 
                 if (group._id !== action.payload.group._id) return
 
-                state.founder = action.payload.group.founder
-                state.moderators = action.payload.group.moderators
-                state.members = action.payload.group.members
+                // state.founder = action.payload.group.founder
+                // state.moderators = action.payload.group.moderators
+                // state.members = action.payload.group.members
 
                 group.isFullyFetched = true
 

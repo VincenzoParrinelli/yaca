@@ -15,7 +15,6 @@ export default function ChatList() {
     const { conversationList, selectedFriendID } = useSelector(state => state.conversation)
     const { groupList, selectedGroupID } = useSelector(state => state.group)
 
-
     const dispatch = useDispatch()
 
     const showScrollBar = () => {

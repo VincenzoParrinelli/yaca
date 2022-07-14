@@ -1,6 +1,7 @@
 const User = require("../models/User.js")
 const { validateSocketToken } = require("../validators/tokenSocketValidators.js")
 const { registerOnlineUsers } = require("../helpers/registerOnlineUsers.js")
+const { subscribeToGroups } = require("../helpers/subscribeToGroups.js")
 
 module.exports = io => {
 
@@ -9,9 +10,14 @@ module.exports = io => {
         validateSocketToken(socket, next)
     })
 
-    //when a user connects to our app we store their socket id into the database
+    //when a user connects to our app, store his socket id into the database
     io.use((socket, next) => {
         registerOnlineUsers(socket, next)
+    })
+
+    //when a user connects to our app, subscribe to all his groups
+    io.use((socket, next) => {
+        subscribeToGroups(socket, next)
     })
 
 

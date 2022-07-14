@@ -121,6 +121,16 @@ const socketMiddleware = store => next => action => {
                 payload: conversation
             })
         })
+
+        //group listeners
+
+        socket.on("send-updated-group-settings", updatedGroupData => {
+
+            store.dispatch({
+                type: "group/getUpdatedGroupSettings",
+                payload: updatedGroupData
+            })
+        })
     }
 
     if (action.type === "socket/searchUsers") {
