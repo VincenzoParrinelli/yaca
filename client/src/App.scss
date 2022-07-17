@@ -1,14 +1,17 @@
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    width: 100vw;
+    height: 100vh;
 }
 
-html {
-    
-    body {
-        width: 100vw;
-        height: 100vh;
-    }
+body {
+    background: linear-gradient(#1B2121, #17181C, #17181C)
 }
 
+@font-face {
+    font-family: "aeroportLight";
+    src: url(./Assets/Fonts/AeroportLight.otf);
+}
