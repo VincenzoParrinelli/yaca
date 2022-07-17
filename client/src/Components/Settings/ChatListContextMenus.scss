@@ -14,7 +14,7 @@
         margin: 0 5px;
 
         &:nth-child(1) {
-            margin-top: 10px;
+            margin-top: 6px;
         }
 
         &:hover {
@@ -24,15 +24,14 @@
     }
 }
 
-
 .chat-list-menus {
     display: flex;
     flex-direction: column;
     padding: 2px;
     width: 14vw;
     height: 30vh;
-    background-color: #18191c;
-    border-radius: 8px;
+    background-color: #1f1f25;
+    border-radius: 5px;
 
     &--friend-settings {
         @include menusButtonsBoilerplate;
