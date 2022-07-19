@@ -36,11 +36,11 @@ export default function GroupSettingsOverview() {
         return (
             <div className='group-settings-overview'>
 
-                <span className='group-settings-overview__section-1-title'>
-                    Server's overview
-                </span>
-
                 <section className='group-settings-overview__section-1'>
+
+                    <span className='group-settings-overview__section-1-title'>
+                        Server's overview
+                    </span>
 
                     <label className='group-settings-overview__propic-container'
                         onMouseEnter={() => setShowChangePicText(true)}
@@ -71,7 +71,7 @@ export default function GroupSettingsOverview() {
                         </button>
                     }
 
-                    <div className='group-settings-overview__server-name-changer'>
+                    <div className='group-settings-overview__server-name-changer-container'>
 
                         <span className='group-settings-overview__server-name-text'>SERVER'S NAME</span>
 
@@ -84,9 +84,11 @@ export default function GroupSettingsOverview() {
 
                     </div>
 
+                    
                 </section>
 
                 <div className='group-settings-overview__divider' />
+
             </div>
         )
     }

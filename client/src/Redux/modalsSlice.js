@@ -6,6 +6,7 @@ const initialState = {
     addFriend: false,
     newGroupModal: false,
     addGroupMembers: false,
+    deleteGroupModal: false,
     notifications: false,
 }
 
@@ -65,6 +66,10 @@ export const modalsSlice = createSlice({
             state.addGroupMembers = false
         },
 
+        handleDeleteGroupModal : state => {
+            state.deleteGroupModal = !state.deleteGroupModal
+        },
+
         handleAddFriend: state => {
             state.addFriend = true
         },
@@ -80,6 +85,7 @@ export const {
     closeNewGroupModal,
     openAddGroupMembers,
     closeAddGroupMembers,
+    handleDeleteGroupModal,
     handleAddFriend,
 } = modalsSlice.actions
 

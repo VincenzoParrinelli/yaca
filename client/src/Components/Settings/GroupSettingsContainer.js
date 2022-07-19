@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { handleOpenGroupSettings } from '../../Redux/settingsSlice'
+import { handleDeleteGroupModal } from '../../Redux/modalsSlice'
+import DeleteGroupModal from '../../Modals/DeleteGroupModal';
 import GroupSettingsOverview from './GroupSettingsOverview'
 import UnsavedChangesAlert from './UnsavedChangesAlert'
 import "./GroupSettingsContainer.scss"
@@ -8,7 +10,7 @@ import "./GroupSettingsContainer.scss"
 export default function GroupSettingsContainer() {
 
     const { selectedGroupID, groupSettingsContent } = useSelector(state => state.settings)
-    
+
     const { groupList } = useSelector(state => state.group)
 
     const dispatch = useDispatch()
@@ -46,13 +48,20 @@ export default function GroupSettingsContainer() {
 
                     <button className='group-settings-container__settings-btns' aria-selected={groupSettingsContent.roles}>Roles</button>
 
-                    <button className='group-settings-container__settings-btns'>Delete Server</button>
+                    <button
+                        className='group-settings-container__settings-btns'
+                        onClick={() => dispatch(handleDeleteGroupModal())}
+                    >
+                        Delete Server
+                    </button>
 
                 </nav>
 
                 <div className='group-settings-container__element'>
                     {groupSettingsContent.overview && <GroupSettingsOverview />}
                 </div>
+
+                <DeleteGroupModal />
 
                 <UnsavedChangesAlert />
             </div>

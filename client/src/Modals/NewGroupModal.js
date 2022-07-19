@@ -74,8 +74,8 @@ export default function NewGroupModal() {
         <Modal
             className="new-group-modal"
             overlayClassName="new-group-modal__overlay"
-
             appElement={document.getElementById('root') || undefined}
+            
             isOpen={newGroupModal}
             onRequestClose={() => dispatch(closeNewGroupModal())}
         >

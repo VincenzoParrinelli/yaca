@@ -10,7 +10,7 @@ const socketMiddleware = store => next => action => {
 
     if (action.type === "socket/connection") {
 
-        var options = {
+        const options = {
             withCredentials: true,
             auth: {
                 currentUserID: action.payload

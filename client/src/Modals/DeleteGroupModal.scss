@@ -1,0 +1,38 @@
+.delete-group-modal {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    width: 28vw;
+    height: 40vh;
+    border-radius: 5px;
+    background-color: #36393f;
+
+    &__overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1;
+        transition: all .5 ease-out;
+    }
+
+
+    &__container {
+        display: flex;
+        position: relative;
+        width: 92%;
+        height: 30%;
+        background-color: red;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 20%;
+    }
+
+    &__text {
+        color: white;
+        margin: 0;
+    }
+}
