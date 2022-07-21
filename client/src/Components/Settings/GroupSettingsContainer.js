@@ -11,7 +11,6 @@ import "./GroupSettingsContainer.scss"
 export default function GroupSettingsContainer() {
 
     const { selectedGroupID, groupSettingsContent } = useSelector(state => state.settings)
-    const { deleteGroupModal } = useSelector(state => state.modal)
 
     const selectedGroupData = useSelectedGroup(selectedGroupID)
 
