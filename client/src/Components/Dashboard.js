@@ -19,7 +19,7 @@ export default function Dashboard() {
     const { data, isLogged } = useSelector(state => state.user)
     const { selectedUserIndex } = useSelector(state => state.conversation)
     const { addFriend, notifications } = useSelector(state => state.modal)
-    const { settings } = useSelector(state => state)
+    const { isOpenFlag } = useSelector(state => state.settings)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -38,12 +38,12 @@ export default function Dashboard() {
 
     return (
         <>
-            {settings.isOpenFlag.groupSettings && <GroupSettingsContainer />}
+            {isOpenFlag.groupSettings && <GroupSettingsContainer />}
 
             {/* if no settings menu or modal is open, render dashboard */}
 
             {
-                Object.values(settings.isOpenFlag).every(state => !state) &&
+                Object.values(isOpenFlag).every(state => !state) &&
 
                 <div className='dashboard'>
 

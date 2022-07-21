@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { handleOpenGroupSettings } from '../../Redux/settingsSlice'
 import "./ChatListContextMenus.scss"
 
@@ -13,22 +13,27 @@ export default function ChatListMenus() {
     const menuRef = useRef(null)
 
     const dispatch = useDispatch()
-
+    
     //get exact position where user clicks and from that origin show a menu
     const menusHandler = useCallback(e => {
 
         e.preventDefault()
 
+        if (e.target.className !== "chat-list__element-container") return
+
+        //avoid closing when right clicking itself
         if (menuRef.current && menuRef.current.contains(e.target)) return
-        
+
         setAnchorPoint({ x: e.pageX, y: e.pageY })
+
         setSelectedID(e.target.id)
         setSelectedType(e.target.dataset.type)
         setIsOpen(true)
 
-    }, [setAnchorPoint, setIsOpen, setSelectedID])
+    }, [setAnchorPoint, setIsOpen, setSelectedID, setSelectedType])
 
     useEffect(() => {
+
         document.addEventListener("contextmenu", menusHandler)
 
         return () => {
@@ -38,7 +43,11 @@ export default function ChatListMenus() {
 
     //close menu when clicking outside or pressing escape key
     const closeMenu = e => {
-        if (menuRef.current && !menuRef.current.contains(e.target)) setIsOpen(false)
+        e.preventDefault()
+        if (menuRef.current && menuRef.current.contains(e.target)) return
+
+        setSelectedID("")
+        setIsOpen(false)
     }
 
     const closeMenuOnEsc = e => {
@@ -54,10 +63,11 @@ export default function ChatListMenus() {
             document.removeEventListener("mousedown", closeMenu)
             document.removeEventListener("keydown", closeMenuOnEsc)
         }
-    }, [menuRef])
+    }, [])
 
 
-    const listController = () => {
+    //check if a friend or a group is selected and display menu accordingly
+    const contextMenusController = () => {
 
         switch (isOpen) {
 
@@ -72,11 +82,14 @@ export default function ChatListMenus() {
 
                 return (
                     <nav className='chat-list-menus chat-list-menus--group-settings' ref={menuRef} style={{ position: "absolute", top: anchorPoint.y, left: anchorPoint.x }}>
+
                         <button
                             className='chat-list-menus--group-settings__group-settings-btn'
                             onClick={() => dispatch(handleOpenGroupSettings(selectedID))}
-                        > Group Settings
+                        >
+                            Group Settings
                         </button>
+
                     </nav>
                 )
 
@@ -84,7 +97,7 @@ export default function ChatListMenus() {
         }
     }
 
-    //check to avoid displaying menu on first
-    return isOpen && listController()
+    //check to avoid displaying menu on first render
+    return isOpen && contextMenusController()
 
 }
