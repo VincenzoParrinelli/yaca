@@ -1,17 +1,21 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { handleOpenGroupSettings } from '../../Redux/settingsSlice'
 import { handleDeleteGroupModal } from '../../Redux/modalsSlice'
 import DeleteGroupModal from '../../Modals/DeleteGroupModal';
 import GroupSettingsOverview from './GroupSettingsOverview'
 import UnsavedChangesAlert from './UnsavedChangesAlert'
+import useSelectedGroup from '../hooks/useSelectedGroup'
 import "./GroupSettingsContainer.scss"
 
 export default function GroupSettingsContainer() {
 
     const { selectedGroupID, groupSettingsContent } = useSelector(state => state.settings)
+    const { deleteGroupModal } = useSelector(state => state.modal)
 
-    const { groupList } = useSelector(state => state.group)
+    const selectedGroupData = useSelectedGroup(selectedGroupID)
+
+    const elementRef = useRef(null)
 
     const dispatch = useDispatch()
 
@@ -32,41 +36,35 @@ export default function GroupSettingsContainer() {
     }
 
 
+    return (
 
-    const renderGroupSettings = () => {
+        <div className='group-settings-container'>
 
-        const selectedGroup = groupList.find(group => group._id === selectedGroupID)
+            <nav className='group-settings-container__sidebar'>
 
-        return (
-            <div className='group-settings-container'>
+                <span className='group-settings-container__server-name'> {selectedGroupData.groupName.toUpperCase()} </span>
 
-                <nav className='group-settings-container__sidebar'>
+                <button className='group-settings-container__settings-btns' aria-selected={groupSettingsContent.overview}>Overview</button>
 
-                    <span className='group-settings-container__server-name'> {selectedGroup.groupName.toUpperCase()} </span>
+                <button className='group-settings-container__settings-btns' aria-selected={groupSettingsContent.roles}>Roles</button>
 
-                    <button className='group-settings-container__settings-btns' aria-selected={groupSettingsContent.overview}>Overview</button>
+                <button
+                    className='group-settings-container__settings-btns'
+                    onClick={() => dispatch(handleDeleteGroupModal())}
+                >
+                    Delete Server
+                </button>
 
-                    <button className='group-settings-container__settings-btns' aria-selected={groupSettingsContent.roles}>Roles</button>
+            </nav>
 
-                    <button
-                        className='group-settings-container__settings-btns'
-                        onClick={() => dispatch(handleDeleteGroupModal())}
-                    >
-                        Delete Server
-                    </button>
+            <div className='group-settings-container__element' ref={elementRef}>
+                {groupSettingsContent.overview && <GroupSettingsOverview {...selectedGroupData} />}
 
-                </nav>
-
-                <div className='group-settings-container__element'>
-                    {groupSettingsContent.overview && <GroupSettingsOverview />}
-                </div>
-
-                <DeleteGroupModal />
-
-                <UnsavedChangesAlert />
+                <DeleteGroupModal {...selectedGroupData} />
             </div>
-        )
-    }
 
-    return renderGroupSettings()
+            <UnsavedChangesAlert />
+        </div>
+
+    )
 }

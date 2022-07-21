@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { resetOverviewState, setNewPic, resetNewPic, setNewGroupName } from '../../Redux/settingsOverviewSlice'
-import useSelectedGroup from '../hooks/useSelectedGroup'
 import "./GroupSettingsOverview.scss"
 
-export default function GroupSettingsOverview() {
+export default function GroupSettingsOverview(selectedGroupData) {
 
     const [showChangePicText, setShowChangePicText] = useState(false)
-
-    const { selectedGroupID } = useSelector(state => state.settings)
+    
     const { newPicBlob, newGroupName } = useSelector(state => state.settingsOverview)
-
-    const selectedGroup = useSelectedGroup(selectedGroupID)
 
     const dispatch = useDispatch()
 
@@ -47,7 +43,7 @@ export default function GroupSettingsOverview() {
 
                     {showChangePicText && <span className='group-settings-overview__change-pic-text'>CHANGE PIC</span>}
 
-                    <img className='group-settings-overview__propic' src={newPicBlob ?? selectedGroup.proPicBlob} />
+                    <img className='group-settings-overview__propic' src={newPicBlob ?? selectedGroupData.proPicBlob} />
 
                     <input
                         className='group-settings-overview__new-group-pic-input'
@@ -76,7 +72,7 @@ export default function GroupSettingsOverview() {
                     <input
                         className='group-settings-overview__server-name-input'
                         type="text"
-                        value={newGroupName ?? selectedGroup.groupName}
+                        value={newGroupName ?? selectedGroupData.groupName}
                         onChange={e => dispatch(setNewGroupName(e.target.value))}
                     />
 

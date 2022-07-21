@@ -4,9 +4,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { handleDeleteGroupModal } from '../Redux/modalsSlice'
 import "./DeleteGroupModal.scss"
 
-export default function DeleteGroupModal() {
+export default function DeleteGroupModal(selectedGroupData) {
 
     const { deleteGroupModal } = useSelector(state => state.modal)
+
+    console.log(selectedGroupData)
 
     const dispatch = useDispatch()
 
