@@ -6,7 +6,7 @@ import "./GroupSettingsOverview.scss"
 export default function GroupSettingsOverview(selectedGroupData) {
 
     const [showChangePicText, setShowChangePicText] = useState(false)
-    
+
     const { newPicBlob, newGroupName } = useSelector(state => state.settingsOverview)
 
     const dispatch = useDispatch()
