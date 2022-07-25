@@ -31,7 +31,7 @@ export const settingsSlice = createSlice({
     reducers: {
 
         handleOpenGroupSettings: (state, action) => {
-            state.selectedGroupID = action.payload
+            if (action.payload) state.selectedGroupID = action.payload
             state.isOpenFlag.groupSettings = !state.isOpenFlag.groupSettings
         },
 

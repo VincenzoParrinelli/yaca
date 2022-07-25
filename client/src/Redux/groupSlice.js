@@ -59,6 +59,8 @@ const groupSlice = createSlice({
 
         updateGroupSettings: () => { },
 
+        deleteGroup: () => { },
+
         getUpdatedGroupSettings: (state, action) => {
 
             state.groupList = state.groupList.map(group => {
@@ -67,6 +69,12 @@ const groupSlice = createSlice({
 
                 return Object.assign(group, action.payload)
             })
+        },
+
+        handleDeletedGroup: (state, action) => {
+
+            state.groupList = state.groupList.filter(group => group._id !== action.payload)
+            
         }
     },
 
@@ -108,6 +116,7 @@ export const {
     setSelectedGroupID,
     sendGroupInvite,
     updateGroupSettings,
+    deleteGroup
 
 } = groupSlice.actions
 

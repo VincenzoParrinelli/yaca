@@ -131,6 +131,20 @@ const socketMiddleware = store => next => action => {
                 payload: updatedGroupData
             })
         })
+
+        socket.on("delete-group-successful", groupID => {
+
+            store.dispatch({
+                type: "group/handleDeletedGroup",
+                payload: groupID
+            })
+
+            store.dispatch({
+                type: "settings/handleOpenGroupSettings"
+            })
+
+        })
+
     }
 
     if (action.type === "socket/searchUsers") {
@@ -158,6 +172,8 @@ const socketMiddleware = store => next => action => {
     //group socket handlers
 
     if (action.type === "group/sendGroupInvite") socket.emit("send-group-invite", action.payload)
+
+    if (action.type === "group/deleteGroup") socket.emit("delete-group", action.payload)
 
     ///
 

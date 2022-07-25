@@ -1,6 +1,7 @@
 .dashboard {
     display: flex;
     position: relative;
+    z-index: 0;
     
     &__separator-vertical {
         border-left: 1px solid black;

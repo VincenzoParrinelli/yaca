@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Modal from "react-modal"
 import { useSelector, useDispatch } from 'react-redux'
 import { handleDeleteGroupModal } from '../Redux/modalsSlice'
+import { deleteGroup } from '../Redux/groupSlice'
 import "./DeleteGroupModal.scss"
 
 export default function DeleteGroupModal(selectedGroupData) {
@@ -10,11 +11,22 @@ export default function DeleteGroupModal(selectedGroupData) {
     const [renderError, setRenderError] = useState(false)
 
     const { deleteGroupModal } = useSelector(state => state.modal)
+    const { data } = useSelector(state => state.user)
 
     const dispatch = useDispatch()
 
     const handleDeleteGroup = () => {
-        if (enteredGroupName !== selectedGroupData.groupName) setRenderError(true)
+        if (enteredGroupName !== selectedGroupData.groupName) return setRenderError(true)
+
+        //send only data that the backend actually needs
+        const payload = {
+
+            userID: data._id,
+            groupID: selectedGroupData._id,
+        
+        }
+
+        dispatch(deleteGroup(payload))
     }
 
     return (

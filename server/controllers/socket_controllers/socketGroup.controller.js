@@ -26,6 +26,7 @@ module.exports = (group, io) => {
         })
 
         await Group.findById(selectedGroupID).then(async data => {
+
             const { founder } = data
 
             if (userID !== founder) return
@@ -39,6 +40,27 @@ module.exports = (group, io) => {
 
                 io.in(idToJSON).emit("send-updated-group-settings", updatedGroupData)
 
+            }).catch(err => new Error(err.message))
+
+        }).catch(err => new Error(err.message))
+
+    })
+
+
+    group.on("delete-group", async payload => {
+
+        const { userID, groupID } = payload
+
+        await Group.findById(groupID).then(async data => {
+
+            if (data.founder !== userID) return
+
+            await data.remove().then(() => {
+
+                const idToJSON = data._id.toJSON()
+
+                io.in(idToJSON).emit("delete-group-successful", groupID)
+                
             }).catch(err => new Error(err.message))
 
         }).catch(err => new Error(err.message))

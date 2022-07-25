@@ -35,6 +35,9 @@ export default function Dashboard() {
 
     }, [errors.authorized])
 
+    useEffect(() => {
+
+    }, [])
 
     return (
         <>

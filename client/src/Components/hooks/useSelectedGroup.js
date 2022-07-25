@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { useSelector } from "react-redux"
 
-const useSelectedGroup = (selectedGroupID) => {
+const useSelectedGroup = selectedGroupID => {
 
     const { groupList } = useSelector(state => state.group)
 
