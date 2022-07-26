@@ -4,6 +4,7 @@ import stringSimilarity from "string-similarity"
 import { useSelector, useDispatch } from 'react-redux'
 import { closeAddGroupMembers } from '../Redux/modalsSlice'
 import { sendGroupInvite } from '../Redux/groupSlice'
+import useSelectedGroup from '../Components/hooks/useSelectedGroup'
 import lens from "../Assets/Images/search-lens.png"
 import cross from "../Assets/Images/x.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
@@ -14,19 +15,19 @@ export default function AddGroupMembersModal() {
     const [userToSearch, setUserToSearch] = useState("")
 
     const { addGroupMembers } = useSelector(state => state.modal)
-    const { groupList, selectedGroupID } = useSelector(state => state.group)
+    const { selectedGroupID } = useSelector(state => state.group)
     const { data } = useSelector(state => state.user)
+
+    const selectedGroupData = useSelectedGroup(selectedGroupID)
 
     const dispatch = useDispatch()
 
     const getGroupName = () => {
 
-        const group = groupList.find(group => group?._id === selectedGroupID)
-
-        if (!group) return
+        if (!selectedGroupData) return
 
         return (
-            <span className='add-group-members-modal__header-text'>Add friends in <b>{group.groupName}</b></span>
+            <span className='add-group-members-modal__header-text'>Add friends in <b>{selectedGroupData.groupName}</b></span>
         )
 
     }
