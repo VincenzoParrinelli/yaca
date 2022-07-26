@@ -5,6 +5,7 @@ import { closeNewGroupModal } from '../Redux/modalsSlice'
 import { createGroup } from '../Redux/groupSlice'
 import createGroupPic from "../Assets/Images/create-group-pic.png"
 import "./NewGroupModal.scss"
+import { produceWithPatches } from 'immer'
 
 export default function NewGroupModal() {
 
@@ -73,12 +74,12 @@ export default function NewGroupModal() {
     return (
 
         <Modal
-            className={{ base: "new-group-modal", beforeClose: "new-group-modal--closed" }}
-            overlayClassName={{ base: "new-group-modal__overlay", beforeClose: "new-group-modal__overlay--closed" }}
+            isOpen={newGroupModal}
             appElement={document.getElementById('root') || undefined}
 
+            className={{ base: "new-group-modal", afterOpen: "", beforeClose: "new-group-modal--closed" }}
+            overlayClassName={{ base: "new-group-modal__overlay", afterOpen: "", beforeClose: "new-group-modal__overlay--closed" }}
             closeTimeoutMS={295}
-            isOpen={newGroupModal}
             onRequestClose={() => dispatch(closeNewGroupModal())}
         >
 

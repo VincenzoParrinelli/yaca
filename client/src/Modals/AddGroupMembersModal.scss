@@ -7,7 +7,7 @@
     height: 60vh;
     border-radius: 5px;
     background-color: #36393f;
-    animation: modalContentPopIn .3s;
+    animation: addMembersModalContentPopIn .3s;
 
     &__overlay {
         position: fixed;
@@ -194,7 +194,7 @@
     }
 }
 
-@keyframes modalContentPopIn {
+@keyframes addMembersModalContentPopIn {
     from {
         width: 20vw;
         height: 50vh;
