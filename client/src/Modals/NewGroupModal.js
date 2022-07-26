@@ -71,11 +71,13 @@ export default function NewGroupModal() {
     }
 
     return (
+
         <Modal
-            className="new-group-modal"
-            overlayClassName="new-group-modal__overlay"
+            className={{ base: "new-group-modal", beforeClose: "new-group-modal--closed" }}
+            overlayClassName={{ base: "new-group-modal__overlay", beforeClose: "new-group-modal__overlay--closed" }}
             appElement={document.getElementById('root') || undefined}
-            
+
+            closeTimeoutMS={295}
             isOpen={newGroupModal}
             onRequestClose={() => dispatch(closeNewGroupModal())}
         >
@@ -129,5 +131,6 @@ export default function NewGroupModal() {
             </footer>
 
         </Modal>
+
     )
 }

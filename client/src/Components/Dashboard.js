@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux"
 import { connection } from '../Redux/socketSlice';
+import { handleDashboard } from '../Redux/dashboardSlice';
 import SideBar from "./SideBar"
 import ProfileModal from "../Modals/ProfileModal"
 import NewGroupModal from '../Modals/NewGroupModal';
@@ -18,7 +19,7 @@ export default function Dashboard() {
     const { errors } = useSelector(state => state.sockets)
     const { data, isLogged } = useSelector(state => state.user)
     const { selectedUserIndex } = useSelector(state => state.conversation)
-    const { addFriend, notifications } = useSelector(state => state.modal)
+    const { addFriend, notifications } = useSelector(state => state.dashboard)
     const { isOpenFlag } = useSelector(state => state.settings)
 
     const dispatch = useDispatch()
@@ -31,13 +32,10 @@ export default function Dashboard() {
 
         } else {
             dispatch(connection(data._id))
+            dispatch(handleDashboard())
         }
 
     }, [errors.authorized])
-
-    useEffect(() => {
-
-    }, [])
 
     return (
         <>

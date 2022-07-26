@@ -5,8 +5,7 @@ import { setSelectedGroupID } from '../Redux/groupSlice'
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import home from "../Assets/Images/home.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
-import SearchBar from '../ComponentsShared/SearchBar'
-
+import SearchBar from './SearchBar';
 import "./ChatList.scss"
 
 export default function ChatList() {
@@ -34,14 +33,17 @@ export default function ChatList() {
 
             <div className='chat-list__header'>
 
-                <img src={home} className='chat-list__icon' />
+                <div className='chat-list__header-container'>
 
-                Dashboard
+                    <img src={home} className='chat-list__icon' /> 
+                    
+                    Dashboard
+
+                    <SearchBar />
+
+                </div>
 
             </div>
-
-            <SearchBar />
-
 
             <div className='chat-list__container'
                 onMouseEnter={() => showScrollBar()}  //show scrollbar when chat-list hovered

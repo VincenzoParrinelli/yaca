@@ -1,8 +1,6 @@
 .dashboard {
     display: flex;
-    position: relative;
-    z-index: 0;
-    
+
     &__separator-vertical {
         border-left: 1px solid black;
         height: 100vh;
@@ -10,8 +8,7 @@
     }
 
     &__lists-container {
-        display: flex;
-        width: 26vw;
+        width: 25vw;
         height: 100vh;
     }
 

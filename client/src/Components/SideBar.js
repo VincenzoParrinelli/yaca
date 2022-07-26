@@ -1,12 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux"
-import {
-    handleDashboard,
-    handleSettings,
-    openNewGroupModal,
-    handleAddFriend,
-    openNotifications
-} from "../Redux/modalsSlice"
+import { handleSettings, openNewGroupModal, } from "../Redux/modalsSlice"
+import { handleAddFriend, handleDashboard, openNotifications } from "../Redux/dashboardSlice"
 import micImage from "../Assets/Images/mic.png"
 import soundImage from "../Assets/Images/sound.png"
 import addFriendImage from "../Assets/Images/add-friend.png"
@@ -18,7 +13,8 @@ import './SideBar.scss'
 
 export default function SideBar() {
 
-    const { dashboard, addFriend, notifications, newGroupModal } = useSelector(state => state.modal)
+    const { newGroupModal } = useSelector(state => state.modal)
+    const { addFriend, dashboard, notifications, } = useSelector(state => state.dashboard)
     const { data } = useSelector(state => state.user)
 
     const dispatch = useDispatch()

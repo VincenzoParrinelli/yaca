@@ -12,8 +12,6 @@ export default function Notifications() {
     const { data } = useSelector(state => state.user)
     const { friendRequests } = useSelector(state => state.user.data)
 
-    console.log(friendRequests)
-
     const dispatch = useDispatch()
 
     const handleAcceptFriendRequest = userToAcceptID => {

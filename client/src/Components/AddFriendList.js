@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { sendFriendRequest } from '../Redux/socketSlice'
-import SearchBar from '../ComponentsShared/SearchBar'
 import addFriendImage from "../Assets/Images/add-friend.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import "./AddFriendList.scss"
@@ -31,8 +30,6 @@ export default function AddFriend() {
                 Add new friend
 
             </div>
-
-            <SearchBar />
 
             <p className='add-friend-list__text'> USERS </p>
 
