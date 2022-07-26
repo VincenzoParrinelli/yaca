@@ -20,11 +20,11 @@ export default function AddGroupMembersModal() {
     const dispatch = useDispatch()
 
     const getGroupName = () => {
-        
+
         const group = groupList.find(group => group?._id === selectedGroupID)
-        
+
         if (!group) return
-        
+
         return (
             <span className='add-group-members-modal__header-text'>Add friends in <b>{group.groupName}</b></span>
         )
@@ -87,11 +87,13 @@ export default function AddGroupMembersModal() {
 
     return (
         <Modal
-            className="add-group-members-modal"
-            overlayClassName="add-group-members-modal__overlay"
-
-            appElement={document.getElementById('root') || undefined}
             isOpen={addGroupMembers}
+            appElement={document.getElementById('root') || undefined}
+
+            className={{ base: "add-group-members-modal", afterOpen: "", beforeClose: "add-group-members-modal--closed" }}
+            overlayClassName={{ base: "add-group-members-modal__overlay", afterOpen: "", beforeClose: "add-group-members-modal__overlay--closed" }}
+
+            closeTimeoutMS={295}
             onRequestClose={() => dispatch(closeAddGroupMembers())}
 
         >

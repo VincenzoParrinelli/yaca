@@ -9,6 +9,10 @@
     background-color: #36393f;
     animation: addMembersModalContentPopIn .3s;
 
+    &--closed {
+        animation: addMembersModalContentPopOut .3s;
+    }
+
     &__overlay {
         position: fixed;
         top: 0;
@@ -17,11 +21,10 @@
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.6);
         z-index: 1;
-        animation: modalPopIn .3s;
-        transition: all .5 ease-out;
-
+        animation: addMembersModalOverlayPopIn .3s;
+ 
         &--closed {
-            animation: modalPopOut .3s;
+            animation: addMembersModalOverlayPopOut .3s;
         }
     }
 
@@ -173,7 +176,7 @@
     }
 }
 
-@keyframes modalPopIn {
+@keyframes addMembersModalOverlayPopIn {
     from {
         opacity: 0.1;
     }
@@ -184,7 +187,7 @@
 }
 
 
-@keyframes modalPopOut {
+@keyframes addMembersModalOverlayPopOut {
     from {
         opacity: 1;
     }
@@ -196,7 +199,7 @@
 
 @keyframes addMembersModalContentPopIn {
     from {
-        width: 20vw;
+        width: 18vw;
         height: 50vh;
     }
 

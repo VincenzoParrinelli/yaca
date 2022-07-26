@@ -79,6 +79,7 @@ export default function NewGroupModal() {
 
             className={{ base: "new-group-modal", afterOpen: "", beforeClose: "new-group-modal--closed" }}
             overlayClassName={{ base: "new-group-modal__overlay", afterOpen: "", beforeClose: "new-group-modal__overlay--closed" }}
+            
             closeTimeoutMS={295}
             onRequestClose={() => dispatch(closeNewGroupModal())}
         >
