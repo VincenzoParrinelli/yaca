@@ -1,6 +1,4 @@
 .delete-group-modal {
-    display: flex;
-    flex-direction: column;
     position: absolute;
     transform: translate(-50%, -50%);
     left: 50%;
@@ -10,6 +8,11 @@
     height: auto;
     border-radius: 5px;
     background-color: #36393f;
+    animation: deleteGroupModalContentPopIn .3s;
+
+    &--closed {
+        animation: deleteGroupModalContentPopOut .3s;
+    }
 
     &__overlay {
         position: fixed;
@@ -19,7 +22,11 @@
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.6);
         z-index: 1;
-        transition: all .5 ease-out;
+        animation: deleteGroupModalOverlayPopIn .3s;
+
+        &--closed {
+            animation: deleteGroupModalOverlayPopOut .3s;
+        }
     }
 
     &__container {
@@ -132,5 +139,49 @@
         &:active {
             background-color: #8c2729;
         }
+    }
+}
+
+
+@keyframes deleteGroupModalContentPopIn {
+    from {
+        width: 24vw;
+        min-height: 30vh;
+    }
+
+    to {
+        width: 28vw;
+        min-height: 40vh;
+    }
+}
+
+@keyframes deleteGroupModalContentPopOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0.1;
+    }
+}
+
+@keyframes deleteGroupModalOverlayPopIn {
+    from {
+        opacity: 0.1;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes deleteGroupModalOverlayPopOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0.1;
     }
 }

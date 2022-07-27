@@ -11,7 +11,6 @@ import "./GroupSettingsContainer.scss"
 export default function GroupSettingsContainer() {
 
     const { selectedGroupID, groupSettingsContent } = useSelector(state => state.settings)
-    const { deleteGroupModal } = useSelector(state => state.modal)
 
     const selectedGroupData = useSelectedGroup(selectedGroupID)
 
@@ -60,7 +59,7 @@ export default function GroupSettingsContainer() {
             <div className='group-settings-container__element' ref={elementRef}>
                 {groupSettingsContent.overview && <GroupSettingsOverview {...selectedGroupData} />}
 
-                {deleteGroupModal && <DeleteGroupModal {...selectedGroupData} />}
+                <DeleteGroupModal {...selectedGroupData} />
             </div>
 
             <UnsavedChangesAlert />

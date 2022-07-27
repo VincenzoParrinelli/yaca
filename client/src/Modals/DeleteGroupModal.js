@@ -23,20 +23,24 @@ export default function DeleteGroupModal(selectedGroupData) {
 
             userID: data._id,
             groupID: selectedGroupData._id,
-        
+
         }
 
         dispatch(deleteGroup(payload))
     }
 
+    console.log(deleteGroupModal)
+
     return (
 
         <Modal
-            className='delete-group-modal'
-            overlayClassName="delete-group-modal__overlay"
-
-            appElement={document.getElementById('root') || undefined}
             isOpen={deleteGroupModal}
+            appElement={document.getElementById('root') || undefined}
+
+            className={{ base: 'delete-group-modal', afterOpen: "", beforeClose: "delete-group-modal--closed" }}
+            overlayClassName={{ base: "delete-group-modal__overlay", afterOpen: "", beforeClose: "delete-group-modal__overlay--closed" }}
+
+            closeTimeoutMS={295}
             onRequestClose={() => dispatch(handleDeleteGroupModal())}
         >
 
