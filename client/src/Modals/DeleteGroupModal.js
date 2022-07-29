@@ -29,8 +29,6 @@ export default function DeleteGroupModal(selectedGroupData) {
         dispatch(deleteGroup(payload))
     }
 
-    console.log(deleteGroupModal)
-
     return (
 
         <Modal
