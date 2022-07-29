@@ -35,6 +35,10 @@ export const settingsSlice = createSlice({
             state.isOpenFlag.groupSettings = !state.isOpenFlag.groupSettings
         },
 
+        handleAppSettings: state => {
+            state.isOpenFlag.appSettings = !state.isOpenFlag.appSettings
+        },
+
         openUnsavedChangesAlert: state => {
             state.unsavedChangesAlert = true
         },
@@ -49,6 +53,7 @@ export const settingsSlice = createSlice({
 
 export const {
     handleOpenGroupSettings,
+    handleAppSettings,
     closeUnsavedChangesAlert
 } = settingsSlice.actions
 

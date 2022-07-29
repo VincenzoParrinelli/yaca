@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux"
 import { connection } from '../Redux/socketSlice';
 import { handleDashboard } from '../Redux/dashboardSlice';
 import SideBar from "./SideBar"
-import ProfileModal from "../Modals/ProfileModal"
 import NewGroupModal from '../Modals/NewGroupModal';
 import AddGroupMembersModal from '../Modals/AddGroupMembersModal';
 import ChatOpen from "./ChatOpen"
@@ -13,6 +12,7 @@ import AddFriend from './AddFriendList';
 import Notifications from './Notifications';
 import ChatListContextMenus from "./Settings/ChatListContextMenus"
 import GroupSettingsContainer from './Settings/GroupSettingsContainer';
+import AppSettings from './Settings/AppSettings';
 import "./Dashboard.scss"
 
 export default function Dashboard() {
@@ -39,6 +39,8 @@ export default function Dashboard() {
 
     return (
         <>
+
+            {isOpenFlag.appSettings && <AppSettings />}
             {isOpenFlag.groupSettings && <GroupSettingsContainer />}
 
             {/* if no settings menu or modal is open, render dashboard */}
@@ -48,7 +50,6 @@ export default function Dashboard() {
 
                 <div className='dashboard'>
 
-                    <ProfileModal />
                     <NewGroupModal />
                     <AddGroupMembersModal />
 

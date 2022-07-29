@@ -29,9 +29,8 @@ export default function GroupSettingsContainer() {
     //close settings when user presses Escape key
     const closeGroupSettings = e => {
 
-        if (e.key !== "Escape") return
+        if (e.key === "Escape") dispatch(handleOpenGroupSettings())
 
-        dispatch(handleOpenGroupSettings())
     }
 
 

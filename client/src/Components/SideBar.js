@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from "react-redux"
-import { handleSettings, openNewGroupModal, } from "../Redux/modalsSlice"
+import { handleUserModal, openNewGroupModal, } from "../Redux/modalsSlice"
 import { handleAddFriend, handleDashboard, openNotifications } from "../Redux/dashboardSlice"
+import { handleAppSettings } from '../Redux/settingsSlice';
 import micImage from "../Assets/Images/mic.png"
 import soundImage from "../Assets/Images/sound.png"
 import addFriendImage from "../Assets/Images/add-friend.png"
@@ -9,6 +10,7 @@ import plus from "../Assets/Images/plus.png"
 import logout from "../Assets/Images/logout.png"
 import home from "../Assets/Images/home.png"
 import bellImage from "../Assets/Images/bell.png"
+import { ReactComponent as SettingsIcon } from "../Assets/Images/settings.svg"
 import './SideBar.scss'
 
 export default function SideBar() {
@@ -22,7 +24,7 @@ export default function SideBar() {
     return (
         <div className='sidebar'>
 
-            <img src={data.proPicBlob} className='sidebar__propic' onClick={() => dispatch(handleSettings())} />
+            <img src={data.proPicBlob} className='sidebar__propic' onClick={() => dispatch(handleUserModal())} />
 
             <div className='sidebar__actions-container'>
                 <img src={micImage} className='sidebar__mic-image' />
@@ -90,6 +92,15 @@ export default function SideBar() {
 
                     <span className='sidebar__tooltip'>Logout</span>
 
+                </li>
+
+                <li>
+                    <SettingsIcon
+                        className="sidebar__settings-icon"
+                        onClick={() => dispatch(handleAppSettings())}
+                    />
+
+                    <span className='sidebar__tooltip'>Settings</span>
                 </li>
 
             </ul>

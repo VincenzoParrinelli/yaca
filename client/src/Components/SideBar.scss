@@ -1,10 +1,12 @@
 .sidebar {
+    display: flex;
+    flex-direction: column;
     height: 100vh;
     width: 140px;
     z-index: 1;
     background-color: linear-gradient(#1B2121, #17181C, #17181C);
-    overflow-x: hidden;
     text-overflow: ellipsis;
+    overflow: hidden;
 
     &__propic {
         position: relative;
@@ -54,7 +56,10 @@
     }
 
     &__icons {
+        display: flex;
+        flex-direction: column;
         position: relative;
+        height: 100%;
         top: 30px;
         list-style-type: none;
         padding: 0;
@@ -62,6 +67,10 @@
 
         li {
             margin: 0 0 35px 0;
+
+            &:nth-last-child(1) {
+                margin-top: auto;
+            }
         }
     }
 
@@ -69,8 +78,9 @@
     &__notification-bell,
     &__add-friend,
     &__create-server,
+    &__settings-icon,
     &__logout-icon {
-        
+
         transition: all .3s ease-out;
 
         opacity: 0.4;
@@ -128,7 +138,6 @@
 
     }
 
-
     &__notification-bell {
         width: 30px;
         height: 30px;
@@ -157,6 +166,12 @@
         &[value=true] {
             opacity: 1;
         }
+    }
+
+    &__settings-icon {
+        width: 2vw;
+        height: 2vw;
+        fill: white;
     }
 
     &__logout-icon {
