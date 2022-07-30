@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux"
-import { handleUserModal, openNewGroupModal, } from "../Redux/modalsSlice"
+import { openNewGroupModal } from "../Redux/modalsSlice"
 import { handleAddFriend, handleDashboard, openNotifications } from "../Redux/dashboardSlice"
 import { handleAppSettings } from '../Redux/settingsSlice';
 import micImage from "../Assets/Images/mic.png"
@@ -24,7 +24,7 @@ export default function SideBar() {
     return (
         <div className='sidebar'>
 
-            <img src={data.proPicBlob} className='sidebar__propic' onClick={() => dispatch(handleUserModal())} />
+            <img src={data.proPicBlob} className='sidebar__propic' />
 
             <div className='sidebar__actions-container'>
                 <img src={micImage} className='sidebar__mic-image' />

@@ -1,7 +1,5 @@
 @import "../../_mixins/settings";
 
-.group-settings-container {
+.settings-container {
     @include settingsContainer;
 }
-
-

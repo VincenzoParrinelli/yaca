@@ -11,8 +11,7 @@ import ChatList from './ChatList'
 import AddFriend from './AddFriendList';
 import Notifications from './Notifications';
 import ChatListContextMenus from "./Settings/ChatListContextMenus"
-import GroupSettingsContainer from './Settings/GroupSettingsContainer';
-import AppSettings from './Settings/AppSettings';
+import SettingsController from './Settings/SettingsController';
 import "./Dashboard.scss"
 
 export default function Dashboard() {
@@ -40,8 +39,7 @@ export default function Dashboard() {
     return (
         <>
 
-            {isOpenFlag.appSettings && <AppSettings />}
-            {isOpenFlag.groupSettings && <GroupSettingsContainer />}
+            {Object.values(isOpenFlag).some(state => state) && <SettingsController />}
 
             {/* if no settings menu or modal is open, render dashboard */}
 

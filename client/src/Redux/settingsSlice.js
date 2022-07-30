@@ -30,6 +30,10 @@ export const settingsSlice = createSlice({
 
     reducers: {
 
+        resetFlags: state => {
+            state.isOpenFlag = initialState.isOpenFlag
+        },
+
         handleOpenGroupSettings: (state, action) => {
             if (action.payload) state.selectedGroupID = action.payload
             state.isOpenFlag.groupSettings = !state.isOpenFlag.groupSettings
@@ -53,6 +57,7 @@ export const settingsSlice = createSlice({
 
 export const {
     handleOpenGroupSettings,
+    resetFlags,
     handleAppSettings,
     closeUnsavedChangesAlert
 } = settingsSlice.actions
