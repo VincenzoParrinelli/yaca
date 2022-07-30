@@ -39,12 +39,9 @@ export default function Dashboard() {
     return (
         <>
 
-            {Object.values(isOpenFlag).some(state => state) && <SettingsController />}
+            {/* if no settings menu is open, render dashboard */}
 
-            {/* if no settings menu or modal is open, render dashboard */}
-
-            {
-                Object.values(isOpenFlag).every(state => !state) &&
+            {Object.values(isOpenFlag).some(state => state) ? <SettingsController /> :
 
                 <div className='dashboard'>
 
@@ -71,6 +68,7 @@ export default function Dashboard() {
                     <ChatListContextMenus />
 
                 </div>
+
             }
 
         </>
