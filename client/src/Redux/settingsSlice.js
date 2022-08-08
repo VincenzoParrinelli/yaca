@@ -12,6 +12,10 @@ const initialState = {
         groupSettings: false,
     },
 
+    appSettingsContent: {
+        myAccount: true,
+    },
+
     //defines wich group settings content to render
     groupSettingsContent: {
         overview: true,

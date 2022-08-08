@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { resetFlags } from '../../Redux/settingsSlice'
 import useSelectedGroup from '../hooks/useSelectedGroup'
-import GroupSettingsSidebar from './GroupSettingsSidebar'
-import GroupSettingsElements from './GroupSettingsElements'
+import GroupSettingsSidebar from './GroupSettings/GroupSettingsSidebar'
+import GroupSettingsElements from './GroupSettings/GroupSettingsElements'
+import AppSettingsSidebar from './AppSettings/AppSettingsSidebar'
+import AppSettingsElements from './AppSettings/AppSettingsElements'
 import UnsavedChangesAlert from './UnsavedChangesAlert'
 import "./SettingsController.scss"
 
@@ -38,14 +40,16 @@ export default function SettingsController() {
 
             <nav className='settings-container__sidebar'>
 
+                {appSettings && <AppSettingsSidebar />}
                 {groupSettings && <GroupSettingsSidebar {...selectedGroupData} />}
 
             </nav>
 
             <div className='settings-container__element' ref={elementRef}>
 
+                {appSettings && <AppSettingsElements />}
                 {groupSettings && <GroupSettingsElements {...selectedGroupData} />}
-                
+
             </div>
 
             <UnsavedChangesAlert />

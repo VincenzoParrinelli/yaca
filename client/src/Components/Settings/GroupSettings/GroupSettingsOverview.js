@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { resetOverviewState, setNewPic, resetNewPic, setNewGroupName } from '../../Redux/settingsOverviewSlice'
+import { resetOverviewState, setNewPic, resetNewPic, setNewGroupName } from '../../../Redux/settingsOverviewSlice'
 import "./GroupSettingsOverview.scss"
 
 export default function GroupSettingsOverview(selectedGroupData) {

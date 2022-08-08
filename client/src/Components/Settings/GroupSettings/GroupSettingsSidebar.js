@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { handleDeleteGroupModal } from '../../Redux/modalsSlice'
+import { handleDeleteGroupModal } from '../../../Redux/modalsSlice'
 
 export default function GroupSettingsSidebar(selectedGroupData) {
     

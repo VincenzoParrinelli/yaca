@@ -53,6 +53,20 @@
         opacity: 0.5;
     }
 
+    &__section-text-divider {
+        position: relative;
+        width: 40%;
+        height: 4%;
+        background-color: transparent;
+        margin: 2px;
+        opacity: 0.5;
+        font: bold 14px "aeroportLight";
+
+        &:nth-child(1) {
+            margin-top: 40px;
+        }
+    }
+
     &__settings-btns {
         position: relative;
         width: 40%;

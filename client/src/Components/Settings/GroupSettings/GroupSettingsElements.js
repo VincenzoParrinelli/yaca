@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from "react-redux"
 import GroupSettingsOverview from './GroupSettingsOverview'
-import DeleteGroupModal from '../../Modals/DeleteGroupModal'
+import DeleteGroupModal from '../../../Modals/DeleteGroupModal'
 
 export default function GroupSettingsElements(selectedGroupData) {
 
