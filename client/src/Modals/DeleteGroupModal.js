@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Modal from "react-modal"
 import { useSelector, useDispatch } from 'react-redux'
-import { handleDeleteGroupModal } from '../Redux/modalsSlice'
+import { closeDeleteGroupModal } from '../Redux/modalsSlice'
 import { deleteGroup } from '../Redux/groupSlice'
 import "./DeleteGroupModal.scss"
 
@@ -39,7 +39,7 @@ export default function DeleteGroupModal(selectedGroupData) {
             overlayClassName={{ base: "delete-group-modal__overlay", afterOpen: "", beforeClose: "delete-group-modal__overlay--closed" }}
 
             closeTimeoutMS={295}
-            onRequestClose={() => dispatch(handleDeleteGroupModal())}
+            onRequestClose={() => dispatch(closeDeleteGroupModal())}
         >
 
             <div className='delete-group-modal__container'>
@@ -78,7 +78,7 @@ export default function DeleteGroupModal(selectedGroupData) {
 
                     <button
                         className='delete-group-modal__discard-btn'
-                        onClick={() => dispatch(handleDeleteGroupModal())}
+                        onClick={() => dispatch(closeDeleteGroupModal())}
                     >
                         Discard
                     </button>

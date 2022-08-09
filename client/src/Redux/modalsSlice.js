@@ -36,8 +36,12 @@ export const modalsSlice = createSlice({
             state.addGroupMembers = false
         },
 
-        handleDeleteGroupModal : state => {
-            state.deleteGroupModal = !state.deleteGroupModal
+        openDeleteGroupModal: state => {
+            state.deleteGroupModal = true
+        },
+
+        closeDeleteGroupModal: state => {
+            state.deleteGroupModal = false
         },
 
 
@@ -50,7 +54,8 @@ export const {
     closeNewGroupModal,
     openAddGroupMembers,
     closeAddGroupMembers,
-    handleDeleteGroupModal,
+    openDeleteGroupModal,
+    closeDeleteGroupModal,
     handleAddFriend,
 } = modalsSlice.actions
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { handleDeleteGroupModal } from '../../../Redux/modalsSlice'
+import { openDeleteGroupModal } from '../../../Redux/modalsSlice'
 
 export default function GroupSettingsSidebar(selectedGroupData) {
     
@@ -18,7 +18,7 @@ export default function GroupSettingsSidebar(selectedGroupData) {
 
             <button
                 className='settings-container__settings-btns'
-                onClick={() => dispatch(handleDeleteGroupModal())}
+                onClick={() => dispatch(openDeleteGroupModal())}
             >
                 Delete Server
             </button>
