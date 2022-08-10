@@ -1,6 +1,7 @@
 .dashboard {
     display: flex;
-
+    background: linear-gradient(#1B2121, #17181C, #17181C);
+    
     &__separator-vertical {
         border-left: 1px solid black;
         height: 100vh;
