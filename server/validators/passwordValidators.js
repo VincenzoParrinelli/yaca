@@ -1,8 +1,8 @@
 const validator = require("validator")
 
 const validateSignUpPassword = async (req, res, next) => {
-    var password = req.body.password
-    var password2 = req.body.password2
+    const password = req.body.password
+    const password2 = req.body.password2
 
     if (!validator.isStrongPassword(password)) return res.json({ isValid: false })
 
@@ -13,9 +13,14 @@ const validateSignUpPassword = async (req, res, next) => {
 }
 
 const validateLoginPassword = async (req, res, next) => {
-    var password = req.body.password
-    
-    if (!validator.isStrongPassword(password)) return res.json({ isValid: false })
+    const password = req.body.password
+    const passwordErrorsMap = new Map()
+
+    if (!password) passwordErrorsMap.set("passwordErrors", { isEmpty: true })
+
+    if (!validator.isStrongPassword(password)) passwordErrorsMap.set("passwordErrors", { isInvalid: true })
+
+    res.locals.passwordErrorsMap = passwordErrorsMap
 
     next()
 

@@ -77,7 +77,6 @@ const userMiddleware = store => next => async action => {
             })
         })
 
-
     }
 
 }

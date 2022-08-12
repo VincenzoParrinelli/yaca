@@ -59,7 +59,7 @@ export const activateAccount = createAsyncThunk(
 export const login = createAsyncThunk(
     "user/login",
 
-    async data => await axios.post(`${serverUrl}user/login`,
+    async (data, { rejectWithValue }) => await axios.post(`${serverUrl}user/login`,
 
         data,
         { withCredentials: true }
@@ -70,7 +70,15 @@ export const login = createAsyncThunk(
 
         return res.data
 
-    }).catch(err => { throw Error(err) })
+    }).catch(err => {
+
+        if (!err.response) throw (err)
+        
+
+        //add error body to login/rejected payload
+        //redux doesn't do this automatically, so we need to call this function
+        throw rejectWithValue(err.response.data) 
+    })
 )
 
 export const updateUser = createAsyncThunk(
@@ -115,8 +123,8 @@ export const userSlice = createSlice({
             state.data.friendList.map(friend => {
 
                 friend.proPicBlob = action.payload
-                
-            }) 
+
+            })
 
         },
 
@@ -131,7 +139,7 @@ export const userSlice = createSlice({
             state.data.friendList.map(friend => {
 
                 if (friend._id === _id) friend.socketID = socketID
-    
+
             })
 
         },

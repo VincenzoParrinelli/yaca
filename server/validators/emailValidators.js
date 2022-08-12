@@ -2,7 +2,7 @@ const validator = require("validator")
 const User = require("../models/User.js")
 
 const validateSignUpEmail = async (req, res, next) => {
-    var email = req.body.email
+    const email = req.body.email
 
     if (!validator.isEmail(email)) return res.json({ isValid: false, emailSent: false })
 
@@ -16,15 +16,19 @@ const validateSignUpEmail = async (req, res, next) => {
 
 const validateLoginEmail = async (req, res, next) => {
 
-    var loginEmail = req.body.loginEmail
+    const loginEmail = req.body.loginEmail
+    const emailErrorsMap = new Map()
 
-    if (!validator.isEmail(loginEmail)) return res.json({ isValid: false })
+    if (!loginEmail) emailErrorsMap.set("emailErrors", { isEmpty: true })
+
+    if (!validator.isEmail(loginEmail)) emailErrorsMap.set("emailErrors", { isInvalid: true })
 
     await User.findOne({ email: loginEmail }).then(async userData => {
 
-        if (!userData) return res.json({ isValid: true, isPresent: false })
+        if (!userData) emailErrorsMap.set("emailErrors", { isPresent: false })
 
         res.locals.userData = userData
+        res.locals.emailErrorsMap = emailErrorsMap
 
         next()
     })

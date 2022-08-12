@@ -5,7 +5,7 @@
     width: 100vw;
     height: 100vh;
     background-color: #141720;
-  
+
     &__container-outer {
         display: flex;
         width: 80vw;
@@ -82,7 +82,7 @@
         margin-bottom: 15px;
         box-sizing: border-box;
         border-radius: 18px;
-        outline: none;
+        outline: solid;
         outline-color: transparent;
         border: none;
         background-color: #323645;
@@ -92,13 +92,17 @@
         transition: 0.1s all;
 
         &:focus {
-            outline: solid;
             outline-color: #2088e5;
             box-shadow: 0 0px 15px -5px #1d90f5;
         }
 
         &--password {
             margin-bottom: 30px;
+        }
+
+        &--error {
+            outline-color: #ff2d34 !important; //avoid color swapping to blue, while there is an error, if user focuses input 
+            box-shadow: 0 0px 15px -5px #ff2d34 !important;
         }
     }
 
@@ -115,6 +119,12 @@
             opacity: 0.4;
             top: 20px;
         }
+
+        &--error {
+            color: #ff2d34;
+            opacity: 1;
+        }
+
     }
 
 
@@ -134,4 +144,5 @@
             box-shadow: 0 30px 80px -15px #1d90f5;
         }
     }
+
 }
