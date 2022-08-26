@@ -19,8 +19,9 @@ export default function NewLogin() {
     const { isLogged } = useSelector(state => state.user)
     const { errors } = useSelector(state => state.sockets)
     const { emailErrors, passwordErrors } = useSelector(state => state.error)
+    const { error } = useSelector(state => state)
 
-    console.log(passwordErrors)
+    console.log(error)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -73,7 +74,7 @@ export default function NewLogin() {
     //add styling for respective errors
     useEffect(() => {
 
-        if (emailErrors.isEmpty || emailErrors.isInvalid) {
+        if (emailErrors.isEmpty || emailErrors.isInvalid || !emailErrors.isPresent) {
             emailLabelRef.current.classList.add("login__label--error")
             emailInputRef.current.classList.add("login__input--error")
         }
@@ -88,7 +89,7 @@ export default function NewLogin() {
     //if email or password not valid, render respective error jsx
     const submitLoginForm = e => {
         e.preventDefault()
-        
+
         reset()
 
         dispatch(login({ loginEmail, password }))

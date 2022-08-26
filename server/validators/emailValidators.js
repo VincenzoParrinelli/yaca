@@ -14,25 +14,5 @@ const validateSignUpEmail = async (req, res, next) => {
     })
 }
 
-const validateLoginEmail = async (req, res, next) => {
 
-    const loginEmail = req.body.loginEmail
-    const emailErrorsMap = new Map()
-
-    if (!loginEmail) emailErrorsMap.set("emailErrors", { isEmpty: true })
-
-    if (!validator.isEmail(loginEmail)) emailErrorsMap.set("emailErrors", { isInvalid: true })
-
-    await User.findOne({ email: loginEmail }).then(async userData => {
-
-        if (!userData) emailErrorsMap.set("emailErrors", { isPresent: false })
-
-        res.locals.userData = userData
-        res.locals.emailErrorsMap = emailErrorsMap
-
-        next()
-    })
-}
-
-
-module.exports = { validateSignUpEmail, validateLoginEmail }
+module.exports = { validateSignUpEmail }

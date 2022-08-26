@@ -1,11 +1,10 @@
 const express = require("express")
 const router = express.Router()
 
-const { validateSignUpEmail, validateLoginEmail } = require("../validators/emailValidators")
-const { validateSignUpPassword, validateLoginPassword } = require("../validators/passwordValidators")
+const { validateLoginForm } = require("../validators/formValidators")
+const { validateSignUpEmail } = require("../validators/emailValidators")
+const { validateSignUpPassword } = require("../validators/passwordValidators")
 const { validateToken } = require("../validators/tokenValidators")
-
-const {handleErrors} = require("../helpers/handleErrors")
 
 const { sendConfirmEmail } = require("../emails/confirmEmail")
 
@@ -16,7 +15,7 @@ router.post("/create-user", validateSignUpEmail, userController.createUser, send
 
 router.post("/activate-account", validateSignUpPassword, userController.activateAccount)
 
-router.post("/login", validateLoginEmail, validateLoginPassword, handleErrors, userController.login)
+router.post("/login", validateLoginForm, userController.login)
 
 router.post("/update", validateToken, userController.update)
 

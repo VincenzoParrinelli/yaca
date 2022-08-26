@@ -12,18 +12,4 @@ const validateSignUpPassword = async (req, res, next) => {
 
 }
 
-const validateLoginPassword = async (req, res, next) => {
-    const password = req.body.password
-    const passwordErrorsMap = new Map()
-
-    if (!password) passwordErrorsMap.set("passwordErrors", { isEmpty: true })
-
-    if (!validator.isStrongPassword(password)) passwordErrorsMap.set("passwordErrors", { isInvalid: true })
-
-    res.locals.passwordErrorsMap = passwordErrorsMap
-
-    next()
-
-}
-
-module.exports = { validateSignUpPassword, validateLoginPassword }
+module.exports = { validateSignUpPassword }
