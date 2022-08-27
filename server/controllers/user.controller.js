@@ -5,52 +5,14 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
 module.exports = {
-    createUser: async (req, res, next) => {
-        const email = req.body.email
 
-        await User.create({ email }).then(async data => {
-
-            next()
-
-        }).catch(err => console.error(err.message))
+    register: async (req, res, next) => {
 
     },
 
 
     activateAccount: async (req, res) => {
-        const id = req.body.id
-        const username = req.body.username
-        const password = req.body.password
 
-        await User.findById(id).then(async data => {
-            if (data) {
-
-                if (data.password === "NOT SET" || data.username === "NOT SET") {
-                    try {
-                        const hashedPassword = await bcrypt.hash(password, 10)
-
-                        await User.findByIdAndUpdate(id, {
-
-                            password: hashedPassword, username, $unset: { createdAt: 1 }
-
-                        }).then(() => {
-
-                            res.json({ isValid: true, isMatch: true, payload: data, hashedPassword })
-
-                        }).catch(err => console.error(err.message))
-
-                    } catch {
-                        res.status(500).send(err.message)
-                    }
-
-                } else {
-                    res.json({ isValid: true, isPresent: true, isMatch: true })
-                }
-            } else {
-                res.json({ isValid: true, isPresent: false })
-            }
-
-        }).catch(err => console.error(err.message))
     },
 
     login: async (req, res) => {

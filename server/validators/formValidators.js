@@ -1,17 +1,18 @@
 const User = require("../models/User.js")
-const { validateEmail, validatePassword } = require("../helpers/emailAndPasswordValidator")
+const { validateUsername, validateEmail, validatePassword } = require("../helpers/validators")
 
-const validateLoginForm = async (req, res, next) => {
+const validateForm = async (req, res, next) => {
 
-    const { loginEmail, password } = req.body
+    const { username, email, password } = req.body
     let errors = {}
 
-    Object.assign(errors, validateEmail(loginEmail))
+    Object.assign(errors, validateUsername(username))
+    Object.assign(errors, validateEmail(email))
     Object.assign(errors, validatePassword(password))
 
     if (errors.emailErrors || errors.passwordErrors) return res.status(400).send(errors)
 
-    await User.findOne({ email: loginEmail }).then(async userData => {
+    await User.findOne({ email }).then(async userData => {
 
         if (!userData) errors.emailErrors = { isPresent: false }
 
@@ -25,4 +26,4 @@ const validateLoginForm = async (req, res, next) => {
 
 }
 
-module.exports = { validateLoginForm } 
+module.exports = { validateForm } 

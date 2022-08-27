@@ -1,285 +1,163 @@
-.Login {
-    height: 100vh;
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100vw;
-    background-image: url(../Assets/Images/login-form-page-background.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    font-family: "arial";
+    height: 100vh;
+    background-color: #141720;
 
-    .logo {
+    &__container-outer {
         display: flex;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 0;
-        width: 18vw;
-        height: 18vh;
-        box-shadow: 10px, 10px, 30px, 10px;
-    }
+        width: 80vw;
+        height: 80vh;
+        background-color: black;
+        color: white;
+        font: 16px "aeroportLight";
+        overflow: hidden;
+        background-image: url("../Assets/Images/login-background.jpg");
+        background-attachment: fixed;
+        background-position: right;
+        background-repeat: no-repeat;
+        background-size: 50em;
+        background-position-x: 45em;
+        border-radius: 25px;
 
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12),
+            0 2px 2px rgba(0, 0, 0, 0.12),
+            0 4px 4px rgba(0, 0, 0, 0.12),
+            0 8px 8px rgba(0, 0, 0, 0.12),
+            0 16px 16px rgba(0, 0, 0, 0.12);
 
-    .login-form-container {
-        display: flex;
-
-        .login-form1 {
-            display: flex;
-            margin: auto;
-            width: 70vh;
-            height: 80vh;
-            transform: translate(0, 0);
-            background-color: white;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 0;
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 0;
-            flex-direction: column;   
-            margin-left: 160px;   
-            box-shadow: 0px 20px 10px 15px;
-            background-image: url(../Assets/Images/login-form-background.jpg);
-            background-position: right;
-
-            .icon {
-                display: flex;
-                margin: auto;
-                margin-top: 66px;
-                width: 15vh;
-                height: 15vh;
-            }
-
-            #icon-email {
-                opacity: 0.9;
-            }
-
-            .email, .password {
-                display: flex;
-                position: relative;
-                bottom: 100px;
-                width: 40vh;
-                height: 4vh;
-                border-radius: 16px;
-                margin-left: auto;
-                margin-right: auto;
-                transform: translate(0, 15px);
-                color: white;
-                background: transparent;
-                border-style: solid;
-                border-width: 1px;
-                border-color: rgb(224, 224, 224);
-                outline: none;
-                margin-bottom: 35px;
-                text-indent: 40px;
-                background: url(../Assets/Images/lock.png);
-                background-position: left;
-                background-size: 18px;
-                background-repeat: no-repeat;
-                background-position: 10px;
-                background-position-y: 5px;
-                opacity: 0.7;
-                font-size: 16px;
-                
-                &:focus {
-                    opacity: 1;
-                }
-            } 
-
-            .email {
-                background: url(../Assets/Images/email.png);
-                background-position: left;
-                background-size: 18px;
-                background-repeat: no-repeat;
-                background-position: 10px;
-                background-position-y: 6px;
-            }
-
-            .email-container {
-                font-size: 13px;
-
-                .email ~ span {
-                    color: white;
-                    transition:top .7s ease;
-                    position:absolute;
-                    top: 273.5px;
-                    left: 100px;
-                }
-    
-                .email:focus ~ span{
-                    font-size: 12px;
-                    top: 242px;
-                }
-            }
-
-            .password-container {
-                font-size: 13px;
-
-                .password ~ span {
-                    color: white;
-                    transition:top .7s ease;
-                    position:absolute;
-                    top: 341.5px;
-                    left: 99px;
-                }
-    
-                .password:focus ~ span{
-                    font-size: 12px;
-                    top: 312px;
-                }
-            }
-
-            .login-icon {
-                position: absolute;
-                width: 3.8vh;
-                height: 3.8vh;
-                left: 65px;
-                bottom: 128px;
-                z-index: 1;
-            }
-        
-            .submit {
-                display: flex;
-                position: relative;
-                bottom: 26vh;
-                border: none;
-                border-radius: 20px;
-                transform: translate(0, 120px);
-                width: 42vh;
-                height: 5vh;
-                margin-left: auto;
-                margin-right: auto;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-                color: white;
-                font-weight: bolder;
-                letter-spacing: 2px;
-                background-color: #0000ff;
-            }
-
-            .remember-me-container {
-                display: flex;
-                margin-left: 50px;
-
-                .remember-me-checkbox {
-                    width: 1.1em;
-                    height: 1.1em;
-                    position: relative;
-                    bottom: 23px;
-                    right: 8px;
-                    border-radius: 50%;
-                    border: 1px solid #ddd;
-                    appearance: none;
-                    -webkit-appearance: none;
-                    outline: none;
-                    
-
-                    &:active {
-                        background-color: white;
-                    }
-                }
-    
-                .remember-me-paragraph {
-                    position: relative;
-                    color: white;
-                    font-size: 12px;
-                    bottom: 32px;
-                }
-            }
-
-            .reset-password {
-                position: relative;
-                color: white;
-                margin-left: auto;
-                margin-right: auto;
-                left: 240px;
-                bottom: 60px;
-                font-size: 12px;
-                font-style: oblique;
-                opacity: 0.7;
-            }
-        }
-
-
-        .login-form2 {
-            display: flex;
+        //parallelogram div
+        &:after {
+            content: "";
             position: relative;
-            margin: auto;
-            margin-right: 160px;    
-            width: 140vh;
-            height: 80vh;
-            background-color: white;
-            border-top-left-radius: 0;
-            border-top-right-radius: 8px;
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 8px;
-            flex-direction: column;
-            box-shadow: -15px 0 10px -10px white, 20px 15px 10px 1px, -15px 10px 10px 0;
-            background-image: url(../Assets/Images/login-form-background.jpg);
+            width: 70%;
+            height: 100%;
+            right: 33em;
+            pointer-events: none;
+            background: linear-gradient(#282a39ea, #282a39e8, #282a399b);
+            //background: linear-gradient(#282a39ea, #2e3041d8 ,#1d1d28);
+            transform: skewX(20deg);
+        }
 
-            .welcome {
-                color: white;
-                position: relative;
-                right: 10vh;
-                bottom: 20vh;
-                margin-top: auto;
-                margin-left: auto;
-                font-weight: bolder;
-                font-size: 48px;
-                animation: 1.5s welcome-transition;
-            }
+    }
 
-            .not-a-member {
-                color: white;
-                position: relative;
-                right: 22vh;
-                bottom: 20vh;
-                margin-left: auto;
-                font-weight: bolder;
-                font-size: 12px;
-                opacity: 0.5;
-                animation: 1s welcome-transition;
-            }
-            
-            .sign-up {
-                color: white;
-                position: relative;
-                right: 11.4vh;
-                bottom: 25.21vh;
-                margin-left: auto;
-                font-weight: bolder;
-                font-size: 12px;
-                animation: 1s welcome-transition;
-                cursor: pointer;
-                text-decoration: underline;
-            }
+    &__form-container {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        width: 37%;
+        height: 70%;
+        transform: translate(20%, 20%);
+        z-index: 1;
+
+        &--open {
+            animation: formPopIn 0.5s;
         }
     }
 
-    @keyframes welcome-transition {
-        0% {
-            transform: translate(-140px);
-        }
+    &__span-1 {
+        margin-bottom: 14px;
+        font: bold 36px "aeroportLight";
+    }
 
-        100% {
-            transform: translate(0);
+    &__signin-text {
+        margin-bottom: 40px;
+    }
+
+    &__signin-anchor {
+        text-decoration: none;
+        color: #1c8ff3;
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
         }
     }
 
-    @keyframes sign-up-form-open {
-        from {
-            transform: rotate3d(0, -1, 0, 90deg)
-         
+    &__form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__input {
+        position: relative;
+        width: 100%;
+        height: 8vh;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+        border-radius: 18px;
+        outline: solid;
+        outline-color: transparent;
+        border: none;
+        background-color: #323645;
+        color: white;
+        padding: 10px 30px;
+        font: 16px "aeroportLight";
+        transition: 0.1s all;
+
+        &:focus {
+            outline-color: #2088e5;
+            box-shadow: 0 0px 15px -5px #1d90f5;
         }
-        to {
-            transform: rotate3d(0);
+
+        &--password {
+            margin-bottom: 30px;
+        }
+
+        &--error {
+            outline-color: #ff2d34 !important; //avoid color swapping to blue, while there is an error, if user focuses input 
+            box-shadow: 0 0px 15px -5px #ff2d34 !important;
         }
     }
 
-    
-    @keyframes sign-up-form-close {
-        from {
-            transform: rotate3d(0);
+    &__label {
+        position: relative;
+        left: 30px;
+        top: 40px;
+        pointer-events: none;
+        transition: 0.3s all;
+        z-index: 1;
+
+        &--focused {
+            font-size: 12px;
+            opacity: 0.4;
+            top: 20px;
         }
-        to {
-            transform: rotate3d(0, -1, 0, 90deg)
+
+        &--error {
+            color: #ff2d34;
+            opacity: 1;
         }
-    } 
+
+    }
+
+
+    &__submit-btn {
+        width: 90%;
+        color: white;
+        background-color: #1d90f5;
+        border-radius: 30px;
+        border: none;
+        padding: 15px;
+        cursor: pointer;
+        align-self: center;
+        transition: 0.3s all;
+        box-shadow: 0 20px 80px -19px #1d90f5;
+
+        &:hover {
+            box-shadow: 0 30px 80px -15px #1d90f5;
+        }
+    }
+}
+
+@keyframes formPopIn {
+    from {
+        left: -500px;
+    }
+
+    to {
+        left: 0;
+    }
 }

@@ -21,25 +21,27 @@ const initialState = {
         friendRequestsPending: [],
         friendList: [],
     },
-
-    errors: {
-        isValid: true,
-        isPresent: false,
-        isMatch: true
-    }
 }
 
 
-export const createUser = createAsyncThunk(
-    "user/createUser",
+export const register = createAsyncThunk(
+    "user/register",
 
-    async email => await axios.post(`${serverUrl}user/create-user`, {
-        email
-    }).then(res => {
+    async (data, { rejectWithValue }) => await axios.post(`${serverUrl}user/register`,
+        data
+    ).then(res => {
 
 
         return res.data;
-    }).catch(err => { throw Error(err) })
+    }).catch(err => {
+
+        if (!err.response) throw (err)
+
+
+        //add error body to login/rejected payload
+        //redux doesn't do this automatically, so we need to call this function
+        throw rejectWithValue(err.response.data)
+    })
 )
 
 export const activateAccount = createAsyncThunk(
@@ -73,11 +75,11 @@ export const login = createAsyncThunk(
     }).catch(err => {
 
         if (!err.response) throw (err)
-        
+
 
         //add error body to login/rejected payload
         //redux doesn't do this automatically, so we need to call this function
-        throw rejectWithValue(err.response.data) 
+        throw rejectWithValue(err.response.data)
     })
 )
 
@@ -163,44 +165,24 @@ export const userSlice = createSlice({
 
         reset: state => {
             state.emailSent = false
-            state.errors.isPresent = false
-            state.errors.isValid = true
-            state.errors.isMatch = true
         },
     },
 
     extraReducers: {
-        [createUser.pending]: (state, action) => {
-            state.errors = initialState.errors
+        [register.pending]: (state, action) => {
             state.emailSent = false
         },
 
-        [createUser.fulfilled]: (state, action) => {
+        [register.fulfilled]: (state, action) => {
             state.emailSent = action.payload.emailSent
-            state.errors = action.payload
         },
 
-        [createUser.rejected]: (state, action) => {
-            state.errors = initialState.errors
-            state.emailSent = false
-        },
+        [register.rejected]: (state, action) => {
 
-        [activateAccount.pending]: (state, action) => {
-            state.errors = initialState.errors
-        },
-
-        [activateAccount.fulfilled]: (state, action) => {
-            state.errors = action.payload
-        },
-
-        [activateAccount.rejected]: (state, action) => {
-            state.errors = initialState.errors
         },
 
         [login.fulfilled]: (state, action) => {
             state.data = action.payload.userData
-            state.errors.isValid = action.payload.isValid
-            state.errors.isPresent = action.payload.isPresent
             state.isLogged = action.payload.isLogged
         },
 

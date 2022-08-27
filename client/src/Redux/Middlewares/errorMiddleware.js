@@ -1,6 +1,6 @@
 export const errorMiddleware = store => next => action => {
 
-    if (action.type === "user/login/rejected") {
+    if (action.type === "user/login/rejected" || action.type === "user/register/rejected") {
 
         store.dispatch({
             type: "error/setErrors",
@@ -8,6 +8,6 @@ export const errorMiddleware = store => next => action => {
         })
 
     }
-
+    
     next(action)
 }

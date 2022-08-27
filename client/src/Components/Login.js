@@ -1,34 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from "react-router-dom"
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react'
+import { useNavigate, useLocation } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { reset as resetUserState, login, logout } from '../Redux/userSlice';
+import { login, logout } from '../Redux/userSlice';
+import { register } from '../Redux/userSlice';
 import { reset as resetSocketState } from "../Redux/socketSlice"
-import logo from "../Assets/Images/logo.png"
-import loginIcon from "../Assets/Images/login-icon.png"
-import userIcon from "../Assets/Images/user-icon.png"
-import emailIcon from "../Assets/Images/email.png"
-import SignUpForm from "./SignUp"
+import { reset as errorsReset, swapEmailIsPresentValue } from '../Redux/errorsSlice';
 import "./Login.scss"
 
-export default function Login() {
+export default function NewLogin() {
 
-    const [openSignUp, setOpenSignUp] = useState(false)
-    const [back, setBack] = useState(false)
-    const [loginEmail, setLoginEmail] = useState("")
+    const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const loginRef = useRef(null)
-    const emailSpanLoginRef = useRef(null)
-    const passwordSpanRef = useRef(null)
+    const formContainerRef = useRef(null)
 
-    const { emailSent, isLogged } = useSelector(state => state.user)
+    const usernameLabelRef = useRef(null)
+    const usernameInputRef = useRef(null)
+    const emailLabelRef = useRef(null)
+    const emailInputRef = useRef(null)
+    const passwordLabelRef = useRef(null)
+    const passwordInputRef = useRef(null)
+
+    const { isLogged } = useSelector(state => state.user)
     const { errors } = useSelector(state => state.sockets)
+    const { usernameErrors, emailErrors, passwordErrors } = useSelector(state => state.error)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const location = useLocation()
 
     // reset socket and user slice state when login page is rendered
-
     useEffect(() => {
 
         dispatch(resetSocketState())
@@ -36,7 +38,21 @@ export default function Login() {
 
     }, [])
 
-    ///
+    //trigger opening animation when user swaps to register form
+    useEffect(() => {
+
+        removeErrorStylingFromInputs()
+
+        if (location.pathname !== "/register") return
+
+        dispatch(swapEmailIsPresentValue())
+        formContainerRef.current.classList.add("login__form-container--open")
+
+        return () => {
+            formContainerRef.current.classList.remove("login__form-container--open")
+        }
+    }, [location.pathname])
+
 
     useEffect(() => {
         if (isLogged && errors.authorized) {
@@ -44,153 +60,208 @@ export default function Login() {
         }
     }, [isLogged])
 
+
+    //user mousedown input listener
     useEffect(() => {
 
-        if (loginEmail) {
-            emailSpanLoginRef.current.style.top = "242px"
-            emailSpanLoginRef.current.style.fontSize = "12px"
+        window.addEventListener("mousedown", removeLabelFocusClass)
 
-        } else {
-            emailSpanLoginRef.current.style.top = ""
-            emailSpanLoginRef.current.style.fontSize = ""
+        return () => {
+            window.removeEventListener("mousedown", removeLabelFocusClass)
         }
 
-    }, [loginEmail])
+    }, [])
 
-    useEffect(() => {
 
-        if (password) {
-            passwordSpanRef.current.style.top = "312px"
-            passwordSpanRef.current.style.fontSize = "12px"
+    //if no email, password or username and no focus in input form remove focused class from respective label 
+    const removeLabelFocusClass = e => {
 
-        } else {
-            passwordSpanRef.current.style.top = ""
-            passwordSpanRef.current.style.fontSize = ""
-        }
+        if (e.target !== emailLabelRef.current && !emailInputRef.current.value) emailLabelRef.current.classList.remove("login__label--focused")
+        if (e.target !== passwordLabelRef.current && !passwordInputRef.current.value) passwordLabelRef.current.classList.remove("login__label--focused")
 
-    }, [password])
-
-    //The back parameter is a flag that tells this function if we want to swap from
-    //signup to login form
-
-    const handleSignUpForm = back => {
-        setBack(back)
-
-        if (openSignUp && !back) return
-
-        loginRef.current.style.animation = "sign-up-form-close 0.4s"
-
-        setLoginEmail("")
+        if (!usernameLabelRef.current) return
+        if (e.target !== usernameLabelRef.current && !usernameInputRef.current.value) usernameLabelRef.current.classList.remove("login__label--focused")
 
     }
 
-    const openSignUpForm = () => {
+    //when user clicks respective input add focused class on respective label
+    const handleInputFocuses = e => {
 
-        //removes errors and emailSent flag while swapping form
-        dispatch(resetUserState())
+        //check wich input the user has focused
+        if (e.target.name === "email") emailLabelRef.current.classList.add("login__label--focused")
+        if (e.target.name === "password") passwordLabelRef.current.classList.add("login__label--focused")
 
-        loginRef.current.style.animation = "sign-up-form-open 0.4s"
+        if (!usernameLabelRef.current) return
+        if (e.target.name === "username") usernameLabelRef.current.classList.add("login__label--focused")
 
-        if (!back) {
-            setOpenSignUp(true)
-        } else {
-            setOpenSignUp(false)
-        }
     }
 
+    //add styling for respective errors
+    useLayoutEffect(() => {
+
+        if (emailErrors.isEmpty || emailErrors.isInvalid || !emailErrors.isPresent && location.pathname !== "/register" || emailErrors.isPresent && location.pathname === "/register") {
+            emailLabelRef.current.classList.add("login__label--error")
+            emailInputRef.current.classList.add("login__input--error")
+        }
+
+        if (passwordErrors.isEmpty || passwordErrors.isInvalid) {
+            passwordLabelRef.current.classList.add("login__label--error")
+            passwordInputRef.current.classList.add("login__input--error")
+        }
+
+        if (!usernameLabelRef.current) return
+
+        if (usernameErrors.isEmpty) {
+            usernameLabelRef.current.classList.add("login__label--error")
+            usernameInputRef.current.classList.add("login__input--error")
+        }
+
+    }, [usernameErrors, emailErrors, passwordErrors])
+
+    //if email or password not valid, render respective error jsx
+    const submitLoginForm = e => {
+        e.preventDefault()
+
+        removeErrorStylingFromInputs()
+
+        if (location.pathname === "/register") {
+
+            dispatch(register({ username, email, password }))
+
+        } else {
+
+            dispatch(login({ email, password }))
+
+        }
+
+    }
+
+    const removeErrorStylingFromInputs = () => {
+
+        dispatch(errorsReset())
+
+        emailLabelRef.current.classList.remove("login__label--error")
+        emailInputRef.current.classList.remove("login__input--error")
+
+        passwordLabelRef.current.classList.remove("login__label--error")
+        passwordInputRef.current.classList.remove("login__input--error")
+
+        if (!usernameLabelRef.current) return
+        usernameLabelRef.current.classList.remove("login__label--error")
+        usernameInputRef.current.classList.remove("login__input--error")
+
+    }
 
     return (
-        <div className='Login'>
+        <div className='login'>
 
-            <img src={logo} className='logo' />
+            <div className='login__container-outer'>
 
-            <div className='login-form-container'>
+                <div className='login__form-container' ref={formContainerRef}>
 
-                <div
-                    ref={loginRef}
-                    className='login-form1'
-                    onAnimationEnd={() => openSignUpForm()}
-                    value={openSignUp}
-                >
-
-                    {emailSent ?
-
-                        <img className='icon' id='icon-email' src={emailIcon} />
+                    {location.pathname === "/register" ?
+                        <>
+                            <span className='login__span-1'>CREATE NEW ACCOUNT.</span>
+                        </>
 
                         :
 
-                        <img className='icon' id='icon-user' src={userIcon} />
+                        <>
+                            <span className='login__span-1'>WELCOME BACK.</span>
+
+                            <span className='login__signin-text'>Not a member? <a className='login__signin-anchor' onClick={() => navigate("/register")}>Sign In</a> </span>
+                        </>
                     }
 
-                    { //swap form to signup on user click
+                    <form className='login__form' method='POST' autoComplete='off' onSubmit={submitLoginForm} noValidate>
 
-                        openSignUp ?
-
-                            <SignUpForm
-                                handleSignUpForm={handleSignUpForm}
-                            />
-
-                            :
-
+                        {location.pathname === "/register" &&
                             <div>
+                                <label
+                                    className='login__label'
+                                    ref={usernameLabelRef}
+                                    htmlFor='username'
+                                >
 
-                                <label className='email-container'>
+                                    Username
 
-                                    <input
-                                        type="email"
-                                        className='email'
-                                        value={loginEmail}
-                                        onChange={e => setLoginEmail(e.target.value)}
-                                    />
-
-                                    <span ref={emailSpanLoginRef}> EMAIL </span>
+                                    {usernameErrors.isEmpty && <span className='login__error'> - This field is required</span>}
 
                                 </label>
 
-                                <label className='password-container'>
-
-                                    <input
-                                        type="password"
-                                        className='password'
-                                        value={password}
-                                        onChange={e => setPassword(e.target.value)}
-                                    />
-                                    <span ref={passwordSpanRef}> PASSWORD </span>
-
-                                </label>
-
-
-                                <img className='login-icon' src={loginIcon} />
-
-                                <button
-                                    className='submit'
-                                    onClick={() => dispatch(login({ loginEmail, password }))}>
-
-                                    LOGIN
-                                </button>
-
-                                <div className='remember-me-container'>
-                                    <input type="checkbox" className='remember-me-checkbox'></input>
-
-                                    <p className='remember-me-paragraph'> Remember me </p>
-                                </div>
-
-
-                                <a className='reset-password' href=""> Forgot your password? </a>
-
+                                <input
+                                    className='login__input login__input--username'
+                                    id='username'
+                                    type="username"
+                                    name="username"
+                                    value={username}
+                                    ref={usernameInputRef}
+                                    onChange={e => setUsername(e.target.value)}
+                                    onClick={e => handleInputFocuses(e)}
+                                />
                             </div>
-                    }
+                        }
+
+                        <div>
+                            <label
+                                className='login__label'
+                                ref={emailLabelRef}
+                                htmlFor="email"
+                            >
+
+                                Email
+
+                                {emailErrors.isEmpty && <span className='login__error'> - This field is required</span>}
+                                {emailErrors.isInvalid && <span className='login__error'> - Invalid Email</span>}
+                                {!emailErrors.isPresent && location.pathname !== "/register" && <span className='login__error'> - This user doesn't exist</span>}
+                                {emailErrors.isPresent && location.pathname === "/register" && <span className='login__error'> - This user already exist</span>}
+                            </label>
+
+                            <input
+                                className='login__input login__input--email'
+                                id='email'
+                                type="email"
+                                name='email'
+                                value={email}
+                                ref={emailInputRef}
+                                onChange={e => setEmail(e.target.value)}
+                                onClick={e => handleInputFocuses(e)}
+                            />
+                        </div>
+
+
+                        <div>
+
+                            <label
+                                className='login__label'
+                                ref={passwordLabelRef}
+                                htmlFor="password"
+                            >
+
+                                Password
+
+                                {passwordErrors.isEmpty && <span className='login__error'> - This field is required</span>}
+                                {passwordErrors.isInvalid && <span className='login__error'> - Invalid Password</span>}
+                            </label>
+
+                            <input
+                                className='login__input login__input--password'
+                                id="password"
+                                name='password'
+                                type="password"
+                                value={password}
+                                ref={passwordInputRef}
+                                onChange={e => setPassword(e.target.value)}
+                                onClick={e => handleInputFocuses(e)}
+                            />
+                        </div>
+
+                        <input className='login__submit-btn' type="submit" value={location.pathname === "/register" ? "SIGNUP" : "LOGIN"} />
+                    </form>
 
                 </div>
 
-
-                <div className='login-form2'>
-                    <p className='welcome'> Welcome. </p>
-                    <p className='not-a-member'>Not a member? </p>
-                    <p className='sign-up' onClick={() => handleSignUpForm()}> Sign up now </p>
-                </div>
             </div>
-
         </div>
     )
 }
