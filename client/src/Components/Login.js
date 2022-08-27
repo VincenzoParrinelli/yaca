@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { useNavigate, useLocation } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { login, logout } from '../Redux/userSlice';
-import { register } from '../Redux/userSlice';
+import { register, login, logout } from '../Redux/userSlice';
 import { reset as resetSocketState } from "../Redux/socketSlice"
 import { reset as errorsReset, swapEmailIsPresentValue } from '../Redux/errorsSlice';
 import "./Login.scss"
@@ -26,6 +25,8 @@ export default function NewLogin() {
     const { errors } = useSelector(state => state.sockets)
     const { usernameErrors, emailErrors, passwordErrors } = useSelector(state => state.error)
 
+    console.log(emailErrors)
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const location = useLocation()
@@ -44,8 +45,9 @@ export default function NewLogin() {
         removeErrorStylingFromInputs()
 
         if (location.pathname !== "/register") return
-
+        
         dispatch(swapEmailIsPresentValue())
+
         formContainerRef.current.classList.add("login__form-container--open")
 
         return () => {
@@ -122,21 +124,15 @@ export default function NewLogin() {
     const submitLoginForm = e => {
         e.preventDefault()
 
-        removeErrorStylingFromInputs()
+        if (location.pathname !== "/register") dispatch(login({ email, password }))
 
-        if (location.pathname === "/register") {
-
-            dispatch(register({ username, email, password }))
-
-        } else {
-
-            dispatch(login({ email, password }))
-
-        }
+        dispatch(register({ username, email, password }))
 
     }
 
     const removeErrorStylingFromInputs = () => {
+
+        console.log("first")
 
         dispatch(errorsReset())
 

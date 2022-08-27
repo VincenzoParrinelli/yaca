@@ -10,7 +10,7 @@ const validateForm = async (req, res, next) => {
     Object.assign(errors, validateEmail(email))
     Object.assign(errors, validatePassword(password))
 
-    if (errors.emailErrors || errors.passwordErrors) return res.status(400).send(errors)
+    if (errors.usernameErrors || errors.emailErrors || errors.passwordErrors) return res.status(400).send(errors)
 
     await User.findOne({ email }).then(async userData => {
 

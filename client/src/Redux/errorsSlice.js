@@ -29,9 +29,9 @@ export const errorSlice = createSlice({
         reset: () => initialState,
 
         setErrors: (state, action) => {
-            state.usernameErrors = { ...initialState.usernameErrors, ...action.payload.usernameErrors }
-            state.emailErrors = { ...initialState.emailErrors, ...action.payload.emailErrors }
-            state.passwordErrors = { ...initialState.passwordErrors, ...action.payload.passwordErrors }
+            state.usernameErrors = { ...state.usernameErrors, ...action.payload.usernameErrors }
+            state.emailErrors = { ...state.emailErrors, ...action.payload.emailErrors }
+            state.passwordErrors = { ...state.passwordErrors, ...action.payload.passwordErrors }
         },
 
         //swap boolean when user swaps to registration form

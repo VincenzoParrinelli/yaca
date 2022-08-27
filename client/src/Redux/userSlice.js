@@ -177,10 +177,6 @@ export const userSlice = createSlice({
             state.emailSent = action.payload.emailSent
         },
 
-        [register.rejected]: (state, action) => {
-
-        },
-
         [login.fulfilled]: (state, action) => {
             state.data = action.payload.userData
             state.isLogged = action.payload.isLogged
