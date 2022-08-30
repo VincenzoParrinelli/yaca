@@ -1,4 +1,5 @@
 const validator = require("validator")
+const User = require("../models/User.js")
 
 const validateUsername = username => {
 
@@ -6,11 +7,21 @@ const validateUsername = username => {
 
 }
 
-const validateEmail = email => {
+const validateEmail = async (email, req) => {
 
     if (!email) return { emailErrors: { isEmpty: true } }
 
     if (!validator.isEmail(email)) return { emailErrors: { isInvalid: true } }
+
+    return await User.findOne({ email }).then(userData => {
+
+        if (!userData && req.path !== "/register") return { emailErrors: { loginIsPresent: false } }
+
+        if (userData && req.path === "/register") return { emailErrors: { signupIsPresent: true } }
+      
+
+    })
+
 }
 
 const validatePassword = password => {

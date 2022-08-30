@@ -25,8 +25,6 @@ export default function NewLogin() {
     const { errors } = useSelector(state => state.sockets)
     const { usernameErrors, emailErrors, passwordErrors } = useSelector(state => state.error)
 
-    console.log(emailErrors)
-
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const location = useLocation()
@@ -45,8 +43,6 @@ export default function NewLogin() {
         removeErrorStylingFromInputs()
 
         if (location.pathname !== "/register") return
-        
-        dispatch(swapEmailIsPresentValue())
 
         formContainerRef.current.classList.add("login__form-container--open")
 
@@ -101,7 +97,7 @@ export default function NewLogin() {
     //add styling for respective errors
     useLayoutEffect(() => {
 
-        if (emailErrors.isEmpty || emailErrors.isInvalid || !emailErrors.isPresent && location.pathname !== "/register" || emailErrors.isPresent && location.pathname === "/register") {
+        if (emailErrors.isEmpty || emailErrors.isInvalid || !emailErrors.loginIsPresent || emailErrors.signupIsPresent) {
             emailLabelRef.current.classList.add("login__label--error")
             emailInputRef.current.classList.add("login__input--error")
         }
@@ -124,15 +120,15 @@ export default function NewLogin() {
     const submitLoginForm = e => {
         e.preventDefault()
 
-        if (location.pathname !== "/register") dispatch(login({ email, password }))
+        removeErrorStylingFromInputs()
+
+        if (location.pathname !== "/register") return dispatch(login({ email, password }))
 
         dispatch(register({ username, email, password }))
 
     }
 
     const removeErrorStylingFromInputs = () => {
-
-        console.log("first")
 
         dispatch(errorsReset())
 
@@ -188,7 +184,7 @@ export default function NewLogin() {
                                 <input
                                     className='login__input login__input--username'
                                     id='username'
-                                    type="username"
+                                    type="text"
                                     name="username"
                                     value={username}
                                     ref={usernameInputRef}
@@ -209,8 +205,8 @@ export default function NewLogin() {
 
                                 {emailErrors.isEmpty && <span className='login__error'> - This field is required</span>}
                                 {emailErrors.isInvalid && <span className='login__error'> - Invalid Email</span>}
-                                {!emailErrors.isPresent && location.pathname !== "/register" && <span className='login__error'> - This user doesn't exist</span>}
-                                {emailErrors.isPresent && location.pathname === "/register" && <span className='login__error'> - This user already exist</span>}
+                                {!emailErrors.loginIsPresent && <span className='login__error'> - This user doesn't exist</span>}
+                                {emailErrors.signupIsPresent && <span className='login__error'> - This user already exist</span>}
                             </label>
 
                             <input
