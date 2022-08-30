@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { register, login, logout } from '../Redux/userSlice';
 import { reset as resetSocketState } from "../Redux/socketSlice"
-import { reset as errorsReset, swapEmailIsPresentValue } from '../Redux/errorsSlice';
+import { reset as errorsReset } from '../Redux/errorsSlice';
 import "./Login.scss"
 
 export default function NewLogin() {
@@ -21,7 +21,7 @@ export default function NewLogin() {
     const passwordLabelRef = useRef(null)
     const passwordInputRef = useRef(null)
 
-    const { isLogged } = useSelector(state => state.user)
+    const { isLogged, redirectToActivation } = useSelector(state => state.user)
     const { errors } = useSelector(state => state.sockets)
     const { usernameErrors, emailErrors, passwordErrors } = useSelector(state => state.error)
 
@@ -47,16 +47,18 @@ export default function NewLogin() {
         formContainerRef.current.classList.add("login__form-container--open")
 
         return () => {
-            formContainerRef.current.classList.remove("login__form-container--open")
+            formContainerRef?.current.classList.remove("login__form-container--open")
         }
     }, [location.pathname])
 
 
     useEffect(() => {
-        if (isLogged && errors.authorized) {
-            navigate("/dashboard")
-        }
-    }, [isLogged])
+
+        if (isLogged && errors.authorized) navigate("/dashboard")
+
+        if (redirectToActivation) navigate("/verify-account")
+
+    }, [isLogged, redirectToActivation])
 
 
     //user mousedown input listener

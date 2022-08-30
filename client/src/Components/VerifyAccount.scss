@@ -1,0 +1,50 @@
+.verify-account {
+    width: 100vw;
+    height: 100vh;
+    background-color: #141720;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    &__container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        width: 50%;
+        height: 60%;
+    }
+
+    &__heading {
+        color: white;
+        font-family: "aeroportLight";
+        font-weight: bold;
+        font-size: 32px;
+    }
+
+    &__span-1 {
+        color: white;
+        font-family: "aeroportLight";
+        font-size: 18px;
+        opacity: 0.8;
+    }
+
+
+    &__resend-email-btn {
+        margin-top: 40px;
+        width: 20%;
+        background-color: #1d90f5;
+        padding: 12px 14px;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: "aeroportLight";
+        transition: all 0.2s;
+
+        &:hover {
+            background-color: #165b98;
+        }
+    }
+
+}
