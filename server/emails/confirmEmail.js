@@ -1,13 +1,13 @@
 const nodemailer = require("nodemailer")
-const fs = require("fs")
-const handlebars = require("handlebars")
+const path = require("path")
+const hbs = require("nodemailer-express-handlebars")
 
 const sendConfirmEmail = async (req, res) => {
     var email = req.body.email
 
     const transport = nodemailer.createTransport({
-        host: process.env.MAIL_HOST,
-        port: process.env.MAIL_PORT,
+
+        service: "Gmail",
         secure: true,
 
         auth: {
@@ -16,48 +16,32 @@ const sendConfirmEmail = async (req, res) => {
         }
     })
 
-    // read html file with fs boilerplate function
+    const handlebarsOptions = {
+        viewEngine: {
+            partialsDir: path.resolve("./views"),
+            defaultLayout: false
+        },
 
-    const readHTMLfile = (path, cb) => {
-        fs.readFile(path, { encoding: 'utf-8' }, (err, html) => {
-            if (err) {
-                cb(err);
-                throw err;
-
-            }
-            else {
-                cb(null, html);
-            }
-        });
+        viewPath: path.resolve("./views")
     }
 
-    //call previous function and enable hbs file to accept variables (see replacements obj) 
-    //and finally send email afterwards
+    transport.use("compile", hbs(handlebarsOptions))
 
-    readHTMLfile("./views/confirmEmail.hbs", (err, html) => {
-        var template = handlebars.compile(html)
+    const mailOptions = {
+        from: process.env.MAIL_USER,
+        to: email,
+        subject: "Thank you. Please confirm your account",
+        template: "confirmEmail",
 
-        var replacements = {
-            email: email
+        context: {
+            email
         }
+    }
 
-        var htmlToSend = template(replacements)
-
-        const options = {
-            from: process.env.MAIL_USER,
-            to: email,
-            subject: "Please confirm your email",
-            html: htmlToSend
-        }
-
-        transport.sendMail(options, (err) => {
-            if (err) {
-                res.status(500).send(err.message)
-            } else {
-                res.json({ isValid: true, isPresent: false, emailSent: true })
-            }
-        })
+    transport.sendMail(mailOptions, err => {
+        console.log(err)
     })
+
 }
 
 module.exports = { sendConfirmEmail }
