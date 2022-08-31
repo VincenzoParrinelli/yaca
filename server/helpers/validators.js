@@ -18,7 +18,6 @@ const validateEmail = async (email, req) => {
         if (!userData && req.path !== "/register") return { emailErrors: { loginIsPresent: false } }
 
         if (userData && req.path === "/register") return { emailErrors: { signupIsPresent: true } }
-      
 
     })
 

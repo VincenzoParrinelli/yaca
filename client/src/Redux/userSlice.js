@@ -11,6 +11,7 @@ const initialState = {
     rememberMe: false,
     isLogged: false,
     emailSent: false,
+    redirectToActivation: false,
 
     data: {
         _id: null,
@@ -170,11 +171,13 @@ export const userSlice = createSlice({
 
     extraReducers: {
         [register.pending]: (state, action) => {
-            state.emailSent = false
+
         },
 
         [register.fulfilled]: (state, action) => {
-            state.emailSent = action.payload.emailSent
+            state.data = action.payload
+            state.redirectToActivation = true
+            console.log(action.payload)
         },
 
         [login.fulfilled]: (state, action) => {

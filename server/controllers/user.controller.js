@@ -9,7 +9,17 @@ module.exports = {
     register: async (req, res, next) => {
         const { username, email, password } = req.body
 
-        console.log(req.body)
+        const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt())
+        const token = jwt.sign({ username, email, hashedPassword }, process.env.ACTIVATION_TOKEN_SECRET, { expiresIn: "5s" })
+        const activationToken = await bcrypt.hash(token, await bcrypt.genSalt())
+
+        await User.create({ username, email, password: hashedPassword, activationToken }).then(newUserData => {
+
+            //if (newUserData) return res.status(201).json({ newUserData })
+
+            next()
+        })
+
     },
 
 

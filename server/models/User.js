@@ -7,6 +7,15 @@ const userSchema = mongoose.Schema({
         default: "OFFLINE"
     },
 
+    activationToken: {
+        type: String,
+    },
+
+    verified: {
+        type: Boolean,
+        default: false
+    },
+
     email: {
         type: String,
         required: true
@@ -41,10 +50,10 @@ const userSchema = mongoose.Schema({
         type: String,
         default: "EMPTY"
     }],
-      
+
     createdAt: {
         type: Date,
-        expires: "10m",
+        expires: "1d",
         default: Date.now
     }
 })

@@ -11,6 +11,8 @@ const validateForm = async (req, res, next) => {
 
     if (errors.usernameErrors || errors.emailErrors || errors.passwordErrors) return res.status(400).send(errors)
 
+    next()
+
 }
 
 module.exports = { validateForm } 
