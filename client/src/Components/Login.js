@@ -47,7 +47,7 @@ export default function NewLogin() {
         formContainerRef.current.classList.add("login__form-container--open")
 
         return () => {
-            formContainerRef?.current.classList.remove("login__form-container--open")
+            if (formContainerRef.current) formContainerRef.current.classList.remove("login__form-container--open")
         }
     }, [location.pathname])
 
