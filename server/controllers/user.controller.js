@@ -3,6 +3,7 @@ const Conversation = require("../models/Conversation.js")
 const Group = require("../models/Groups.js")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+const { getAuth } = require("firebase-admin/auth")
 
 module.exports = {
 
@@ -10,21 +11,44 @@ module.exports = {
         const { username, email, password } = req.body
 
         const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt())
-        const token = jwt.sign({ username, email, hashedPassword }, process.env.ACTIVATION_TOKEN_SECRET, { expiresIn: "5s" })
-        const activationToken = await bcrypt.hash(token, await bcrypt.genSalt())
 
-        await User.create({ username, email, password: hashedPassword, activationToken }).then(newUserData => {
+        await User.create({ username, email, password: hashedPassword }).then(async newUserData => {
 
-            //if (newUserData) return res.status(201).json({ newUserData })
+            if (newUserData) res.locals.newUserData = newUserData
 
-            next()
+            const activationToken = jwt.sign({ _id: newUserData._id }, process.env.ACTIVATION_TOKEN_SECRET, { expiresIn: "1h" })
+
+            newUserData.activationToken = activationToken
+
+            await newUserData.save().then(newData => {
+                if (newData) {
+
+                    getAuth().createUser(newData)
+                    next()
+                    
+                }
+            })
+
         })
 
     },
 
 
-    activateAccount: async (req, res) => {
+    activateAccount: async (req, res, next) => {
+        const { token } = req.body
 
+        jwt.verify(token, process.env.ACTIVATION_TOKEN_SECRET, async (err, tokenData) => {
+            if (err) res.sendStatus(403)
+
+            await User.findByIdAndUpdate(tokenData._id, { verified: true, $unset: { createdAt: 1, activationToken: 1 } }, { new: true })
+                .select({ "_id": 1, "username": 1, "socketID": 1, "verified": 1 })
+                .then(user => {
+
+                    res.locals.userData = user
+
+                    next()
+                })
+        })
     },
 
     login: async (req, res) => {

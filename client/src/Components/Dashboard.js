@@ -24,6 +24,8 @@ export default function Dashboard() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    console.log(data)
+
     useEffect(() => {
 
         if (!isLogged || !errors.authorized) {

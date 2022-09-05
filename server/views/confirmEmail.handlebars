@@ -10,9 +10,14 @@
 
     <style>
         body {
-            display: table;
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
             position: relative;
             margin: auto;
+            justify-content: center;
+            align-items: center;
         }
 
         .confirmEmail {
@@ -24,17 +29,11 @@
         }
 
         .confirm-button {
-            display: flex;
-            margin: auto;
-            margin-top: 20px;
-            width: 150vh;
-            height: 15vh;
+            width: 5vw;
+            height: 5vh;
+            padding: 12px;
             color: white;
-            background-color: #0000ff;
-            letter-spacing: 2px;
-            justify-content: center;
-            align-items: center;
-            font-weight: bolder;
+            background-color: #1d90f5;
         }
     </style>
 </head>
@@ -43,8 +42,8 @@
     <div class="confirmEmail">
         Hello: {{email}}, please click the button below to activate your account
 
-        <button class="confirm-button" <a href="http://localhost:3000/new_password/${id}">
-            Please set your password
+        <button class="confirm-button">
+            <a href="http://localhost:3000/verify-account/{{activationToken}}">Activate Account</a>
         </button>
     </div>
 </body>

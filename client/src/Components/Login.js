@@ -32,8 +32,13 @@ export default function NewLogin() {
     // reset socket and user slice state when login page is rendered
     useEffect(() => {
 
+        //this if prevents user from going back to login form while already logged
+        if (isLogged) return navigate("/dashboard")
+
         dispatch(resetSocketState())
         dispatch(logout())
+
+        if (isLogged && errors.authorized) navigate("/dashboard")
 
     }, [])
 

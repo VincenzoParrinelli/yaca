@@ -1,11 +1,11 @@
 const express = require("express")
 const router = express.Router()
 
-const { validateToken } = require("../validators/tokenValidators")
+const { validateAccessToken } = require("../validators/tokenValidators")
 
 const groupController = require("../controllers/group.controller")
 
-router.use(validateToken)
+router.use(validateAccessToken)
 
 router.post("/create-group", groupController.createGroup)
 

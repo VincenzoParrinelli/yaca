@@ -21,6 +21,10 @@
         font-family: "aeroportLight";
         font-weight: bold;
         font-size: 32px;
+
+        &--error {
+            color: rgb(192, 48, 48);
+        }
     }
 
     &__span-1 {

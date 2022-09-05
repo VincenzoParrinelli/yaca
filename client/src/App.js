@@ -14,6 +14,7 @@ export default function App() {
                 <Route path="/" element={<Login />} />
                 <Route path="/register" element={<Login />} />
                 <Route path="/verify-account" element={<VerifyAccount />} />
+                <Route path="/verify-account/:token" element={<VerifyAccount />} />
                 <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
         </BrowserRouter>

@@ -48,15 +48,21 @@ export const register = createAsyncThunk(
 export const activateAccount = createAsyncThunk(
     "user/activateAccount",
 
-    async data => await axios.post(`${serverUrl}user/activate-account`,
-        data
+    async (token, { rejectWithValue }) => await axios.post(`${serverUrl}user/activate-account`,
+        { token },
 
     ).then(res => {
-
-        createUserWithEmailAndPassword(auth, res.data.payload.email, res.data.hashedPassword)
+     
 
         return res.data;
-    }).catch(err => { throw Error(err) })
+    }).catch(err => {
+
+        if (!err.response) throw (err)
+
+        //add error body to login/rejected payload
+        //redux doesn't do this automatically, so we need to call this function
+        throw rejectWithValue(err.response.data)
+    })
 )
 
 export const login = createAsyncThunk(
@@ -69,14 +75,13 @@ export const login = createAsyncThunk(
 
     ).then(async res => {
 
-        signInWithEmailAndPassword(auth, res.data.userData.email, res.data.userData.password)
+     
 
         return res.data
 
     }).catch(err => {
 
         if (!err.response) throw (err)
-
 
         //add error body to login/rejected payload
         //redux doesn't do this automatically, so we need to call this function
@@ -175,9 +180,12 @@ export const userSlice = createSlice({
         },
 
         [register.fulfilled]: (state, action) => {
-            state.data = action.payload
             state.redirectToActivation = true
-            console.log(action.payload)
+        },
+
+        [activateAccount.fulfilled]: (state, action) => {
+            state.data = action.payload.userData
+            state.isLogged = action.payload.isLogged
         },
 
         [login.fulfilled]: (state, action) => {

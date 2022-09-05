@@ -2,6 +2,10 @@ import { createSlice, current } from "@reduxjs/toolkit"
 
 const initialState = {
 
+    activationErrors: {
+        isInvalid: false
+    },
+
     usernameErrors: {
         isEmpty: false,
     },
@@ -35,6 +39,10 @@ export const errorSlice = createSlice({
             state.emailErrors = { ...initialState.emailErrors, ...action.payload.emailErrors }
             state.passwordErrors = { ...initialState.passwordErrors, ...action.payload.passwordErrors }
         },
+
+        setActivationErrors: (state, action) => {
+            state.activationErrors = { ...initialState.activationErrors, ...action.payload?.activationErrors }
+        }
     }
 
 })

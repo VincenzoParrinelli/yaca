@@ -1,7 +1,20 @@
 const jwt = require("jsonwebtoken")
 
-const validateToken = (req, res, next) => {
-    const authHeader = req.headers.cookie 
+const validateActivationToken = (req, res, next) => {
+    const { token } = req.body
+
+    if (!token) return res.status(401)
+
+    jwt.verify(token, process.env.ACTIVATION_TOKEN_SECRET, err => {
+
+        if (err) return res.status(403).json({ activationErrors: { isInvalid: true } })
+
+        next()
+    })
+}
+
+const validateAccessToken = (req, res, next) => {
+    const authHeader = req.headers.cookie
     const accessToken = authHeader && authHeader.split(" ")[0].split("=")[1].split(";")[0]
 
     if (!accessToken) return res.sendStatus(401)
@@ -42,4 +55,4 @@ const refreshToken = (req, res, next) => {
     })
 }
 
-module.exports = { validateToken, refreshToken }
+module.exports = { validateActivationToken, validateAccessToken, refreshToken }

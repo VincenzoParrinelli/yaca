@@ -3,7 +3,8 @@ const path = require("path")
 const hbs = require("nodemailer-express-handlebars")
 
 const sendConfirmEmail = async (req, res) => {
-    var email = req.body.email
+    const email = req.body.email
+    const { activationToken } = res.locals.newUserData
 
     const transport = nodemailer.createTransport({
 
@@ -34,12 +35,13 @@ const sendConfirmEmail = async (req, res) => {
         template: "confirmEmail",
 
         context: {
-            email
+            email,
+            activationToken
         }
     }
 
     transport.sendMail(mailOptions, err => {
-        console.log(err)
+        if (!err) res.sendStatus(201)
     })
 
 }

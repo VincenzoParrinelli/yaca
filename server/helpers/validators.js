@@ -7,7 +7,7 @@ const validateUsername = username => {
 
 }
 
-const validateEmail = async (email, req) => {
+const validateEmail = async (email, req, res) => {
 
     if (!email) return { emailErrors: { isEmpty: true } }
 
@@ -19,6 +19,7 @@ const validateEmail = async (email, req) => {
 
         if (userData && req.path === "/register") return { emailErrors: { signupIsPresent: true } }
 
+        res.locals.userData = userData
     })
 
 }
