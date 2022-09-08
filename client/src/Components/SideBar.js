@@ -10,6 +10,7 @@ import plus from "../Assets/Images/plus.png"
 import logout from "../Assets/Images/logout.png"
 import home from "../Assets/Images/home.png"
 import bellImage from "../Assets/Images/bell.png"
+import defaultProPic from "../Assets/Images/user-icon-2.png"
 import { ReactComponent as SettingsIcon } from "../Assets/Images/settings.svg"
 import './SideBar.scss'
 
@@ -24,7 +25,12 @@ export default function SideBar() {
     return (
         <div className='sidebar'>
 
-            <img src={data.proPicBlob} className='sidebar__propic' />
+            <label className='sidebar__propic-container'>
+
+                <img src={data.proPicBlob ?? defaultProPic} className='sidebar__propic' />
+
+            </label>
+
 
             <div className='sidebar__actions-container'>
                 <img src={micImage} className='sidebar__mic-image' />

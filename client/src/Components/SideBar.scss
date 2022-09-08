@@ -8,19 +8,25 @@
     text-overflow: ellipsis;
     overflow: hidden;
 
-    &__propic {
+    &__propic-container {
+        display: flex;
         position: relative;
-        display: inline-flex;
-        text-align: center;
-        object-fit: cover;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        align-self: center;
+        justify-content: center;
+        align-items: center;
         width: 3.5em;
         height: 3.5em;
-        margin-top: 40px;
         border-radius: 50%;
-        background-color: grey;
-        cursor: pointer;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    &__propic {
+        position: absolute;
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
     }
 
     &__actions-container {
