@@ -29,6 +29,8 @@ export default function NewLogin() {
     const dispatch = useDispatch()
     const location = useLocation()
 
+    console.log(passwordErrors)
+
     // reset socket and user slice state when login page is rendered
     useEffect(() => {
 

@@ -51,59 +51,58 @@ module.exports = {
         const userData = res.locals.userData
         const password = req.body.password
 
-        if (await bcrypt.compare(password, userData.password)) {
-            //convert user object whose coming from mongoose to json
-            const userToJSON = userData.toJSON()
+        if (!await bcrypt.compare(password, userData.password)) return res.status(401).send({ passwordErrors: { isInvalid: true } })
 
-            //create access and refresh token
-            const accessToken = jwt.sign({ id: userToJSON._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
-            const refreshToken = jwt.sign({ id: userToJSON._id }, process.env.REFRESH_TOKEN_SECRET)
+        //convert user object whose coming from mongoose to json
+        const userToJSON = userData.toJSON()
 
-            res.cookie("accessToken", accessToken, {
-                httpOnly: true
-            })
+        //create access and refresh token
+        const accessToken = jwt.sign({ id: userToJSON._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
+        const refreshToken = jwt.sign({ id: userToJSON._id }, process.env.REFRESH_TOKEN_SECRET)
 
-            res.cookie("refreshToken", refreshToken, {
-                httpOnly: true,
-            })
+        res.cookie("accessToken", accessToken, {
+            httpOnly: true
+        })
 
-
-            // await for all the promises to fullfill then send logged user data among with his friends, groups
-            // and last message sent to the respective conversation so we can display it without fetching all the messages
-            const getFriends = await User.find({ _id: userData.friendList })
-                .select({ "socketID": 1, "username": 1, "profilePicId": 1 })
-
-            const friendRequests = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicId": 1 })
-
-            const getGroups = await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }, { messages: { $slice: - 1 } })
-
-            const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } })
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+        })
 
 
-            Promise.all(getFriends).then(async friendsData => {
+        // await for all the promises to fullfill then send logged user data among with his friends, groups
+        // and last message sent to the respective conversation so we can display it without fetching all the messages
+        const getFriends = await User.find({ _id: userData.friendList })
+            .select({ "socketID": 1, "username": 1, "profilePicId": 1 })
 
-                Promise.all(getGroups).then(async groupsData => {
+        const friendRequests = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicId": 1 })
 
-                    Promise.all(friendRequests).then(async requestsData => {
+        const getGroups = await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }, { messages: { $slice: - 1 } })
 
-                        Promise.all(getConversations).then(convData => {
+        const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } })
 
-                            userToJSON.friendList = friendsData
 
-                            res.json({ isLogged: true, isValid: true, userData: userToJSON, requestsData, groupList: groupsData, convData })
+        Promise.all(getFriends).then(async friendsData => {
 
-                        })
+            Promise.all(getGroups).then(async groupsData => {
+
+                Promise.all(friendRequests).then(async requestsData => {
+
+                    Promise.all(getConversations).then(convData => {
+
+                        userToJSON.friendList = friendsData
+
+                        res.json({ isLogged: true, isValid: true, userData: userToJSON, requestsData, groupList: groupsData, convData })
 
                     })
 
                 })
 
-            }).catch(err => console.error(err.message))
+            })
+
+        }).catch(err => console.error(err.message))
 
 
-        } else {
-            res.json({ isLogged: false, isValid: false })
-        }
+
     },
 
     update: async (req, res) => {
@@ -113,7 +112,7 @@ module.exports = {
         if (!newProPicId) return
 
         await User.findByIdAndUpdate(id, { profilePicId: newProPicId }, { new: true }).then((data) => {
-            
+
             res.json({ username: data.username, profilePicId: data.profilePicId })
 
         }).catch(err => console.error(err.message))

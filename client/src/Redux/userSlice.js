@@ -191,9 +191,7 @@ export const userSlice = createSlice({
         },
 
         [updateUser.fulfilled]: (state, action) => {
-
             state.data.profilePicId = action.payload.profilePicId
-
         },
 
         [logout.fulfilled]: (state, action) => {

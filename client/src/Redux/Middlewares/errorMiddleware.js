@@ -9,7 +9,7 @@ export const errorMiddleware = store => next => action => {
 
     }
 
-    if(action.type === "user/activateAccount/rejected") {
+    if (action.type === "user/activateAccount/rejected") {
 
         store.dispatch({
             type: "error/setActivationErrors",
@@ -17,6 +17,6 @@ export const errorMiddleware = store => next => action => {
         })
 
     }
-    
+
     next(action)
 }
