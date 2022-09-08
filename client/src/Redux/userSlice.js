@@ -1,9 +1,5 @@
 import { current, createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
-import { auth, storage } from "../firebase"
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth"
-
-import { deletePrevPic, updateProPic } from "./helpers/firebase.helpers"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
@@ -50,9 +46,10 @@ export const activateAccount = createAsyncThunk(
 
     async (token, { rejectWithValue }) => await axios.post(`${serverUrl}user/activate-account`,
         { token },
+        { withCredentials: true }
 
     ).then(res => {
-     
+
 
         return res.data;
     }).catch(err => {
@@ -75,7 +72,7 @@ export const login = createAsyncThunk(
 
     ).then(async res => {
 
-     
+
 
         return res.data
 
@@ -195,13 +192,8 @@ export const userSlice = createSlice({
 
         [updateUser.fulfilled]: (state, action) => {
 
-            deletePrevPic(state)
-
             state.data.profilePicId = action.payload.profilePicId
 
-            updateProPic(state, action)
-
-            state.data.proPicBlob = URL.createObjectURL(action.meta.arg.file.proPic)
         },
 
         [logout.fulfilled]: (state, action) => {

@@ -15,7 +15,7 @@ const createLoginTokens = (req, res) => {
     })
 
     res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
+        httpOnly: true
     })
 
     res.json({ isLogged: true, userData: userToJSON })

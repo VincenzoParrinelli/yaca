@@ -21,7 +21,7 @@ export default function NewLogin() {
     const passwordLabelRef = useRef(null)
     const passwordInputRef = useRef(null)
 
-    const { isLogged, redirectToActivation } = useSelector(state => state.user)
+    const { isLogged, redirectToActivation, verified } = useSelector(state => state.user)
     const { errors } = useSelector(state => state.sockets)
     const { usernameErrors, emailErrors, passwordErrors } = useSelector(state => state.error)
 
@@ -38,7 +38,7 @@ export default function NewLogin() {
         dispatch(resetSocketState())
         dispatch(logout())
 
-        if (isLogged && errors.authorized) navigate("/dashboard")
+        if (isLogged && verified && errors.authorized) navigate("/dashboard")
 
     }, [])
 

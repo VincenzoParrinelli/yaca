@@ -3,7 +3,7 @@ const Conversation = require("../models/Conversation.js")
 const Group = require("../models/Groups.js")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const { getAuth } = require("firebase-admin/auth")
+const cloudinary = require("cloudinary").v2
 
 module.exports = {
 
@@ -21,12 +21,9 @@ module.exports = {
             newUserData.activationToken = activationToken
 
             await newUserData.save().then(newData => {
-                if (newData) {
 
-                    getAuth().createUser(newData)
-                    next()
-                    
-                }
+                if (newData) next()
+
             })
 
         })
@@ -40,14 +37,13 @@ module.exports = {
         jwt.verify(token, process.env.ACTIVATION_TOKEN_SECRET, async (err, tokenData) => {
             if (err) res.sendStatus(403)
 
-            await User.findByIdAndUpdate(tokenData._id, { verified: true, $unset: { createdAt: 1, activationToken: 1 } }, { new: true })
-                .select({ "_id": 1, "username": 1, "socketID": 1, "verified": 1 })
-                .then(user => {
+            await User.findByIdAndUpdate(tokenData._id, { verified: true, $unset: { createdAt: 1, activationToken: 1 } }, { new: true }).then(userData => {
 
-                    res.locals.userData = user
+                res.locals.userData = userData
 
-                    next()
-                })
+                next()
+
+            })
         })
     },
 
@@ -114,15 +110,13 @@ module.exports = {
         const newProPicId = req.body.newProPicUrl.split("/")[3]
         const id = req.body._id
 
-        if (newProPicId) {
-            await User.findByIdAndUpdate(id, {
-                profilePicId: newProPicId
-            }, { new: true }).then((data) => {
+        if (!newProPicId) return
 
-                res.json({ username: data.username, profilePicId: data.profilePicId })
-            }).catch(err => console.error(err.message))
+        await User.findByIdAndUpdate(id, { profilePicId: newProPicId }, { new: true }).then((data) => {
+            
+            res.json({ username: data.username, profilePicId: data.profilePicId })
 
-        } else return
+        }).catch(err => console.error(err.message))
 
     },
 

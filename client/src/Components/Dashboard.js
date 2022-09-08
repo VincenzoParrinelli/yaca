@@ -36,7 +36,7 @@ export default function Dashboard() {
             dispatch(handleDashboard())
         }
 
-    }, [errors.authorized])
+    }, [errors.authorized, isLogged])
 
     return (
         <>

@@ -3,7 +3,7 @@ const cors = require("cors")
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const mongoose = require("mongoose")
-const admin = require("firebase-admin/app")
+const cloudinary = require("cloudinary").v2
 
 require("dotenv").config()
 
@@ -19,15 +19,16 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-//Initialize firebase storage
-
-admin.initializeApp({
-    credential: admin.applicationDefault(),
-})
 
 //DB connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
+//Cloudinary connection
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+})
 
 //routers
 const userRouter = require("./routes/users")

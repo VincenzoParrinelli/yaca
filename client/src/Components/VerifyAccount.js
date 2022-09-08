@@ -14,6 +14,7 @@ export default function VerifyAccount() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+
     useEffect(() => {
      
         if (token) dispatch(activateAccount(token))

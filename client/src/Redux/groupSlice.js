@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit"
-import { updateGroupPic } from "./helpers/firebase.helpers"
 import axios from "axios"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
@@ -82,11 +81,9 @@ const groupSlice = createSlice({
 
         [createGroup.fulfilled]: (state, action) => {
 
-            updateGroupPic(action)
-
             const newGroup = action.payload
 
-            newGroup.proPicBlob = action.meta.arg.proPicBlob
+            //*****newGroup.proPicBlob = action.meta.arg.proPicBlob
 
             state.groupList.push(newGroup)
         },

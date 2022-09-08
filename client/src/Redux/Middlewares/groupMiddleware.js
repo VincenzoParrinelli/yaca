@@ -1,5 +1,4 @@
 import { getGroup } from "../groupSlice"
-import { loadProPics } from "../helpers/firebase.helpers"
 
 const groupMiddleware = store => next => action => {
 
