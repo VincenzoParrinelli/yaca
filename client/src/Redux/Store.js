@@ -9,6 +9,7 @@ import socketsReducer from "./socketSlice"
 import groupReducer from "./groupSlice"
 import modalReducer from "./modalsSlice"
 import settingsReducer from "./settingsSlice"
+import appSettingsReducer from "./appSettingsSlice"
 import settingsOverviewReducer from "./settingsOverviewSlice" 
 
 //middlewares
@@ -31,6 +32,7 @@ const store = configureStore({
         sockets: socketsReducer,
         modal: modalReducer,
         settings: settingsReducer,
+        appSettings: appSettingsReducer,
         settingsOverview: settingsOverviewReducer,
 
     },

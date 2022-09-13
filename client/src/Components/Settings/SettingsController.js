@@ -4,15 +4,15 @@ import { resetFlags } from '../../Redux/settingsSlice'
 import useSelectedGroup from '../hooks/useSelectedGroup'
 import GroupSettingsSidebar from './GroupSettings/GroupSettingsSidebar'
 import GroupSettingsElements from './GroupSettings/GroupSettingsElements'
-import AppSettingsSidebar from './AppSettings/AppSettingsSidebar'
-import AppSettingsElements from './AppSettings/AppSettingsElements'
+import UserSettingsSidebar from './UserSettings/UserSettingsSidebar'
+import UserSettingsElements from './UserSettings/UserSettingsElements'
 import UnsavedChangesAlert from './UnsavedChangesAlert'
 import "./SettingsController.scss"
 
 export default function SettingsController() {
 
     const { selectedGroupID, groupSettingsContent } = useSelector(state => state.settings)
-    const { appSettings, userSettings, groupSettings } = useSelector(state => state.settings.isOpenFlag)
+    const { userSettings, groupSettings } = useSelector(state => state.settings.isOpenFlag)
 
     const selectedGroupData = useSelectedGroup(selectedGroupID)
 
@@ -40,14 +40,14 @@ export default function SettingsController() {
 
             <nav className='settings-container__sidebar'>
 
-                {appSettings && <AppSettingsSidebar />}
+                {userSettings && <UserSettingsSidebar />}
                 {groupSettings && <GroupSettingsSidebar {...selectedGroupData} />}
 
             </nav>
 
             <div className='settings-container__element' ref={elementRef}>
 
-                {appSettings && <AppSettingsElements />}
+                {userSettings && <UserSettingsElements />}
                 {groupSettings && <GroupSettingsElements {...selectedGroupData} />}
 
             </div>

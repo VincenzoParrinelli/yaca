@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from "react-redux"
 import { openNewGroupModal } from "../Redux/modalsSlice"
 import { handleAddFriend, handleDashboard, openNotifications } from "../Redux/dashboardSlice"
-import { handleAppSettings } from '../Redux/settingsSlice';
+import { handleUserSettings } from '../Redux/settingsSlice';
 import micImage from "../Assets/Images/mic.png"
 import soundImage from "../Assets/Images/sound.png"
 import addFriendImage from "../Assets/Images/add-friend.png"
@@ -103,7 +103,7 @@ export default function SideBar() {
                 <li>
                     <SettingsIcon
                         className="sidebar__settings-icon"
-                        onClick={() => dispatch(handleAppSettings())}
+                        onClick={() => dispatch(handleUserSettings())}
                     />
 
                     <span className='sidebar__tooltip'>Settings</span>

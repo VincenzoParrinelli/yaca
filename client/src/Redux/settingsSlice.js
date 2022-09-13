@@ -7,12 +7,12 @@ const initialState = {
 
     //defines if a settings container is open
     isOpenFlag: {
-        appSettings: false,
         userSettings: false,
         groupSettings: false,
     },
 
-    appSettingsContent: {
+    //defines wich app settings content to render
+    userSettingsContent: {
         myAccount: true,
     },
 
@@ -43,8 +43,8 @@ export const settingsSlice = createSlice({
             state.isOpenFlag.groupSettings = !state.isOpenFlag.groupSettings
         },
 
-        handleAppSettings: state => {
-            state.isOpenFlag.appSettings = !state.isOpenFlag.appSettings
+        handleUserSettings: state => {
+            state.isOpenFlag.userSettings = !state.isOpenFlag.userSettings
         },
 
         openUnsavedChangesAlert: state => {
@@ -62,7 +62,7 @@ export const settingsSlice = createSlice({
 export const {
     handleOpenGroupSettings,
     resetFlags,
-    handleAppSettings,
+    handleUserSettings,
     closeUnsavedChangesAlert
 } = settingsSlice.actions
 

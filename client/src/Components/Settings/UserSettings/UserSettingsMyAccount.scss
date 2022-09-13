@@ -1,0 +1,88 @@
+.app-settings-my-account {
+    position: relative;
+    margin-left: 50px;
+    width: 62%;
+    height: 100%;
+
+    &__section-1 {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        position: relative;
+        width: 100%;
+        height: 55%;
+        top: 100px;
+    }
+
+    &__section-1-title {
+        position: absolute;
+        top: -60px;
+        font: bold 20px "aeroportLight";
+    }
+
+    &__user-profile-card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        background-color: #202225;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    &__banner {
+        width: 100%;
+        height: 25%;
+        background-color: red;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    &__propic-container {
+        display: flex;
+        position: absolute;
+        top: 70px;
+        left: 20px;
+        justify-content: center;
+        align-items: center;
+        width: 5.5em;
+        height: 5.5em;
+        border: 8px solid;
+        border-color: #202225;
+        border-radius: 50%;
+        background-color: black;
+        cursor: pointer;
+    }
+
+    &__propic {
+        position: absolute;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+    }
+
+    &__new-pro-pic {
+        display: none;
+    }
+
+    &__username {
+        position: relative;
+        align-self: center;
+        top: 15px;
+        left: 140px;
+        width: 100%;
+        height: 10%;
+        font: bold 20px "aeroportLight";
+    }
+
+    &__user-settings-container {
+        position: relative;
+        align-self: center;
+        top: 45px;
+        width: 96%;
+        height: 50%;
+        border-radius: 6px;
+        background-color: #2f3136;
+    }
+}

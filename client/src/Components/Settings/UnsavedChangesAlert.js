@@ -6,7 +6,7 @@ import "./UnsavedChangesAlert.scss"
 
 export default function UnsavedChangesAlert() {
 
-    const { unsavedChangesAlert, groupSettingsContent } = useSelector(state => state.settings)
+    const { unsavedChangesAlert, userSettingsContent, groupSettingsContent } = useSelector(state => state.settings)
 
     const unsavedChangesRef = useRef(null)
 
@@ -27,9 +27,9 @@ export default function UnsavedChangesAlert() {
     const resetChanges = () => {
 
         //get key of open content and reset his state
-        const openContentKey = Object.keys(groupSettingsContent).find(content => groupSettingsContent[content])
+        const openGroupContentKey = Object.keys(groupSettingsContent).find(content => groupSettingsContent[content])
 
-        if (openContentKey === "overview") dispatch(resetOverviewState())
+        if (openGroupContentKey === "overview") dispatch(resetOverviewState())
 
     }
 
