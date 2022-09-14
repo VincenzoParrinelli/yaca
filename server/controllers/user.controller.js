@@ -111,7 +111,7 @@ module.exports = {
         const profilePicId = req.body.newProPicID
         const userID = req.body.userID
 
-        await User.findOneAndUpdate(userID, { profilePicId }).then(async () => {
+        await User.findOneAndUpdate({ _id: userID }, { profilePicId }).then(async () => {
 
             await cloudinary.uploader.upload(proPicFile, {
                 type: "authenticated",
