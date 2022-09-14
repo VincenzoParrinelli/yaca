@@ -18,7 +18,7 @@ export default function SideBar() {
 
     const { newGroupModal } = useSelector(state => state.modal)
     const { addFriend, dashboard, notifications, } = useSelector(state => state.dashboard)
-    const { data } = useSelector(state => state.user)
+    const { proPicBlob } = useSelector(state => state.user.data)
 
     const dispatch = useDispatch()
 
@@ -27,7 +27,7 @@ export default function SideBar() {
 
             <label className='sidebar__propic-container'>
 
-                <img src={data.proPicBlob ?? defaultProPic} className='sidebar__propic' />
+                <img src={proPicBlob ?? defaultProPic} className='sidebar__propic' />
 
             </label>
 

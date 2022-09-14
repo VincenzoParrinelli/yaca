@@ -73,7 +73,6 @@ export const login = createAsyncThunk(
     ).then(async res => {
 
 
-
         return res.data
 
     }).catch(err => {
@@ -86,11 +85,11 @@ export const login = createAsyncThunk(
     })
 )
 
-export const updateUser = createAsyncThunk(
-    "user/updateUser",
-    async data => await axios.post(`${serverUrl}user/update`,
+export const updateProPic = createAsyncThunk(
+    "user/updateProPic",
+    async data => await axios.post(`${serverUrl}user/updateProPic`,
 
-        data.payload,
+        data,
         { withCredentials: true },
 
     ).then(async res => {
@@ -190,7 +189,8 @@ export const userSlice = createSlice({
             state.isLogged = action.payload.isLogged
         },
 
-        [updateUser.fulfilled]: (state, action) => {
+        [updateProPic.fulfilled]: (state, action) => {
+            state.data.proPicBlob = action.payload.proPicFile
             state.data.profilePicId = action.payload.profilePicId
         },
 

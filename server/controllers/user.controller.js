@@ -105,15 +105,23 @@ module.exports = {
 
     },
 
-    update: async (req, res) => {
-        const newProPicId = req.body.newProPicUrl.split("/")[3]
-        const id = req.body._id
+    updateProPic: async (req, res) => {
 
-        if (!newProPicId) return
+        const proPicFile = req.body.newProPic
+        const profilePicId = req.body.newProPicID
+        const userID = req.body.userID
 
-        await User.findByIdAndUpdate(id, { profilePicId: newProPicId }, { new: true }).then((data) => {
+        await User.findOneAndUpdate(userID, { profilePicId }).then(async () => {
 
-            res.json({ username: data.username, profilePicId: data.profilePicId })
+            await cloudinary.uploader.upload(proPicFile, {
+                type: "authenticated",
+                folder: "Yaca/ProfilePictures",
+
+            }).then(() => {
+
+                res.status(201).json({ proPicFile, profilePicId })
+
+            }).catch(err => console.error(err.message))
 
         }).catch(err => console.error(err.message))
 

@@ -7,6 +7,7 @@ import "./UnsavedChangesAlert.scss"
 export default function UnsavedChangesAlert() {
 
     const { unsavedChangesAlert, userSettingsContent, groupSettingsContent } = useSelector(state => state.settings)
+    const { userSettings } = useSelector(state => state.settings.isOpenFlag)
 
     const unsavedChangesRef = useRef(null)
 
