@@ -5,14 +5,7 @@ const userMiddleware = store => next => async action => {
     if (action.type === "user/login/fulfilled") {
 
         //load current user proPics
-        const user = store.getState().user.data
-
-        // const userProPicBlob = await loadProPics(user, store)
-
-        // store.dispatch({
-        //     type: "user/loadUserProPic",
-        //     payload: userProPicBlob
-        // })
+        const userProPicID = store.getState().user.data.profilePicId
 
         //load friends proPics
         const friendList = store.getState().user.data.friendList
@@ -64,7 +57,7 @@ const userMiddleware = store => next => async action => {
         })
 
         //load groups proPics
-     
+
         // const loadGroups = groupList.map(async group => await loadProPics(group))
 
         // Promise.all(loadGroups).then(groups => {

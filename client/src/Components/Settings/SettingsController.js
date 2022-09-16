@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { resetFlags } from '../../Redux/settingsSlice'
-import useSelectedGroup from '../hooks/useSelectedGroup'
+import useSelectedGroup from '../../hooks/useSelectedGroup'
 import GroupSettingsSidebar from './GroupSettings/GroupSettingsSidebar'
 import GroupSettingsElements from './GroupSettings/GroupSettingsElements'
 import UserSettingsSidebar from './UserSettings/UserSettingsSidebar'

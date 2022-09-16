@@ -87,11 +87,18 @@ module.exports = {
 
                 Promise.all(friendRequests).then(async requestsData => {
 
-                    Promise.all(getConversations).then(convData => {
+                    Promise.all(getConversations).then(async convData => {
 
                         userToJSON.friendList = friendsData
 
-                        res.json({ isLogged: true, isValid: true, userData: userToJSON, requestsData, groupList: groupsData, convData })
+                        res.json({
+                            isLogged: true,
+                            isValid: true,
+                            userData: userToJSON,
+                            requestsData,
+                            groupList: groupsData,
+                            convData
+                        })
 
                     })
 
@@ -116,6 +123,7 @@ module.exports = {
             await cloudinary.uploader.upload(proPicFile, {
                 type: "authenticated",
                 folder: "Yaca/ProfilePictures",
+                public_id: profilePicId
 
             }).then(() => {
 

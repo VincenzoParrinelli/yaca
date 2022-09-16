@@ -4,7 +4,7 @@ import stringSimilarity from "string-similarity"
 import { useSelector, useDispatch } from 'react-redux'
 import { closeAddGroupMembers } from '../Redux/modalsSlice'
 import { sendGroupInvite } from '../Redux/groupSlice'
-import useSelectedGroup from '../Components/hooks/useSelectedGroup'
+import useSelectedGroup from '../hooks/useSelectedGroup'
 import lens from "../Assets/Images/search-lens.png"
 import cross from "../Assets/Images/x.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"

@@ -119,6 +119,7 @@ export const userSlice = createSlice({
     reducers: {
 
         loadUserProPic: (state, action) => {
+            console.log(action.payload)
             state.data.proPicBlob = action.payload
         },
 
