@@ -3,7 +3,7 @@ const Conversation = require("../models/Conversation.js")
 const Group = require("../models/Groups.js")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-const cloudinary = require("cloudinary").v2
+const { getObjectUrl } = require("../helpers/awsHelpers")
 
 module.exports = {
 
@@ -53,12 +53,9 @@ module.exports = {
 
         if (!await bcrypt.compare(password, userData.password)) return res.status(401).send({ passwordErrors: { isInvalid: true } })
 
-        //convert user object whose coming from mongoose to json
-        const userToJSON = userData.toJSON()
-
         //create access and refresh token
-        const accessToken = jwt.sign({ id: userToJSON._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
-        const refreshToken = jwt.sign({ id: userToJSON._id }, process.env.REFRESH_TOKEN_SECRET)
+        const accessToken = jwt.sign({ id: userData._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
+        const refreshToken = jwt.sign({ id: userData._id }, process.env.REFRESH_TOKEN_SECRET)
 
         res.cookie("accessToken", accessToken, {
             httpOnly: true
@@ -72,66 +69,69 @@ module.exports = {
         // await for all the promises to fullfill then send logged user data among with his friends, groups
         // and last message sent to the respective conversation so we can display it without fetching all the messages
         const getFriends = await User.find({ _id: userData.friendList })
-            .select({ "socketID": 1, "username": 1, "profilePicId": 1 })
+            .select({ "socketID": 1, "username": 1, "profilePicId": 1 }).lean()
 
-        const friendRequests = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicId": 1 })
+        const friendRequests = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicId": 1 }).lean()
 
-        const getGroups = await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }, { messages: { $slice: - 1 } })
+        const getGroups = await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }, { messages: { $slice: - 1 } }).lean()
 
-        const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } })
+        const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } }).lean()
 
 
         Promise.all(getFriends).then(async friendsData => {
 
-            Promise.all(getGroups).then(async groupsData => {
+            //download proPics from aws s3
+            const friendsProPics = getFriends.map(async friend => {
 
-                Promise.all(friendRequests).then(async requestsData => {
+                if (!friend.profilePicId) return friend
 
-                    Promise.all(getConversations).then(async convData => {
+                const getObjectUrlParams = {
+                    Bucket: process.env.AWS_BUCKET_NAME,
+                    Key: friend.profilePicId,
+                    Expires: 60
+                }
 
-                        userToJSON.friendList = friendsData
+                return await getObjectUrl(getObjectUrlParams).then(proPicBlob => {
 
-                        res.json({
-                            isLogged: true,
-                            isValid: true,
-                            userData: userToJSON,
-                            requestsData,
-                            groupList: groupsData,
-                            convData
+                    const newList = { ...friend, proPicBlob }
+
+                    return newList
+
+                })
+            })
+
+
+            Promise.all(friendsProPics).then(updatedFriendsWithPicsData => {
+
+                Promise.all(getGroups).then(groupsData => {
+
+                    Promise.all(friendRequests).then(requestsData => {
+
+                        Promise.all(getConversations).then(convData => {
+
+                            userData.friendList = updatedFriendsWithPicsData
+
+                            console.log(userData.friendList)
+
+                            res.json({
+                                isLogged: true,
+                                isValid: true,
+                                userData,
+                                requestsData,
+                                groupList: groupsData,
+                                convData
+                            })
+
                         })
 
                     })
 
                 })
-
             })
 
         }).catch(err => console.error(err.message))
 
 
-
-    },
-
-    updateProPic: async (req, res) => {
-
-        const proPicFile = req.body.newProPic
-        const profilePicId = req.body.newProPicID
-        const userID = req.body.userID
-
-        await User.findOneAndUpdate({ _id: userID }, { profilePicId }).then(async () => {
-
-            await cloudinary.uploader.upload(proPicFile, {
-                type: "authenticated",
-                folder: "Yaca/ProfilePictures",
-                public_id: profilePicId
-
-            }).then(() => {
-
-                res.status(201).json({ proPicFile, profilePicId })
-
-            }).catch(err => console.error(err.message))
-
-        }).catch(err => console.error(err.message))
 
     },
 

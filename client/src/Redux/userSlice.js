@@ -13,7 +13,7 @@ const initialState = {
         _id: null,
         socketID: null,
         proPicBlob: "",
-        profilePicId: "",
+        profilePicID: "",
         friendRequests: [],
         friendRequestsPending: [],
         friendList: [],
@@ -85,19 +85,6 @@ export const login = createAsyncThunk(
     })
 )
 
-export const updateProPic = createAsyncThunk(
-    "user/updateProPic",
-    async data => await axios.post(`${serverUrl}user/updateProPic`,
-
-        data,
-        { withCredentials: true },
-
-    ).then(async res => {
-
-        return res.data
-    }).catch(err => { throw Error(err) })
-)
-
 export const logout = createAsyncThunk(
     "user/logout",
     async () => await axios.delete(`${serverUrl}user/logout`,
@@ -119,8 +106,19 @@ export const userSlice = createSlice({
     reducers: {
 
         loadUserProPic: (state, action) => {
-            console.log(action.payload)
             state.data.proPicBlob = action.payload
+        },
+
+        updateProPic: () => { },
+
+        setUpdatedProPic: (state, action) => {
+
+            state.data.friendList.map(friend => {
+
+                if (friend._id === action.payload.friendID) friend.proPicBlob = action.payload.proPicFile
+
+            })
+
         },
 
         loadFriendProPic: (state, action) => {
@@ -190,11 +188,6 @@ export const userSlice = createSlice({
             state.isLogged = action.payload.isLogged
         },
 
-        [updateProPic.fulfilled]: (state, action) => {
-            state.data.proPicBlob = action.payload.proPicFile
-            state.data.profilePicId = action.payload.profilePicId
-        },
-
         [logout.fulfilled]: (state, action) => {
             state.isLogged = false
             state.data = initialState.data
@@ -205,7 +198,8 @@ export const userSlice = createSlice({
 
 export const {
     reset,
-
+    updateProPic,
+  
 } = userSlice.actions
 
 export default userSlice.reducer

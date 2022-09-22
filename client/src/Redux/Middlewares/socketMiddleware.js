@@ -28,11 +28,21 @@ const socketMiddleware = store => next => action => {
 
         })
 
+        //user listeners
+
         socket.on("update-friend-status", friend => {
 
             store.dispatch({
                 type: "user/updateFriendStatus",
                 payload: friend
+            })
+        })
+
+        socket.on("receive-updated-pro-pic", updatedUserData => {
+
+            store.dispatch({
+                type: "user/setUpdatedProPic",
+                payload: updatedUserData
             })
         })
 
@@ -158,6 +168,11 @@ const socketMiddleware = store => next => action => {
 
         socket.emit("search-user", payload)
     }
+
+    //user socket handlers
+
+    if (action.type === "user/updateProPic") socket.emit("update-pro-pic", action.payload)
+
 
     //friend requests socket handlers
 

@@ -3,7 +3,8 @@ const cors = require("cors")
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const mongoose = require("mongoose")
-const cloudinary = require("cloudinary").v2
+const AWS = require("aws-sdk")
+const { S3Client } = require("@aws-sdk/client-s3")
 
 require("dotenv").config()
 
@@ -19,16 +20,18 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 
+//AWS connection
+
+AWS.config.loadFromPath("./AwsConfig.json")
+
+const s3 = new AWS.S3()
+
+module.exports = { s3 }
+
 
 //DB connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
-//Cloudinary connection
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET
-})
 
 //routers
 const userRouter = require("./routes/users")
@@ -51,7 +54,5 @@ const io = require("socket.io")(server, {
 
 //Handle socket.io in this file
 require("./controllers/socket.controller")(io)
-
-
 
 server.listen(PORT)

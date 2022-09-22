@@ -16,6 +16,8 @@ export default function ChatList() {
 
     const dispatch = useDispatch()
 
+    console.log(data.friendList)
+
     const showScrollBar = () => {
         const scrollbarRef = document.querySelector(".chat-list__scrollbar-thumb-vertical")
 
@@ -35,8 +37,8 @@ export default function ChatList() {
 
                 <div className='chat-list__header-container'>
 
-                    <img src={home} className='chat-list__icon' /> 
-                    
+                    <img src={home} className='chat-list__icon' />
+
                     Dashboard
 
                     <SearchBar />
@@ -62,7 +64,7 @@ export default function ChatList() {
 
                     {/*logic that handles the rendering of the friend list*/}
 
-                    {data.friendList && data.friendList.map(friend => {
+                    {data.friendList?.map(friend => {
 
                         return (
                             <div
@@ -122,7 +124,7 @@ export default function ChatList() {
 
                     {/*logic that handles the rendering of the group list*/}
 
-                    {groupList && groupList.map(group => {
+                    {groupList?.map(group => {
 
                         if (!group) return
 

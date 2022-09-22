@@ -37,20 +37,30 @@ export default function UserSettingsMyAccount() {
 
     const updatePic = async () => {
 
-        const formData = new FormData()
+        //get mimetype
+        const splitString = newProPic.name.split(".")
+        const newProfilePicMimeType = splitString[splitString.length - 1]
 
-        formData.append("userID", _id)
-        formData.append("newProPic", await toBase64(newProPic))
-        formData.append("newProPicID", uuidv4())
+        const payload = {
+            userID: _id,
+            newProPic: await toBase64(newProPic),
+            newProPicID: `${uuidv4()}.${newProfilePicMimeType}`,
+            mimetype: newProfilePicMimeType
+        }
+
+        //const formData = new FormData()
+        // formData.append("userID", _id)
+        // formData.append("newProPic", newProPic)
+        // formData.append("newProPicID", `${uuidv4()}.${newProfilePicMimeType}`)
 
 
-        dispatch(updateProPic(formData))
+        dispatch(updateProPic(payload))
 
         setApplyImageComponent(false)
 
     }
 
-    //convert image file to base64 for cloudinary upload
+    // convert image file to base64 for s3 upload
     const toBase64 = newProPic => new Promise((res, rej) => {
 
         const reader = new FileReader();

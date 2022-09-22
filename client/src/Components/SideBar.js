@@ -21,6 +21,7 @@ export default function SideBar() {
     const { proPicBlob } = useSelector(state => state.user.data)
 
     const dispatch = useDispatch()
+    
 
     return (
         <div className='sidebar'>

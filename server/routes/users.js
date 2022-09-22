@@ -18,7 +18,7 @@ router.post("/activate-account", validateActivationToken, userController.activat
 
 router.post("/login", validateForm, userController.login)
 
-router.post("/updateProPic", validateAccessToken, upload.single("newProPic") ,userController.updateProPic)
+//router.post("/updateProPic", validateAccessToken, upload.single("newProPic") ,userController.updateProPic)
 
 router.delete("/logout", userController.logout)
 

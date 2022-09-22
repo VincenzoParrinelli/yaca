@@ -13,7 +13,7 @@ const validateEmail = async (email, req, res) => {
 
     if (!validator.isEmail(email)) return { emailErrors: { isInvalid: true } }
 
-    return await User.findOne({ email }).then(userData => {
+    return await User.findOne({ email }).lean().then(userData => {
 
         if (!userData && req.path !== "/register") return { emailErrors: { loginIsPresent: false } }
 

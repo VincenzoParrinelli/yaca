@@ -10,16 +10,6 @@ const userMiddleware = store => next => async action => {
         //load friends proPics
         const friendList = store.getState().user.data.friendList
 
-        // const loadFriendsProPics = friendList.map(async friend => await loadProPics(friend))
-
-        // Promise.all(loadFriendsProPics).then(friendProPicBlob => {
-
-        //     store.dispatch({
-        //         type: "user/loadFriendProPic",
-        //         payload: friendProPicBlob
-        //     })
-        // })
-
 
         //load friendRequests data
         const friendRequestsData = action.payload.requestsData
