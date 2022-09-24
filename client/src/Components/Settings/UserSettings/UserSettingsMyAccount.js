@@ -37,15 +37,10 @@ export default function UserSettingsMyAccount() {
 
     const updatePic = async () => {
 
-        //get mimetype
-        const splitString = newProPic.name.split(".")
-        const newProfilePicMimeType = splitString[splitString.length - 1]
-
         const payload = {
             userID: _id,
             newProPic: await toBase64(newProPic),
-            newProPicID: `${uuidv4()}.${newProfilePicMimeType}`,
-            mimetype: newProfilePicMimeType
+            newProPicID: uuidv4(),
         }
 
         //const formData = new FormData()

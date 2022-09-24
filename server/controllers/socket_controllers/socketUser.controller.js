@@ -1,5 +1,4 @@
 const User = require("../../models/User.js")
-const { deleteImage, uploadImage } = require("../../helpers/awsHelpers")
 
 module.exports = (user, io) => {
 
@@ -26,7 +25,8 @@ module.exports = (user, io) => {
         const proPicFile = payload.newProPic
         const profilePicId = payload.newProPicID
         const userID = payload.userID
-        const mimetype = payload.mimetype
+
+        console.log(proPicFile)
 
 
         await User.findOneAndUpdate({ _id: userID }, { profilePicId }).then(async userData => {
@@ -35,42 +35,6 @@ module.exports = (user, io) => {
 
             await User.find({ "_id": { $in: userData.friendList } }).then(async friendsData => {
 
-                const uploadNewProPicParams = {
-                    Bucket: process.env.AWS_BUCKET_NAME,
-                    Key: profilePicId,
-                    Body: proPicFile,
-                    ContentType: `image/${mimetype}`
-                }
-
-                if (!oldProfilePicID) await uploadImage(uploadNewProPicParams).then(success => {
-
-                    if (success) friendsData.forEach(friend => {
-
-                        io.to(friend.socketID).emit("receive-updated-pro-pic", { friendID: userID, proPicFile })
-
-                    })
-
-                }).catch(err => console.error(err.message))
-
-                const deletePrevPicParams = {
-                    Bucket: process.env.AWS_BUCKET_NAME,
-                    Key: oldProfilePicID
-                }
-
-                //if user has a previous proPic delete it from s3 before uploading a new one
-                await deleteImage(deletePrevPicParams).then(async () => {
-
-                    await uploadImage(uploadNewProPicParams).then(success => {
-
-                        if (success) friendsData.forEach(friend => {
-
-                            io.to(friend.socketID).emit("receive-updated-pro-pic", { friendID: userID, proPicFile })
-
-                        })
-
-                    }).catch(err => console.error(err.message))
-
-                }).catch(err => console.error(err.message))
 
             }).catch(err => console.error(err.message))
 

@@ -1,5 +1,7 @@
 import { current, createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
+import { auth, storage } from "../firebase"
+import { signInWithCustomToken } from "firebase/auth"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
@@ -72,9 +74,14 @@ export const login = createAsyncThunk(
 
     ).then(async res => {
 
+        const firebaseToken = document.cookie.split("=")[1]
 
-        return res.data
-
+        return await signInWithCustomToken(auth, firebaseToken).then(() => {
+            
+            return res.data
+        })
+        
+        
     }).catch(err => {
 
         if (!err.response) throw (err)
@@ -199,7 +206,7 @@ export const userSlice = createSlice({
 export const {
     reset,
     updateProPic,
-  
+
 } = userSlice.actions
 
 export default userSlice.reducer

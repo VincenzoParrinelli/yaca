@@ -16,8 +16,6 @@ export default function ChatList() {
 
     const dispatch = useDispatch()
 
-    console.log(data.friendList)
-
     const showScrollBar = () => {
         const scrollbarRef = document.querySelector(".chat-list__scrollbar-thumb-vertical")
 

@@ -1,3 +1,5 @@
+import { loadProPics } from "../helpers/firebase.helpers"
+
 const userMiddleware = store => next => async action => {
 
     next(action)
@@ -5,24 +7,41 @@ const userMiddleware = store => next => async action => {
     if (action.type === "user/login/fulfilled") {
 
         //load current user proPics
-        const userProPicID = store.getState().user.data.profilePicId
+        const user = store.getState().user.data
+
+        const userProPicBlob = await loadProPics(user, store)
+
+        store.dispatch({
+            type: "user/loadUserProPic",
+            payload: userProPicBlob
+        })
 
         //load friends proPics
         const friendList = store.getState().user.data.friendList
+
+        const loadFriendsProPics = friendList.map(async friend => await loadProPics(friend))
+
+        Promise.all(loadFriendsProPics).then(friendProPicBlob => {
+
+            store.dispatch({
+                type: "user/loadFriendProPic",
+                payload: friendProPicBlob
+            })
+        })
 
 
         //load friendRequests data
         const friendRequestsData = action.payload.requestsData
 
-        // const loadRequests = await loadProPics(friendRequestsData)
+        const loadRequests = await loadProPics(friendRequestsData)
 
-        // Promise.all(loadRequests).then(requests => {
+        Promise.all(loadRequests).then(requests => {
 
-        //     store.dispatch({
-        //         type: "user/loadRequestProPic",
-        //         payload: requests
-        //     })
-        // })
+            store.dispatch({
+                type: "user/loadRequestProPic",
+                payload: requests
+            })
+        })
 
 
         //load conversations last messages
@@ -48,15 +67,15 @@ const userMiddleware = store => next => async action => {
 
         //load groups proPics
 
-        // const loadGroups = groupList.map(async group => await loadProPics(group))
+        const loadGroups = groupList.map(async group => await loadProPics(group))
 
-        // Promise.all(loadGroups).then(groups => {
+        Promise.all(loadGroups).then(groups => {
 
-        //     store.dispatch({
-        //         type: "group/loadGroupsProPics",
-        //         payload: groups
-        //     })
-        // })
+            store.dispatch({
+                type: "group/loadGroupsProPics",
+                payload: groups
+            })
+        })
 
     }
 
