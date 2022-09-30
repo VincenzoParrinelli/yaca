@@ -1,7 +1,5 @@
 const express = require("express")
 const router = express.Router()
-const multer = require("multer")
-const upload = multer()
 
 const { validateForm } = require("../validators/formValidators")
 const { validateActivationToken, validateAccessToken } = require("../validators/tokenValidators")
@@ -17,8 +15,6 @@ router.post("/register", validateForm, userController.register, sendConfirmEmail
 router.post("/activate-account", validateActivationToken, userController.activateAccount, createLoginTokens)
 
 router.post("/login", validateForm, userController.login)
-
-//router.post("/updateProPic", validateAccessToken, upload.single("newProPic") ,userController.updateProPic)
 
 router.delete("/logout", userController.logout)
 

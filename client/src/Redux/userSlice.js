@@ -2,6 +2,7 @@ import { current, createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 import { auth, storage } from "../firebase"
 import { signInWithCustomToken } from "firebase/auth"
+import { firebaseDeletePrevPic, firebaseUploadProPic } from "../helpers/firebase.helpers"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
@@ -77,11 +78,11 @@ export const login = createAsyncThunk(
         const firebaseToken = document.cookie.split("=")[1]
 
         return await signInWithCustomToken(auth, firebaseToken).then(() => {
-            
+
             return res.data
         })
-        
-        
+
+
     }).catch(err => {
 
         if (!err.response) throw (err)
@@ -90,6 +91,21 @@ export const login = createAsyncThunk(
         //redux doesn't do this automatically, so we need to call this function
         throw rejectWithValue(err.response.data)
     })
+)
+
+
+export const deletePrevPic = createAsyncThunk(
+    "user/deletePrevPic",
+
+    async userAndOldPicIDS => await firebaseDeletePrevPic(userAndOldPicIDS).catch(err => { throw Error(err) })
+
+)
+
+export const updateProPic = createAsyncThunk(
+    "user/updateProPic",
+
+    async newProPicData => await firebaseUploadProPic(newProPicData).then(data => data).catch(err => { throw Error(err) })
+
 )
 
 export const logout = createAsyncThunk(
@@ -113,16 +129,15 @@ export const userSlice = createSlice({
     reducers: {
 
         loadUserProPic: (state, action) => {
+
             state.data.proPicBlob = action.payload
         },
 
-        updateProPic: () => { },
-
-        setUpdatedProPic: (state, action) => {
+        setFriendUpdatedProPic: (state, action) => {
 
             state.data.friendList.map(friend => {
 
-                if (friend._id === action.payload.friendID) friend.proPicBlob = action.payload.proPicFile
+                if (friend._id === action.payload.userID) friend.proPicBlob = action.payload.proPicBlob
 
             })
 
@@ -132,7 +147,7 @@ export const userSlice = createSlice({
 
             state.data.friendList.map(friend => {
 
-                friend.proPicBlob = action.payload
+                friend.proPicBlob = action.payload.proPicBlob
 
             })
 
@@ -195,6 +210,11 @@ export const userSlice = createSlice({
             state.isLogged = action.payload.isLogged
         },
 
+        [updateProPic.fulfilled]: (state, action) => {
+            state.data.profilePicID = action.payload.newProPicID
+            state.data.proPicBlob = action.payload.newProPicBlob
+        },
+
         [logout.fulfilled]: (state, action) => {
             state.isLogged = false
             state.data = initialState.data
@@ -205,7 +225,6 @@ export const userSlice = createSlice({
 
 export const {
     reset,
-    updateProPic,
 
 } = userSlice.actions
 

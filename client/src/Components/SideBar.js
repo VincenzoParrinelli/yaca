@@ -17,11 +17,11 @@ import './SideBar.scss'
 export default function SideBar() {
 
     const { newGroupModal } = useSelector(state => state.modal)
-    const { addFriend, dashboard, notifications, } = useSelector(state => state.dashboard)
+    const { addFriend, dashboard, notifications } = useSelector(state => state.dashboard)
     const { proPicBlob } = useSelector(state => state.user.data)
 
     const dispatch = useDispatch()
-    
+
 
     return (
         <div className='sidebar'>

@@ -12,7 +12,7 @@ module.exports = (user, io) => {
 
         //search for users matching username value and exclude current user
         await User.find({ username: { "$regex": username, "$options": "i" }, _id: { "$ne": userID } })
-            .select({ "email": 1, "username": 1, "profilePicId": 1 })
+            .select({ "email": 1, "username": 1, "profilePicID": 1 })
             .then(usersData => {
 
                 user.emit("receive-searched-users", usersData)
@@ -22,18 +22,17 @@ module.exports = (user, io) => {
 
     user.on("update-pro-pic", async payload => {
 
-        const proPicFile = payload.newProPic
-        const profilePicId = payload.newProPicID
-        const userID = payload.userID
+        const { userID, newProPicID } = payload
 
-        console.log(proPicFile)
+        await User.findByIdAndUpdate(userID, { profilePicID: newProPicID }).then(async userData => {
 
+            await User.find({ "_id": { $in: userData.friendList } }).lean().then(async friendsData => {
 
-        await User.findOneAndUpdate({ _id: userID }, { profilePicId }).then(async userData => {
+                friendsData.forEach(friend => {
 
-            const oldProfilePicID = userData.profilePicId
-
-            await User.find({ "_id": { $in: userData.friendList } }).then(async friendsData => {
+                    io.to(friend.socketID).emit("receive-friend-updated-pro-pic", { userID, newProPicID })
+                
+                })
 
 
             }).catch(err => console.error(err.message))

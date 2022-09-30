@@ -31,7 +31,7 @@ const userSchema = mongoose.Schema({
         default: "NOT SET"
     },
 
-    profilePicId: {
+    profilePicID: {
         type: String,
         default: ""
     },

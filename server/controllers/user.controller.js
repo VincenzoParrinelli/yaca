@@ -82,9 +82,9 @@ module.exports = {
             // await for all the promises to fullfill then send logged user data among with his friends, groups
             // and last message sent to the respective conversation so we can display it without fetching all the messages
             const getFriends = await User.find({ _id: userData.friendList })
-                .select({ "socketID": 1, "username": 1, "profilePicId": 1 }).lean()
+                .select({ "socketID": 1, "username": 1, "profilePicID": 1 }).lean()
 
-            const friendRequests = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicId": 1 }).lean()
+            const friendRequests = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicID": 1 }).lean()
 
             const getGroups = await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }, { messages: { $slice: - 1 } }).lean()
 
@@ -120,11 +120,13 @@ module.exports = {
         }).catch(err => console.error(err.message))
     },
 
+
     logout: async (req, res) => {
 
         //clear tokens on logout
         res.clearCookie("accessToken")
         res.clearCookie("refreshToken")
+        res.clearCookie("firebaseToken")
         res.end()
     }
 }

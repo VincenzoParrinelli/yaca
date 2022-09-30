@@ -1,6 +1,7 @@
 import io from 'socket.io-client'
 import { storage } from "../../firebase"
 import { ref, getDownloadURL } from "firebase/storage"
+import { loadProPics } from '../../helpers/firebase.helpers'
 
 var socket
 
@@ -38,11 +39,16 @@ const socketMiddleware = store => next => action => {
             })
         })
 
-        socket.on("receive-updated-pro-pic", updatedUserData => {
+        socket.on("receive-friend-updated-pro-pic", async payload => {
+
+            const { userID, newProPicID } = payload
+
+            //download image from firebase
+            const proPicBlob = await loadProPics({ _id: userID, profilePicId: newProPicID })
 
             store.dispatch({
-                type: "user/setUpdatedProPic",
-                payload: updatedUserData
+                type: "user/setFriendUpdatedProPic",
+                payload: { userID, proPicBlob }
             })
         })
 
@@ -57,7 +63,7 @@ const socketMiddleware = store => next => action => {
                 const proPicRef = ref(storage, `proPics/${userID}/${userProPic}`)
 
                 //get user multimedia files from firebase and then return updated obj
-                return getDownloadURL(proPicRef).then(proPicBlob => {
+                return await getDownloadURL(proPicRef).then(proPicBlob => {
 
                     user.proPicBlob = proPicBlob
 
@@ -171,8 +177,13 @@ const socketMiddleware = store => next => action => {
 
     //user socket handlers
 
-    if (action.type === "user/updateProPic") socket.emit("update-pro-pic", action.payload)
+    if (action.type === "user/updateProPic/fulfilled") {
 
+        const { userID, newProPicID } = action.payload
+
+        //send only userID and newProPicID since we don't need to send proPicBlob to server
+        socket.emit("update-pro-pic", { userID, newProPicID })
+    }
 
     //friend requests socket handlers
 
@@ -182,7 +193,6 @@ const socketMiddleware = store => next => action => {
 
     if (action.type === "socket/refuseFriendRequest") socket.emit("refuse-friend-request", action.payload)
 
-    //
 
     //group socket handlers
 
@@ -190,7 +200,6 @@ const socketMiddleware = store => next => action => {
 
     if (action.type === "group/deleteGroup") socket.emit("delete-group", action.payload)
 
-    ///
 
     if (action.type === "socket/sendMessage") {
         const conversationID = store.getState().conversation.selectedConversationID

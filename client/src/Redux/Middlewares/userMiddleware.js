@@ -1,4 +1,4 @@
-import { loadProPics } from "../helpers/firebase.helpers"
+import { loadProPics } from "../../helpers/firebase.helpers"
 
 const userMiddleware = store => next => async action => {
 
@@ -8,40 +8,53 @@ const userMiddleware = store => next => async action => {
 
         //load current user proPics
         const user = store.getState().user.data
+    
+        if (user.profilePicID) {
+            
+            const userProPicBlob = await loadProPics(user)
+            
+            store.dispatch({
+                type: "user/loadUserProPic",
+                payload: userProPicBlob
+            })
 
-        const userProPicBlob = await loadProPics(user, store)
+        }
 
-        store.dispatch({
-            type: "user/loadUserProPic",
-            payload: userProPicBlob
-        })
 
         //load friends proPics
         const friendList = store.getState().user.data.friendList
 
-        const loadFriendsProPics = friendList.map(async friend => await loadProPics(friend))
+        if (friendList.length >= 1) {
 
-        Promise.all(loadFriendsProPics).then(friendProPicBlob => {
+            const loadFriendsProPics = friendList.map(async friend => await loadProPics(friend))
 
-            store.dispatch({
-                type: "user/loadFriendProPic",
-                payload: friendProPicBlob
+            Promise.all(loadFriendsProPics).then(friendProPicBlob => {
+
+                store.dispatch({
+                    type: "user/loadFriendProPic",
+                    payload: friendProPicBlob
+                })
             })
-        })
+
+        }
 
 
         //load friendRequests data
         const friendRequestsData = action.payload.requestsData
 
-        const loadRequests = await loadProPics(friendRequestsData)
+        if (friendRequestsData.length >= 1) {
 
-        Promise.all(loadRequests).then(requests => {
+            const loadRequests = await loadProPics(friendRequestsData)
 
-            store.dispatch({
-                type: "user/loadRequestProPic",
-                payload: requests
+            Promise.all(loadRequests).then(requests => {
+
+                store.dispatch({
+                    type: "user/loadRequestProPic",
+                    payload: requests
+                })
             })
-        })
+
+        }
 
 
         //load conversations last messages
@@ -58,24 +71,26 @@ const userMiddleware = store => next => async action => {
         })
 
 
-        //load groups data
         const groupList = action.payload.groupList
 
-        groupList.forEach(group => {
-            group.isFullyFetched = false
-        })
+        if (groupList.length >= 1) {
 
-        //load groups proPics
-
-        const loadGroups = groupList.map(async group => await loadProPics(group))
-
-        Promise.all(loadGroups).then(groups => {
-
-            store.dispatch({
-                type: "group/loadGroupsProPics",
-                payload: groups
+            groupList.forEach(group => {
+                group.isFullyFetched = false
             })
-        })
+
+            //load groups proPics
+            const loadGroups = groupList.map(async group => await loadProPics(group))
+
+            Promise.all(loadGroups).then(groups => {
+
+                store.dispatch({
+                    type: "group/loadGroupsProPics",
+                    payload: groups
+                })
+            })
+
+        }
 
     }
 
