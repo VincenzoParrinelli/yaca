@@ -78,21 +78,18 @@ export default function ChatList() {
 
                                     {friend.proPicBlob ?
 
-                                        <>
-                                            <img src={friend.proPicBlob} className='chat-list__propic' />
-
-                                            {friend.socketID !== "OFFLINE" ?
-
-                                                <div className='chat-list__user-status chat-list__user-status--online' />
-
-                                                :
-
-                                                <div className='chat-list__user-status chat-list__user-status--offline' />
-                                            }
-
-                                        </>
+                                        <img src={friend.proPicBlob} className='chat-list__propic' />
                                         :
                                         <img src={defaultProPic} className='chat-list__default-propic' />
+                                    }
+
+                                    {friend.socketID !== "OFFLINE" ?
+
+                                        <div className='chat-list__user-status chat-list__user-status--online' />
+
+                                        :
+
+                                        <div className='chat-list__user-status chat-list__user-status--offline' />
                                     }
 
                                 </div>
