@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { openUsernameModal } from '../../../Redux/modalsSlice'
 import { deletePrevPic, updateProPic } from '../../../Redux/userSlice'
 import defaultProPic from "../../../Assets/Images/user-icon-2.png"
 import { v4 as uuidv4 } from "uuid"
@@ -10,7 +11,7 @@ export default function UserSettingsMyAccount() {
     const [newProPic, setNewProPic] = useState(null)
     const [applyImageComponent, setApplyImageComponent] = useState(false)
 
-    const { _id, username, proPicBlob, profilePicID } = useSelector(state => state.user.data)
+    const { _id, username, proPicBlob, profilePicID, email } = useSelector(state => state.user.data)
 
     const dispatch = useDispatch()
 
@@ -112,6 +113,31 @@ export default function UserSettingsMyAccount() {
 
 
                     <div className='app-settings-my-account__user-settings-container'>
+
+                        <div className='app-settings-my-account__change-username-container'>
+
+                            <div className='app-settings-my-account__username-2'>USERNAME</div>
+
+                            <span className='app-settings-my-account__username-3'>{username}</span>
+
+                            <button
+                                className='app-settings-my-account__btn-modify'
+                                onClick={() => dispatch(openUsernameModal())}
+                            >
+                                Modify
+                            </button>
+
+                        </div>
+
+                        <div className='app-settings-my-account__change-email-container'>
+
+                            <div className='app-settings-my-account__email'>E-MAIL</div>
+
+                            <span className='app-settings-my-account__username-3'>{email}</span>
+
+                            <button className='app-settings-my-account__btn-modify'>Modify</button>
+
+                        </div>
 
                     </div>
 

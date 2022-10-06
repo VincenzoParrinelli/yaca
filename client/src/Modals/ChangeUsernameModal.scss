@@ -1,0 +1,122 @@
+.change-username-modal {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    width: 29vw;
+    height: 46vh;
+    border-radius: 5px;
+    background-color: #36393f;
+
+    &__overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1;
+        animation: deleteGroupModalOverlayPopIn .3s;
+
+        &--closed {
+            animation: deleteGroupModalOverlayPopOut .3s;
+        }
+    }
+
+    &__header {
+        padding: 18px;
+    }
+
+    &__text,
+    &__text-2 {
+        padding: 3px;
+        color: white;
+        text-align: center;
+        margin: 0;
+    }
+
+    &__text {
+        font: bold 24px "aeroportLight";
+    }
+
+    &__text-2 {
+        font: 16px "aeroportLight";
+        opacity: 0.6;
+    }
+
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    &__username-label,
+    &__existing-password-label {
+        width: 92.8%;
+        align-self: center;
+        font: bold 13px "aeroportLight";
+        color: #a8aaad;
+    }
+
+    &__username-input,
+    &__existing-password-input {
+        outline: none;
+        background-color: #202225;
+        border: none;
+        color: #bfc0c1;
+        padding: 10px;
+        width: 88%;
+        align-self: center;
+        border-radius: 3px;
+        font: 15px "aeroportLight";
+        margin: 10px;
+    }
+
+    &__btns-container {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        margin-top: 6px;
+        height: 100%;
+        background-color: #2f3136;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    &__btn-discard,
+    &__btn-done {
+        position: relative;
+        padding: 11px 33px;
+        right: 16px;
+        border-radius: 3px;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    &__btn-discard {
+
+        background-color: transparent;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    &__btn-done {
+        background-color: #5865f2;
+        transition: all 0.2s;
+
+        &:hover {
+            background-color: #4752c4;
+        }
+
+        &:active {
+            background-color: #3c45a5;
+        }
+    }
+
+}

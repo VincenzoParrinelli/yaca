@@ -5,6 +5,7 @@ const initialState = {
     newGroupModal: false,
     addGroupMembers: false,
     deleteGroupModal: false,
+    changeUsernameModal: false
 }
 
 export const modalsSlice = createSlice({
@@ -44,6 +45,13 @@ export const modalsSlice = createSlice({
             state.deleteGroupModal = false
         },
 
+        openUsernameModal: state => {
+            state.changeUsernameModal = true
+        },
+
+        closeUsernameModal: state => {
+            state.changeUsernameModal = false
+        }
 
     }
 })
@@ -57,6 +65,8 @@ export const {
     openDeleteGroupModal,
     closeDeleteGroupModal,
     handleAddFriend,
+    openUsernameModal,
+    closeUsernameModal
 } = modalsSlice.actions
 
 export default modalsSlice.reducer

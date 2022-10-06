@@ -23,7 +23,6 @@ export const firebaseDeletePrevPic = async payload => {
 
     const { userID, oldProPicID } = payload
 
-    console.log("delete")
     const prevPicRef = ref(storage, `proPics/${userID}/${oldProPicID}`)
 
     return await deleteObject(prevPicRef).catch(err => {
