@@ -67,6 +67,6 @@ export const loadProPics = async user => {
 
         return await getDownloadURL(proPicRef).then(proPicBlob => proPicBlob)
 
-    }
+    } 
 
 }

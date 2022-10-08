@@ -60,8 +60,6 @@ export default function ChatList() {
 
                     <p className='chat-list__text'> DIRECT MESSAGES </p>
 
-                    {/*logic that handles the rendering of the friend list*/}
-
                     {data.friendList?.map(friend => {
 
                         return (
@@ -79,7 +77,9 @@ export default function ChatList() {
                                     {friend.proPicBlob ?
 
                                         <img src={friend.proPicBlob} className='chat-list__propic' />
+                                        
                                         :
+
                                         <img src={defaultProPic} className='chat-list__default-propic' />
                                     }
 
@@ -120,8 +120,6 @@ export default function ChatList() {
                     {/*logic that handles the rendering of the group list*/}
 
                     {groupList?.map(group => {
-
-                        if (!group) return
 
                         return (
                             <div
