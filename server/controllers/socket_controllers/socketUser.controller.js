@@ -20,6 +20,18 @@ module.exports = (user, io) => {
             }).catch(err => new Error(err))
     })
 
+    user.on("update-username", async payload => {
+
+        const { _id, newUsername, friendList } = payload
+
+        friendList.forEach(friend => {
+
+            io.to(friend.socketID).emit("receive-new-friend-username", { _id, newUsername })
+
+        })
+
+    })
+
     user.on("update-pro-pic", async payload => {
 
         const { userID, newProPicID } = payload
@@ -31,7 +43,7 @@ module.exports = (user, io) => {
                 friendsData.forEach(friend => {
 
                     io.to(friend.socketID).emit("receive-friend-updated-pro-pic", { userID, newProPicID })
-                
+
                 })
 
 

@@ -61,6 +61,14 @@
         color: #a8aaad;
     }
 
+    &__existing-password-label {
+
+        &--errors {
+            color: #ff2d34;
+        }
+
+    }
+
     &__username-input,
     &__existing-password-input {
         outline: none;

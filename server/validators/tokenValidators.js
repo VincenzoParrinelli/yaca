@@ -24,10 +24,11 @@ const validateAccessToken = (req, res, next) => {
         //automatically refresh token on expiry
         if (err && err.name === "TokenExpiredError") {
 
-            refreshToken
+
+            refreshToken(req, res, next)
         } else if (err) return res.sendStatus(403)
 
-        else next()
+        next()
     })
 }
 

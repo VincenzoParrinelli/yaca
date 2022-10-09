@@ -41,7 +41,7 @@ module.exports = {
 
                 const { email, password } = userData
 
-                await createUserWithEmailAndPassword(auth, email, password).then(() => {
+                await auth().createUser({ email, password }).then(() => {
 
                     res.locals.userData = userData
 
@@ -116,6 +116,26 @@ module.exports = {
 
                 })
             }).catch(err => console.error(err.message))
+
+        }).catch(err => console.error(err.message))
+    },
+
+    changeUsername: async (req, res) => {
+
+        const { _id, newUsername, password } = req.body
+
+        await User.findById(_id).then(async userData => {
+
+            if (await bcrypt.compare(password, userData.password)) {
+
+                userData.username = newUsername
+
+                await userData.update(_id).then(() => {
+
+                    return res.sendStatus(204)
+
+                }).catch(err => console.error(err.message))
+            }
 
         }).catch(err => console.error(err.message))
     },

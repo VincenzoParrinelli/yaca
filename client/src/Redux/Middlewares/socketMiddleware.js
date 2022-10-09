@@ -52,6 +52,14 @@ const socketMiddleware = store => next => action => {
             })
         })
 
+        socket.on("receive-new-friend-username", payload => {
+
+            store.dispatch({
+                type: "user/setFriendUpdatedUsername",
+                payload
+            })
+        })
+
         socket.on("receive-searched-users", users => {
 
             //loadingUsers returns n promises based on how many users have been fetched
@@ -184,6 +192,16 @@ const socketMiddleware = store => next => action => {
         //send only userID and newProPicID since we don't need to send proPicBlob to server
         socket.emit("update-pro-pic", { userID, newProPicID })
     }
+
+
+    if (action.type === "user/changeUsername/fulfilled") {
+
+        const { _id, newUsername } = action.payload.data
+        const friendList = action.payload.friendList
+
+        socket.emit("update-username", { _id, newUsername, friendList })
+    }
+
 
     //friend requests socket handlers
 

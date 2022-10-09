@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { closeUsernameModal } from '../Redux/modalsSlice'
+import { changeUsername } from '../Redux/userSlice'
+import { reset as errorsReset } from '../Redux/errorsSlice';
 import Modal from "react-modal"
 import "./ChangeUsernameModal.scss"
 
@@ -10,13 +12,40 @@ export default function ChangeUsernameModal() {
     const [password, setPassword] = useState("")
 
     const { changeUsernameModal } = useSelector(state => state.modal)
-    const { username } = useSelector(state => state.user.data)
+    const { _id, username, friendList } = useSelector(state => state.user.data)
+    const { passwordErrors } = useSelector(state => state.error)
 
     const dispatch = useDispatch()
 
-    const handleNewUsername = e => {
-        e.preventDefault()
+    const handleNewUsername = () => {
 
+        const payload = {
+
+            data: {
+                _id, newUsername, password
+            },
+
+            friendList
+        }
+
+
+        dispatch(changeUsername(payload)).then(action => {
+
+            //if username update has been succesfull close modal and reset errors state
+            if (action.type === "user/changeUsername/fulfilled") {
+
+                dispatch(closeUsernameModal())
+              
+
+            }
+
+
+        })
+    }
+
+    const handleCloseModal = () => {
+        dispatch(closeUsernameModal())
+        dispatch(errorsReset())
     }
 
     return (
@@ -28,7 +57,7 @@ export default function ChangeUsernameModal() {
             overlayClassName={{ base: "change-username-modal__overlay", afterOpen: "", beforeClose: "change-username-modal__overlay--closed" }}
 
             closeTimeoutMS={295}
-            onRequestClose={() => dispatch(closeUsernameModal())}
+            onRequestClose={() => handleCloseModal()}
 
         >
 
@@ -51,7 +80,21 @@ export default function ChangeUsernameModal() {
                     onChange={e => setNewUsername(e.target.value)}
                 />
 
-                <label className='change-username-modal__existing-password-label'>EXISTING PASSWORD</label>
+                <label className='change-username-modal__existing-password-label'>
+
+                    {passwordErrors.isEmpty &&
+
+                        <span className='change-username-modal__existing-password-label change-username-modal__existing-password-label--errors'> EXISTING PASSWORD - Please insert your password</span>
+
+                    }
+
+                    {passwordErrors.isInvalid &&
+
+                        <span className='change-username-modal__existing-password-label change-username-modal__existing-password-label--errors'>EXISTING PASSWORD - Passwords do not match</span>
+
+                    }
+
+                </label>
 
                 <input
                     type="password"
@@ -72,7 +115,8 @@ export default function ChangeUsernameModal() {
 
                     <button
                         className='change-username-modal__btn-done'
-                     
+                        onClick={() => handleNewUsername()}
+
                     >
                         Done
                     </button>

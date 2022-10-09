@@ -1,6 +1,6 @@
-import { current, createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
-import { auth, storage } from "../firebase"
+import { auth } from "../firebase"
 import { signInWithCustomToken } from "firebase/auth"
 import { firebaseDeletePrevPic, firebaseUploadProPic } from "../helpers/firebase.helpers"
 
@@ -108,6 +108,22 @@ export const updateProPic = createAsyncThunk(
 
 )
 
+export const changeUsername = createAsyncThunk(
+    "user/changeUsername",
+
+    async (payload, { rejectWithValue }) => await axios.patch(`${serverUrl}user/changeUsername`,
+
+        payload.data,
+        { withCredentials: true },
+
+    ).then(() => payload).catch(err => {
+
+        if (!err.response) throw (err)
+
+        throw rejectWithValue(err.response.data)
+    })
+)
+
 export const logout = createAsyncThunk(
     "user/logout",
     async () => await axios.delete(`${serverUrl}user/logout`,
@@ -143,11 +159,20 @@ export const userSlice = createSlice({
 
         },
 
+        setFriendUpdatedUsername: (state, action) => {
+
+            state.data.friendList.map(friend => {
+
+                if (friend._id === action.payload._id) friend.username = action.payload.newUsername
+
+            })
+        },
+
         loadFriendProPic: (state, action) => {
 
             state.data.friendList.map(friend => {
 
-                friend.proPicBlob = action.payload.proPicBlob
+                friend.proPicBlob = action.payload
 
             })
 
@@ -192,9 +217,6 @@ export const userSlice = createSlice({
     },
 
     extraReducers: {
-        [register.pending]: (state, action) => {
-
-        },
 
         [register.fulfilled]: (state, action) => {
             state.redirectToActivation = true
@@ -213,6 +235,10 @@ export const userSlice = createSlice({
         [updateProPic.fulfilled]: (state, action) => {
             state.data.profilePicID = action.payload.newProPicID
             state.data.proPicBlob = action.payload.newProPicBlob
+        },
+
+        [changeUsername.fulfilled]: (state, action) => {
+            state.data.username = action.payload.data.newUsername
         },
 
         [logout.fulfilled]: (state, action) => {

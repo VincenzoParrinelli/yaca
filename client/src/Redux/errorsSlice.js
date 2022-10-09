@@ -35,9 +35,9 @@ export const errorSlice = createSlice({
         reset: () => initialState,
 
         setErrors: (state, action) => {
-            state.usernameErrors = { ...initialState.usernameErrors, ...action.payload.usernameErrors }
-            state.emailErrors = { ...initialState.emailErrors, ...action.payload.emailErrors }
-            state.passwordErrors = { ...initialState.passwordErrors, ...action.payload.passwordErrors }
+            state.usernameErrors = { ...initialState.usernameErrors, ...action.payload?.usernameErrors }
+            state.emailErrors = { ...initialState.emailErrors, ...action.payload?.emailErrors }
+            state.passwordErrors = { ...initialState.passwordErrors, ...action.payload?.passwordErrors }
         },
 
         setActivationErrors: (state, action) => {

@@ -1,6 +1,6 @@
 export const errorMiddleware = store => next => action => {
 
-    if (action.type === "user/login/rejected" || action.type === "user/register/rejected") {
+    if (action.type === "user/login/rejected" || action.type === "user/register/rejected" || action.type === "user/changeUsername/rejected") {
 
         store.dispatch({
             type: "error/setErrors",

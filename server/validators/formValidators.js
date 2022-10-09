@@ -6,7 +6,7 @@ const validateForm = async (req, res, next) => {
     errors = {}
 
     if (req.path === "/register") Object.assign(errors, validateUsername(username))
-    Object.assign(errors, await validateEmail(email, req, res))
+    if (req.path !== "/changeUsername") Object.assign(errors, await validateEmail(email, req, res))
     Object.assign(errors, validatePassword(password))
 
     if (errors.usernameErrors || errors.emailErrors || errors.passwordErrors) return res.status(400).send(errors)

@@ -8,11 +8,11 @@ const userMiddleware = store => next => async action => {
 
         //load current user proPics
         const user = store.getState().user.data
-    
+
         if (user.profilePicID) {
-            
+
             const userProPicBlob = await loadProPics(user)
-            
+
             store.dispatch({
                 type: "user/loadUserProPic",
                 payload: userProPicBlob
@@ -26,14 +26,17 @@ const userMiddleware = store => next => async action => {
 
         if (friendList.length >= 1) {
 
-            const loadFriendsProPics = friendList.map(async friend => await loadProPics(friend))
+            friendList.map(async friend => {
 
-            Promise.all(loadFriendsProPics).then(friendProPicBlob => {
+                await loadProPics(friend).then(friendProPicBlob => {
 
-                store.dispatch({
-                    type: "user/loadFriendProPic",
-                    payload: friendProPicBlob
+                    store.dispatch({
+                        type: "user/loadFriendProPic",
+                        payload: friendProPicBlob
+                    })
                 })
+
+             
             })
 
         }

@@ -16,6 +16,8 @@ router.post("/activate-account", validateActivationToken, userController.activat
 
 router.post("/login", validateForm, userController.login)
 
+router.patch("/changeUsername", validateAccessToken, validateForm, userController.changeUsername)
+
 router.delete("/logout", userController.logout)
 
 
