@@ -44,7 +44,7 @@ const socketMiddleware = store => next => action => {
             const { userID, newProPicID } = payload
 
             //download image from firebase
-            const proPicBlob = await loadProPics({ _id: userID, profilePicId: newProPicID })
+            const proPicBlob = await loadProPics({ _id: userID, profilePicID: newProPicID })
 
             store.dispatch({
                 type: "user/setFriendUpdatedProPic",
