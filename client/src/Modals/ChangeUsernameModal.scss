@@ -9,6 +9,11 @@
     height: 46vh;
     border-radius: 5px;
     background-color: #36393f;
+    animation: deleteGroupModalContentPopIn .3s;
+
+    &--closed {
+        animation: deleteGroupModalContentPopOut .3s;
+    }
 
     &__overlay {
         position: fixed;
@@ -128,3 +133,4 @@
     }
 
 }
+

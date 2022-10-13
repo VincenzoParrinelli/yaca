@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { closeUsernameModal } from '../Redux/modalsSlice'
 import { changeUsername } from '../Redux/userSlice'
@@ -17,6 +17,14 @@ export default function ChangeUsernameModal() {
 
     const dispatch = useDispatch()
 
+    const passwordLabelRef = useRef(null)
+
+    useEffect(() => {
+
+        if (passwordErrors.isEmpty || passwordErrors.isInvalid) passwordLabelRef.current.classList.add("change-username-modal__existing-password-label--errors")
+
+    }, [passwordErrors])
+
     const handleNewUsername = () => {
 
         const payload = {
@@ -31,13 +39,8 @@ export default function ChangeUsernameModal() {
 
         dispatch(changeUsername(payload)).then(action => {
 
-            //if username update has been succesfull close modal and reset errors state
-            if (action.type === "user/changeUsername/fulfilled") {
-
-                dispatch(closeUsernameModal())
-              
-
-            }
+            //if username update has been successful close modal and reset errors state
+            if (action.type === "user/changeUsername/fulfilled") dispatch(closeUsernameModal())
 
 
         })
@@ -71,7 +74,9 @@ export default function ChangeUsernameModal() {
 
             <div className='change-username-modal__form'>
 
-                <label className='change-username-modal__username-label'>USERNAME</label>
+                <label className='change-username-modal__username-label'>
+                    USERNAME
+                </label>
 
                 <input
                     type="text"
@@ -80,17 +85,19 @@ export default function ChangeUsernameModal() {
                     onChange={e => setNewUsername(e.target.value)}
                 />
 
-                <label className='change-username-modal__existing-password-label'>
+                <label ref={passwordLabelRef} className='change-username-modal__existing-password-label'>
+
+                    EXISTING PASSWORD
 
                     {passwordErrors.isEmpty &&
 
-                        <span className='change-username-modal__existing-password-label change-username-modal__existing-password-label--errors'> EXISTING PASSWORD - Please insert your password</span>
+                        <span className='change-username-modal__existing-password-label change-username-modal__existing-password-label--errors'> - Please insert your password</span>
 
                     }
 
                     {passwordErrors.isInvalid &&
 
-                        <span className='change-username-modal__existing-password-label change-username-modal__existing-password-label--errors'>EXISTING PASSWORD - Passwords do not match</span>
+                        <span className='change-username-modal__existing-password-label change-username-modal__existing-password-label--errors'> - Passwords do not match</span>
 
                     }
 
