@@ -144,9 +144,12 @@ export const userSlice = createSlice({
 
     reducers: {
 
-        loadUserProPic: (state, action) => {
+        loadedUser: (state, action) => {
+            state.data = action.payload
+        },
 
-            state.data.proPicBlob = action.payload
+        setIsLogged: (state) => {
+            state.isLogged = true
         },
 
         setFriendUpdatedProPic: (state, action) => {
@@ -168,13 +171,9 @@ export const userSlice = createSlice({
             })
         },
 
-        loadFriendProPic: (state, action) => {
+        loadedFriendList: (state, action) => {
 
-            state.data.friendList.map(friend => {
-
-                friend.proPicBlob = action.payload
-
-            })
+            state.data.friendList = action.payload
 
         },
 
@@ -223,11 +222,6 @@ export const userSlice = createSlice({
         },
 
         [activateAccount.fulfilled]: (state, action) => {
-            state.data = action.payload.userData
-            state.isLogged = action.payload.isLogged
-        },
-
-        [login.fulfilled]: (state, action) => {
             state.data = action.payload.userData
             state.isLogged = action.payload.isLogged
         },

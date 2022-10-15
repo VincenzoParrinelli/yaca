@@ -7,36 +7,33 @@ const userMiddleware = store => next => async action => {
     if (action.type === "user/login/fulfilled") {
 
         //load current user proPics
-        const user = store.getState().user.data
+        const user = action.payload.userData
 
         if (user.profilePicID) {
 
             const userProPicBlob = await loadProPics(user)
 
             store.dispatch({
-                type: "user/loadUserProPic",
+                type: "user/loadedUser",
                 payload: userProPicBlob
             })
 
         }
 
-
         //load friends proPics
-        const friendList = store.getState().user.data.friendList
+        const friendList = action.payload.friendList
 
         if (friendList.length >= 1) {
 
-            friendList.map(async friend => {
+            const friendListLoadedAssets = friendList.map(async friend => await loadProPics(friend))
 
-                await loadProPics(friend).then(friendProPicBlob => {
+            Promise.all(friendListLoadedAssets).then(friendListLoadedAssetsData => {
 
-                    store.dispatch({
-                        type: "user/loadFriendProPic",
-                        payload: friendProPicBlob
-                    })
+                store.dispatch({
+                    type: "user/loadedFriendList",
+                    payload: friendListLoadedAssetsData
                 })
 
-             
             })
 
         }
@@ -76,6 +73,8 @@ const userMiddleware = store => next => async action => {
 
         const groupList = action.payload.groupList
 
+
+
         if (groupList.length >= 1) {
 
             groupList.forEach(group => {
@@ -86,7 +85,7 @@ const userMiddleware = store => next => async action => {
             const loadGroups = groupList.map(async group => await loadProPics(group))
 
             Promise.all(loadGroups).then(groups => {
-
+        
                 store.dispatch({
                     type: "group/loadGroupsProPics",
                     payload: groups
@@ -94,6 +93,11 @@ const userMiddleware = store => next => async action => {
             })
 
         }
+
+        //set is logged flag to true when everything is loaded
+        store.dispatch({
+            type: "user/setIsLogged"
+        })
 
     }
 

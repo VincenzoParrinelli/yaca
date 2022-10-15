@@ -55,18 +55,24 @@ export const updateGroupPic = async action => {
 
 //load ProfilePictures
 
-export const loadProPics = async user => {
+export const loadProPics = async list => {
 
     //check if the user or the group has a profile pic then download it from firebase
-    if (user.profilePicID || user.groupPicID) {
+    if (list.profilePicID || list.groupPicID) {
 
-        const _id = user._id
-        const profilePicID = user.profilePicID ?? user.groupPicID
+        const _id = list._id
+        const profilePicID = list.profilePicID ?? list.groupPicID
 
-        const proPicRef = ref(storage, `${user.profilePicID ? "proPics" : "groupPics"}/${_id}/${profilePicID}`)
+        const proPicRef = ref(storage, `${list.profilePicID ? "proPics" : "groupPics"}/${_id}/${profilePicID}`)
 
-        return await getDownloadURL(proPicRef).then(proPicBlob => proPicBlob)
+        return await getDownloadURL(proPicRef).then(proPicBlob => {
+
+            return { ...list, proPicBlob }
+
+        })
 
     } 
+    
+    return list
 
 }

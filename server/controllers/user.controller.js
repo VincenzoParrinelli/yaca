@@ -99,13 +99,12 @@ module.exports = {
 
                         Promise.all(getConversations).then(convData => {
 
-                            userData.friendList = friendsData
-
                             res.json({
                                 isLogged: true,
                                 isValid: true,
                                 userData,
                                 requestsData,
+                                friendList: friendsData,
                                 groupList: groupsData,
                                 convData
                             })
