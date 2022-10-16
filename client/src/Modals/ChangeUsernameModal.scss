@@ -9,10 +9,10 @@
     height: 46vh;
     border-radius: 5px;
     background-color: #36393f;
-    animation: deleteGroupModalContentPopIn .3s;
+    animation: changeUsernameModalContentPopIn .3s;
 
     &--closed {
-        animation: deleteGroupModalContentPopOut .3s;
+        animation: changeUsernameModalContentPopOut .3s;
     }
 
     &__overlay {
@@ -23,10 +23,10 @@
         bottom: 0;
         background-color: rgba(0, 0, 0, 0.6);
         z-index: 1;
-        animation: deleteGroupModalOverlayPopIn .3s;
+        animation: changeUsernameModalOverlayPopIn .3s;
 
         &--closed {
-            animation: deleteGroupModalOverlayPopOut .3s;
+            animation: changeUsernameModalOverlayPopOut .3s;
         }
     }
 
@@ -136,7 +136,7 @@
 
 }
 
-@keyframes deleteGroupModalContentPopIn {
+@keyframes changeUsernameModalContentPopIn {
     from {
         width: 25vw;
         min-height: 46vh;
@@ -148,7 +148,7 @@
     }
 }
 
-@keyframes deleteGroupModalContentPopOut {
+@keyframes changeUsernameModalContentPopOut {
     from {
         opacity: 1;
     }
@@ -158,7 +158,7 @@
     }
 }
 
-@keyframes deleteGroupModalOverlayPopIn {
+@keyframes changeUsernameModalOverlayPopIn {
     from {
         opacity: 0.1;
     }
@@ -169,7 +169,7 @@
 }
 
 
-@keyframes deleteGroupModalOverlayPopOut {
+@keyframes changeUsernameModalOverlayPopOut {
     from {
         opacity: 1;
     }
