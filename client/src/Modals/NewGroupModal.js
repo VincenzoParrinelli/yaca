@@ -19,6 +19,14 @@ export default function NewGroupModal() {
 
     const dispatch = useDispatch()
 
+    useEffect(() => {
+
+        return () => {
+            URL.revokeObjectURL(newGroupPic)
+        }
+
+    }, [])
+
     //reset modal state on open
     useEffect(() => {
 
