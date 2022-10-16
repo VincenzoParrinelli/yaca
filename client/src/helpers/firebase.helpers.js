@@ -65,9 +65,13 @@ export const loadProPics = async list => {
 
         const proPicRef = ref(storage, `${list.profilePicID ? "proPics" : "groupPics"}/${_id}/${profilePicID}`)
 
-        return await getDownloadURL(proPicRef).then(proPicBlob => {
+        return await getDownloadURL(proPicRef).then(imageBlob => {
 
-            return { ...list, proPicBlob }
+            //if we got a profile pic return imageBlob as proPicBlob
+            if (list.profilePicID) return { ...list, proPicBlob: imageBlob }
+
+            //else if we got a group pic return imageBlob as groupPicBlob
+            return { ...list, groupPicBlob: imageBlob }
 
         })
 

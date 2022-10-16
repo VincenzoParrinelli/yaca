@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { resetOverviewState, setNewPic, resetNewPic, setNewGroupName } from '../../../Redux/settingsOverviewSlice'
+import defaultProPic from "../../../Assets/Images/user-icon-2.png"
 import "./GroupSettingsOverview.scss"
 
 export default function GroupSettingsOverview(selectedGroupData) {
@@ -43,7 +44,7 @@ export default function GroupSettingsOverview(selectedGroupData) {
 
                     {showChangePicText && <span className='group-settings-overview__change-pic-text'>CHANGE PIC</span>}
 
-                    <img className='group-settings-overview__propic' src={newPicBlob ?? selectedGroupData.proPicBlob} />
+                    <img className='group-settings-overview__propic' src={newPicBlob ?? selectedGroupData.groupPicBlob ?? defaultProPic} />
 
                     <input
                         className='group-settings-overview__new-group-pic-input'
