@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Modal from "react-modal"
 import { useSelector, useDispatch } from 'react-redux'
+import { v4 as uuidv4 } from "uuid"
 import { closeNewGroupModal } from '../Redux/modalsSlice'
 import { createGroup } from '../Redux/groupSlice'
 import createGroupPic from "../Assets/Images/create-group-pic.png"
 import "./NewGroupModal.scss"
-import { produceWithPatches } from 'immer'
 
 export default function NewGroupModal() {
 
     const [groupName, setGroupName] = useState("")
-    const [groupPic, setGroupPic] = useState(null)
-    const [groupPicUrl, setGroupPicUrl] = useState(null)
+    const [newGroupPic, setNewGroupPic] = useState(null)
 
     const picRef = useRef(null)
 
@@ -23,8 +22,7 @@ export default function NewGroupModal() {
     //reset modal state on open
     useEffect(() => {
 
-        setGroupPic(null)
-        setGroupPicUrl(null)
+        setNewGroupPic(null)
         setGroupName(`${data.username}'s Server`)
 
     }, [newGroupModal])
@@ -32,37 +30,26 @@ export default function NewGroupModal() {
     //if user selects an image for his group, add border radius 
     useEffect(() => {
 
-        if (!groupPicUrl) return
+        if (!newGroupPic) return
 
         picRef.current.style.borderRadius = "50%"
 
-    }, [groupPicUrl])
-
-
-    const handleNewGroupPic = e => {
-
-        setGroupPic(e.target.files[0])
-        setGroupPicUrl(URL.createObjectURL(e.target.files[0]))
-    }
+    }, [newGroupPic])
 
 
     const handleNewGroup = () => {
 
-        const groupPicID = groupPicUrl?.split("/")[3]
-        const proPicBlob = URL.createObjectURL(groupPic)
-
+    
         const payload = {
             data: {
                 userID: data._id,
                 groupName,
-                groupPicID,
+                groupPicID: uuidv4(),
             },
 
             file: {
-                groupPic
+                groupPic: newGroupPic
             },
-
-            proPicBlob
 
         }
 
@@ -111,14 +98,14 @@ export default function NewGroupModal() {
                 <img
                     ref={picRef}
                     className='new-group-modal__group-pro-pic'
-                    src={groupPicUrl ? groupPicUrl : createGroupPic}
+                    src={(newGroupPic && URL.createObjectURL(newGroupPic)) ?? (createGroupPic)}
                 />
 
                 <input
                     className='new-group-modal__new-group-pic'
                     type="file"
                     accept='.jpg, .png'
-                    onChange={e => handleNewGroupPic(e)}
+                    onChange={e =>  setNewGroupPic(e.target.files[0])}
                 />
             </label>
 
