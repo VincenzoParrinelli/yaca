@@ -49,7 +49,6 @@ export default function Dashboard() {
                     <AddGroupMembersModal />
 
                     <SideBar />
-
                     <div className='dashboard__separator-vertical' />
 
                     <div className='dashboard__lists-container'>
@@ -59,7 +58,6 @@ export default function Dashboard() {
                         }
 
                     </div>
-
 
                     <div className='dashboard__separator-vertical' />
 

@@ -40,6 +40,7 @@ export default function Notifications() {
                 <img src={notificationBell} className="notifications__icon" />
 
                 Notifications
+
             </div>
 
             {friendRequests && friendRequests.map((friendRequest, i) => {

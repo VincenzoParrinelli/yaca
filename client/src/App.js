@@ -5,7 +5,6 @@ import Dashboard from "./Components/Dashboard"
 import VerifyAccount from "./Components/VerifyAccount"
 import "./App.scss"
 
-
 export default function App() {
 
     return (

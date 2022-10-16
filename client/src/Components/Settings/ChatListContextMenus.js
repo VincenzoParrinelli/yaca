@@ -1,19 +1,19 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { handleOpenGroupSettings } from '../../Redux/settingsSlice'
 import "./ChatListContextMenus.scss"
 
 export default function ChatListMenus() {
 
-    const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 })
     const [isOpen, setIsOpen] = useState(false)
+    const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 })
     const [selectedID, setSelectedID] = useState("")
     const [selectedType, setSelectedType] = useState("")
 
     const menuRef = useRef(null)
 
     const dispatch = useDispatch()
-    
+
     //get exact position where user clicks and from that origin show a menu
     const menusHandler = useCallback(e => {
 
@@ -43,7 +43,7 @@ export default function ChatListMenus() {
 
     //close menu when clicking outside or pressing escape key
     const closeMenu = e => {
-        e.preventDefault()
+  
         if (menuRef.current && menuRef.current.contains(e.target)) return
 
         setSelectedID("")
@@ -63,6 +63,7 @@ export default function ChatListMenus() {
             document.removeEventListener("mousedown", closeMenu)
             document.removeEventListener("keydown", closeMenuOnEsc)
         }
+
     }, [])
 
 
