@@ -22,8 +22,9 @@ const validateAccessToken = (req, res, next) => {
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
 
         //automatically refresh token on expiry
-        if (err && err.name === "TokenExpiredError") {
-
+        if (err && err.message === "jwt expired") {
+            
+            console.log(err.message)
 
             refreshToken(req, res, next)
         } else if (err) return res.sendStatus(403)
@@ -39,6 +40,7 @@ const refreshToken = (req, res, next) => {
     if (!refreshToken) return res.sendStatus(401)
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+
         if (err) return res.sendStatus(403)
 
         const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
