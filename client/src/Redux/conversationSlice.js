@@ -5,11 +5,7 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
 
-    selectedFriendID: "",
-
     conversationList: [],
-
-    selectedConversationID: null
 
 }
 
@@ -36,10 +32,6 @@ export const conversationSlice = createSlice({
         //get only last messages on login, so we can display them after user has logged in
         getLastMessages: (state, action) => {
             state.conversationList = action.payload
-        },
-
-        setSelectedFriendID: (state, action) => {
-            state.selectedFriendID = action.payload
         },
 
         setSelectedConv: (state, action) => {
@@ -102,7 +94,6 @@ export const conversationSlice = createSlice({
 })
 
 export const {
-    setSelectedFriendID,
     updateChat
 
 } = conversationSlice.actions

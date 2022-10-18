@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { useParams } from 'react-router-dom'
 import { sendMessage } from '../Redux/socketSlice'
 import { updateChat } from '../Redux/conversationSlice'
 import sendMessageIcon from "../Assets/Images/send-message.png"
@@ -13,17 +14,18 @@ export default function MainContent() {
 
     const [message, setMessage] = useState("")
 
-    const { selectedConversationID } = useSelector(state => state.conversation)
-    const { selectedGroupID } = useSelector(state => state.group)
+    const { friendList } = useSelector(state => state.user.data)
+    const { groupList } = useSelector(state => state.group)
 
     const dispatch = useDispatch()
+    const { friendID, groupID } = useParams()
 
     const textAreaRef = useRef(null)
 
     //automatically resize textarea
     useEffect(() => {
 
-        if(!textAreaRef.current) return
+        if (!textAreaRef.current) return
 
         if (!message) textAreaRef.current.style.height = "2%"
 
@@ -54,39 +56,68 @@ export default function MainContent() {
     return (
         <div className='chat-open'>
 
-            {selectedConversationID &&
+
+            {/*Render selected friend*/}
+
+            {friendID &&
 
                 <>
-                    <ConversationHeader />
+                    {friendList.map(friend => {
 
-                    <ConversationContainer />
+                        if (friend._id === friendID) return (
 
-                    <textarea
-                        ref={textAreaRef}
-                        className='chat-open__message-input'
-                        placeholder='Write a message...'
-                        spellCheck="false"
-                        value={message}
-                        onChange={e => setMessage(e.target.value)}
-                        onKeyDown={e => handleSendMessage(e)}
-                    />
+                            <>
 
-                    <img
-                        src={sendMessageIcon}
-                        className='chat-open__send-message-icon'
+                                <ConversationHeader friendData={friend} />
 
-                    />
+                                <ConversationContainer friendData={friend} />
+
+                                <textarea
+                                    ref={textAreaRef}
+                                    className='chat-open__message-input'
+                                    placeholder='Write a message...'
+                                    spellCheck="false"
+                                    value={message}
+                                    onChange={e => setMessage(e.target.value)}
+                                    onKeyDown={e => handleSendMessage(e)}
+                                />
+
+                                <img
+                                    src={sendMessageIcon}
+                                    className='chat-open__send-message-icon'
+
+                                />
+
+                            </>
+                        )
+                    })}
+
+
                 </>
 
             }
 
-            {selectedGroupID &&
+            {/*Render selected group*/}
+
+            {groupID &&
 
                 <>
-                    <GroupHeader />
+                    {groupList.map(group => {
 
-                    <GroupContainer />
+                        if (group._id === groupID) return (
+
+                            <>
+                                <GroupHeader groupData={group} />
+
+                                <GroupContainer groupData={group} />
+                            </>
+
+                        )
+
+                    })}
                 </>
+
+
             }
 
 

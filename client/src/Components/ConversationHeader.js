@@ -1,67 +1,57 @@
 import React from 'react'
-import { useSelector } from "react-redux"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import "./ConversationHeader.scss"
 
-export default function ChatHeader() {
-
-    const { data } = useSelector(state => state.user)
-    const { selectedFriendID } = useSelector(state => state.conversation)
+export default function ChatHeader({ friendData }) {
 
     return (
 
         <div className='chat-header'>
 
-            {data.friendList.map(friend => {
+    
+            <div
+                key={friendData._id}
+                className='chat-header__user-propic-container'
+            >
 
-                if (friend._id !== selectedFriendID) return
+                {friendData.proPicBlob ?
 
-                return (
-                    <div
-                        key={friend._id}
-                        className='chat-header__user-propic-container'
-                    >
+                    <img src={friendData.proPicBlob} className='chat-header__user-propic' />
 
-                        {friend.proPicBlob ?
+                    :
 
-                            <img src={friend.proPicBlob} className='chat-header__user-propic' />
-
-                            :
-
-                            <img src={defaultProPic} className='chat-header__default-propic' />
+                    <img src={defaultProPic} className='chat-header__default-propic' />
 
 
-                        }
+                }
 
-                        {friend.socketID !== "OFFLINE" ?
-                            <>
-                                <div className='chat-header__user-status chat-header__user-status--online' />
+                {friendData.socketID !== "OFFLINE" ?
+                    <>
+                        <div className='chat-header__user-status chat-header__user-status--online' />
 
-                                <p className='chat-header__user-status-text chat-header__user-status-text--online' >
-                                    Online
-                                </p>
-                            </>
+                        <p className='chat-header__user-status-text chat-header__user-status-text--online' >
+                            Online
+                        </p>
+                    </>
 
-                            :
+                    :
 
-                            <>
-                                <div className='chat-header__user-status chat-header__user-status--offline' />
+                    <>
+                        <div className='chat-header__user-status chat-header__user-status--offline' />
 
-                                <p className='chat-header__user-status-text chat-header__user-status-text--offline' >
-                                    Offline
+                        <p className='chat-header__user-status-text chat-header__user-status-text--offline' >
+                            Offline
 
-                                </p>
-                            </>
-                        }
+                        </p>
+                    </>
+                }
 
 
-                        <p className='chat-header__username'>{friend.username}</p>
+                <p className='chat-header__username'>{friendData.username}</p>
 
-                    </div>
+            </div>
 
-                )
 
-            })}
             <div className='chat-header__separator-horizontal' />
         </div>
     )

@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    width: 140px;
+    min-width: 8%;
     z-index: 1;
     background-color: linear-gradient(#1B2121, #17181C, #17181C);
     text-overflow: ellipsis;

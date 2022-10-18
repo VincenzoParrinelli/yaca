@@ -3,9 +3,8 @@ import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import "./GroupContainer.scss"
 
-export default function GroupContainer() {
+export default function GroupContainer({ groupData }) {
 
-    const { groupList, selectedGroupID } = useSelector(state => state.group)
     const { data } = useSelector(state => state.user)
 
 
@@ -22,40 +21,35 @@ export default function GroupContainer() {
 
 
     return (
-        groupList.map(group => {
 
-            if (group._id !== selectedGroupID) return
+        <div className='group-container' key={groupData._id}>
+            {
+                groupData.messages.map(message => {
 
-            return (
-                <div className='group-container' key={group._id}>
-                    {
-                        group.messages.map(message => {
+                    return (
+                        <div
+                            className={
+                                message.senderID !== data._id ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
+                            }
+                            key={uuidv4()}
+                        >
 
-                            return (
-                                <div
-                                    className={
-                                        message.senderID !== data._id ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
-                                    }
-                                    key={uuidv4()}
-                                >
+                            <div className='metadata-container'>
 
-                                    <div className='metadata-container'>
+                                <span className='metadata-container__sender-username'></span>
 
-                                        <span className='metadata-container__sender-username'></span>
+                                <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
 
-                                        <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
+                                <span className='metadata-container__text'>{message.text}</span>
 
-                                        <span className='metadata-container__text'>{message.text}</span>
+                            </div>
 
-                                    </div>
+                        </div>
+                    )
 
-                                </div>
-                            )
-
-                        })
-                    }
-                </div>
-            )
-        })
+                })
+            }
+        </div>
     )
+
 }

@@ -4,9 +4,9 @@ import { v4 as uuidv4 } from "uuid"
 import "./ConversationContainer.scss"
 
 
-export default function ChatContainer() {
+export default function ChatContainer({ friendData }) {
 
-    const { conversationList, selectedFriendID, selectedConversationID } = useSelector(state => state.conversation)
+    const { conversationList, selectedFriendID } = useSelector(state => state.conversation)
 
 
     const refactorDate = createdAt => {
@@ -24,20 +24,20 @@ export default function ChatContainer() {
 
     conversationList.map(conv => {
 
-        if (conv._id !== selectedConversationID) return
+        if (conv._id !== friendData._id) return
 
         return (
             <div className='conversation-container' key={conv._id}>
                 {
                     conv.messages.map(message => {
 
-                        if (message.senderID !== selectedFriendID) {
+                        if (message.senderID !== friendData._id) {
 
                             return (
                                 <div
 
                                     className={
-                                        message.senderID !== selectedFriendID ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
+                                        message.senderID !== friendData._id ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
                                     }
                                     key={uuidv4()}
                                 >

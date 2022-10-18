@@ -5,44 +5,33 @@ import defaultProPic from "../Assets/Images/user-icon-2.png"
 import addFriend from "../Assets/Images/add-friend.png"
 import "./GroupHeader.scss"
 
-export default function GroupHeader() {
+export default function GroupHeader({ groupData }) {
 
-    const { groupList, selectedGroupID } = useSelector(state => state.group)
     const { addGroupMembers } = useSelector(state => state.modal)
 
     const dispatch = useDispatch()
 
-    const renderGroup = group => {
-
-        return (
-            <>
-                <div
-                    key={group._id}
-                    className='group-header__group-propic-container'
-
-                >
-
-                    {group.proPicBlob ?
-
-                        <img src={group.proPicBlob} className='group-header__group-propic' />
-                        :
-                        <img src={defaultProPic} className='group-header__default-propic' />
-
-                    }
-
-                    <p className='group-header__groupname'>{group.groupName}</p>
-
-                </div>
-
-            </>
-
-        )
-    }
 
     return (
         <div className='group-header'>
 
-            {renderGroup(groupList.find(group => group._id === selectedGroupID))}
+            <div
+                key={groupData._id}
+                className='group-header__group-propic-container'
+
+            >
+
+                {groupData.proPicBlob ?
+
+                    <img src={groupData.proPicBlob} className='group-header__group-propic' />
+                    :
+                    <img src={defaultProPic} className='group-header__default-propic' />
+
+                }
+
+                <p className='group-header__groupname'>{groupData.groupName}</p>
+
+            </div>
 
             <img
                 src={addFriend}

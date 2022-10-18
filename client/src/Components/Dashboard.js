@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux"
 import { connection } from '../Redux/socketSlice';
 import { handleDashboard } from '../Redux/dashboardSlice';
 import SideBar from "./SideBar"
 import NewGroupModal from '../Modals/NewGroupModal';
 import AddGroupMembersModal from '../Modals/AddGroupMembersModal';
-import ChatOpen from "./ChatOpen"
 import ChatList from './ChatList'
 import AddFriend from './AddFriendList';
 import Notifications from './Notifications';
@@ -26,49 +25,56 @@ export default function Dashboard() {
 
     useEffect(() => {
 
-        if (!isLogged || !errors.authorized) {
-            navigate("/")
+        if (!isLogged) return
 
-        } else {
-            dispatch(connection(data._id))
-            dispatch(handleDashboard())
-        }
+        dispatch(connection(data._id))
+        dispatch(handleDashboard())
+
 
     }, [errors.authorized, isLogged])
 
     return (
-        <>
 
-            {/* if no settings menu is open, render dashboard */}
+        isLogged
 
-            {Object.values(isOpenFlag).some(state => state) ? <SettingsController /> :
+            ?
 
-                <div className='dashboard'>
+            <>
+               
+                
+                {/* if no settings menu is open, render dashboard */}
 
-                    <NewGroupModal />
-                    <AddGroupMembersModal />
+                {Object.values(isOpenFlag).some(state => state) ? <SettingsController /> :
 
-                    <SideBar />
-                    <div className='dashboard__separator-vertical' />
+                    <div className='dashboard'>
 
-                    <div className='dashboard__lists-container'>
-                        {
-                            addFriend ? <AddFriend /> :
-                                notifications ? <Notifications /> : <ChatList />
-                        }
+                        <NewGroupModal />
+                        <AddGroupMembersModal />
 
+                        <SideBar />
+                        <div className='dashboard__separator-vertical' />
+
+                        <div className='dashboard__lists-container'>
+                            {
+                                addFriend ? <AddFriend /> :
+                                    notifications ? <Notifications /> : <ChatList />
+                            }
+
+                        </div>
+
+                        <div className='dashboard__separator-vertical' />
+
+                        <ChatListContextMenus />
+                        
+                        <Outlet />
                     </div>
 
-                    <div className='dashboard__separator-vertical' />
+                }
 
-                    {selectedUserIndex !== null && <ChatOpen />}
+            </>
 
-                    <ChatListContextMenus />
+            :
 
-                </div>
-
-            }
-
-        </>
+            <Navigate to="/" />
     )
 }

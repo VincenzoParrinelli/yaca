@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from "react-redux"
-import { setSelectedFriendID } from '../Redux/conversationSlice'
-import { setSelectedGroupID } from '../Redux/groupSlice'
+import { useNavigate, useParams } from "react-router-dom"
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import home from "../Assets/Images/home.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
@@ -11,10 +10,12 @@ import "./ChatList.scss"
 export default function ChatList() {
 
     const { data } = useSelector(state => state.user)
-    const { conversationList, selectedFriendID } = useSelector(state => state.conversation)
-    const { groupList, selectedGroupID } = useSelector(state => state.group)
+    const { conversationList } = useSelector(state => state.conversation)
+    const { groupList } = useSelector(state => state.group)
 
-    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const { friendID, groupID } = useParams()
 
     const showScrollBar = () => {
         const scrollbarRef = document.querySelector(".chat-list__scrollbar-thumb-vertical")
@@ -68,8 +69,8 @@ export default function ChatList() {
                                 id={friend._id}
                                 data-type="friend"
                                 className='chat-list__element-container'
-                                aria-checked={selectedFriendID === friend._id}
-                                onClick={() => dispatch(setSelectedFriendID(friend._id))}
+                                aria-checked={friend._id === friendID}
+                                onClick={() => navigate(`conversation/${friend._id}`)}
                             >
 
                                 <div className='chat-list__propic-container'>
@@ -77,7 +78,7 @@ export default function ChatList() {
                                     {friend.proPicBlob ?
 
                                         <img src={friend.proPicBlob} className='chat-list__propic' />
-                                        
+
                                         :
 
                                         <img src={defaultProPic} className='chat-list__default-propic' />
@@ -126,9 +127,9 @@ export default function ChatList() {
                                 key={group._id}
                                 id={group._id}
                                 data-type="group"
-                                aria-checked={selectedGroupID === group._id}
+                                aria-checked={group._id === groupID}
                                 className='chat-list__element-container'
-                                onClick={() => dispatch(setSelectedGroupID(group._id))}
+                                onClick={() => navigate(`group/${group._id}`)}
 
                             >
 

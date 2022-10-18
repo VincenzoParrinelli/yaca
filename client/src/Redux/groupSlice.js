@@ -6,8 +6,6 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 const initialState = {
     groupList: [],
 
-    selectedGroupID: ""
-
 }
 
 export const createGroup = createAsyncThunk(
@@ -50,9 +48,6 @@ const groupSlice = createSlice({
             state.selectedGroupID = ""
         },
 
-        setSelectedGroupID: (state, action) => {
-            state.selectedGroupID = action.payload
-        },
 
         sendGroupInvite: () => { },
 
@@ -110,7 +105,6 @@ const groupSlice = createSlice({
 
 
 export const {
-    setSelectedGroupID,
     sendGroupInvite,
     updateGroupSettings,
     deleteGroup
