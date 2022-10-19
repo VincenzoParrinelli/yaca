@@ -10,7 +10,6 @@ export default function ChatHeader({ friendData }) {
 
     
             <div
-                key={friendData._id}
                 className='chat-header__user-propic-container'
             >
 

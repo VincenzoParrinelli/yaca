@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux"
 import { connection } from '../Redux/socketSlice';
 import { handleDashboard } from '../Redux/dashboardSlice';
@@ -16,12 +16,10 @@ import "./Dashboard.scss"
 export default function Dashboard() {
     const { errors } = useSelector(state => state.sockets)
     const { data, isLogged } = useSelector(state => state.user)
-    const { selectedUserIndex } = useSelector(state => state.conversation)
     const { addFriend, notifications } = useSelector(state => state.dashboard)
     const { isOpenFlag } = useSelector(state => state.settings)
 
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     useEffect(() => {
 
@@ -40,7 +38,6 @@ export default function Dashboard() {
             ?
 
             <>
-               
                 
                 {/* if no settings menu is open, render dashboard */}
 

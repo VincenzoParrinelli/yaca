@@ -22,9 +22,9 @@ export default function GroupContainer({ groupData }) {
 
     return (
 
-        <div className='group-container' key={groupData._id}>
+        <div className='group-container'>
             {
-                groupData.messages.map(message => {
+                groupData.messages?.map(message => {
 
                     return (
                         <div
