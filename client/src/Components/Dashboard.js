@@ -6,6 +6,7 @@ import { handleDashboard } from '../Redux/dashboardSlice';
 import SideBar from "./SideBar"
 import NewGroupModal from '../Modals/NewGroupModal';
 import AddGroupMembersModal from '../Modals/AddGroupMembersModal';
+import LogoutModal from '../Modals/LogoutModal';
 import ChatList from './ChatList'
 import AddFriend from './AddFriendList';
 import Notifications from './Notifications';
@@ -38,7 +39,7 @@ export default function Dashboard() {
             ?
 
             <>
-                
+
                 {/* if no settings menu is open, render dashboard */}
 
                 {Object.values(isOpenFlag).some(state => state) ? <SettingsController /> :
@@ -47,8 +48,10 @@ export default function Dashboard() {
 
                         <NewGroupModal />
                         <AddGroupMembersModal />
+                        <LogoutModal />
 
                         <SideBar />
+                        
                         <div className='dashboard__separator-vertical' />
 
                         <div className='dashboard__lists-container'>
@@ -62,7 +65,7 @@ export default function Dashboard() {
                         <div className='dashboard__separator-vertical' />
 
                         <ChatListContextMenus />
-                        
+
                         <Outlet />
                     </div>
 

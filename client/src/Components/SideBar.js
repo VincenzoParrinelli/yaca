@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from "react-redux"
-import { openNewGroupModal } from "../Redux/modalsSlice"
+import { openNewGroupModal, openLogoutModal } from "../Redux/modalsSlice"
 import { handleAddFriend, handleDashboard, openNotifications } from "../Redux/dashboardSlice"
 import { handleUserSettings } from '../Redux/settingsSlice';
 import micImage from "../Assets/Images/mic.png"
 import soundImage from "../Assets/Images/sound.png"
 import addFriendImage from "../Assets/Images/add-friend.png"
 import plus from "../Assets/Images/plus.png"
-import logout from "../Assets/Images/logout.png"
+import logoutImage from "../Assets/Images/logout.png"
 import home from "../Assets/Images/home.png"
 import bellImage from "../Assets/Images/bell.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
@@ -95,7 +95,11 @@ export default function SideBar() {
                 </li>
 
                 <li>
-                    <img src={logout} className="sidebar__logout-icon" />
+                    <img
+                        src={logoutImage}
+                        className="sidebar__logout-icon"
+                        onClick={() => dispatch(openLogoutModal())}
+                    />
 
                     <span className='sidebar__tooltip'>Logout</span>
 

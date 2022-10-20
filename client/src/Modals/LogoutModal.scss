@@ -1,0 +1,110 @@
+.logout-modal {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    width: 28vw;
+    height: 30vh;
+    border-radius: 5px;
+    background-color: #36393f;
+    animation: logoutModalContentPopIn .3s;
+
+    &--closed {
+        animation: logoutModalContentPopOut .3s;
+    }
+
+    &__overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1;
+        animation: modalOverlayPopIn .3s;
+
+        &--closed {
+            animation: modalOverlayPopOut .3s;
+        }
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        color: white;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    &__logout-text {
+        margin: 0;
+        padding: 16px;
+        font: bold 18px "aeroportLight";
+    }
+
+    &__logout-text-2 {
+        margin: 0;
+        padding: 0px 8px 67px 16px;
+        font: 15px "aeroportLight";
+        opacity: 0.7;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        padding: 16px 15px 16px;
+        background-color: #2f3136;
+        border-bottom-left-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
+
+    &__btn {
+        cursor: pointer;
+        color: white;
+        border: none;
+        background-color: transparent;
+        padding: 12px 30px;
+        border-radius: 3px;
+
+        &--discard {
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+        }
+
+        &--logout {
+
+            background-color: #d83c3e;
+            transition: .15s all ease-in-out;
+
+            &:hover {
+                background-color: #a12d2f;
+            }
+
+            &:active {
+                background-color: #8c2729;
+            }
+
+        }
+    }
+}
+
+
+@keyframes logoutModalContentPopIn {
+
+    from {
+        width: 20vw;
+        height: 20vh;
+    }
+
+    to {
+        width: 28vw;
+        height: 30vh;
+    }
+
+}

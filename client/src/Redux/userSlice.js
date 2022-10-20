@@ -124,6 +124,7 @@ export const changeUsername = createAsyncThunk(
     })
 )
 
+// Since tokens are httpOnly we need to delete them server side
 export const logout = createAsyncThunk(
     "user/logout",
     async () => await axios.delete(`${serverUrl}user/logout`,

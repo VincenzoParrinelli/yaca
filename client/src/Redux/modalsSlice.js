@@ -51,6 +51,14 @@ export const modalsSlice = createSlice({
 
         closeUsernameModal: state => {
             state.changeUsernameModal = false
+        },
+
+        openLogoutModal: state => {
+            state.logoutModal = true
+        },
+
+        closeLogoutModal: state => {
+            state.logoutModal = false
         }
 
     }
@@ -66,7 +74,9 @@ export const {
     closeDeleteGroupModal,
     handleAddFriend,
     openUsernameModal,
-    closeUsernameModal
+    closeUsernameModal,
+    openLogoutModal,
+    closeLogoutModal
 } = modalsSlice.actions
 
 export default modalsSlice.reducer
