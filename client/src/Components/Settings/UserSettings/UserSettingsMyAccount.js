@@ -8,6 +8,7 @@ import "./UserSettingsMyAccount.scss"
 
 export default function UserSettingsMyAccount() {
 
+    const [showChangePicText, setShowChangePicText] = useState(false)
     const [newProPic, setNewProPic] = useState(null)
     const [applyImageComponent, setApplyImageComponent] = useState(false)
 
@@ -72,7 +73,13 @@ export default function UserSettingsMyAccount() {
 
                     <label className='app-settings-my-account__propic-container'>
 
-                        <img className='app-settings-my-account__propic' src={(newProPic && URL.createObjectURL(newProPic)) ?? (proPicBlob || defaultProPic)} />
+                        {showChangePicText && <span className='app-settings-my-account__change-pic-text'>CHANGE PIC</span>}
+
+                        <img className='app-settings-my-account__propic'
+                            src={(newProPic && URL.createObjectURL(newProPic)) ?? (proPicBlob || defaultProPic)}
+                            onMouseEnter={() => setShowChangePicText(true)}
+                            onMouseLeave={() => setShowChangePicText(false)}
+                        />
 
                         <input
                             className='app-settings-my-account__new-pro-pic'

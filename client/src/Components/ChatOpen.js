@@ -25,14 +25,17 @@ export default function MainContent() {
 
     const textAreaRef = useRef(null)
 
+    //Get friend or group data
+    // @desc: use a find method in a useEffect, rather than a map, directly in the jsx
+    // to avoid react throwing "each child in a list should have a unique key prop" error
     useEffect(() => {
 
         friendID && setFriendData(friendList.find(friend => friend._id === friendID))
         groupID && setGroupData(groupList.find(group => group._id === groupID))
 
-    }, [friendID, groupID])
+    }, [])
 
-    //automatically resize textarea
+    //Automatically resize textarea
     useEffect(() => {
 
         if (!textAreaRef.current) return

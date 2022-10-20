@@ -51,7 +51,16 @@
         border-color: #202225;
         border-radius: 50%;
         background-color: black;
-        cursor: pointer;
+        z-index: 99;
+        pointer-events: none;
+    }
+
+    &__change-pic-text {
+        position: relative;
+        font: bold 12px "aeroportLight";
+        bottom: 2px;
+        z-index: 1;
+        pointer-events: none;
     }
 
     &__propic {
@@ -60,7 +69,12 @@
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        z-index: 99;
+        pointer-events: all;
+        cursor: pointer;
+        
+        &:hover {
+            opacity: 0.8;
+        }
     }
 
     &__new-pro-pic {
