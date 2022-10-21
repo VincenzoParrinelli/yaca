@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux"
 import { openNewGroupModal, openLogoutModal } from "../Redux/modalsSlice"
 import { handleAddFriend, handleDashboard, openNotifications } from "../Redux/dashboardSlice"
 import { handleUserSettings } from '../Redux/settingsSlice';
+import { ReactComponent as ChatIcon } from "../Assets/Images/chat-icon.svg"
 import micImage from "../Assets/Images/mic.png"
 import soundImage from "../Assets/Images/sound.png"
 import addFriendImage from "../Assets/Images/add-friend.png"
 import plus from "../Assets/Images/plus.png"
 import logoutImage from "../Assets/Images/logout.png"
-import home from "../Assets/Images/home.png"
-import bellImage from "../Assets/Images/bell.png"
+import { ReactComponent as BellIcon } from "../Assets/Images/bell.svg"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import { ReactComponent as SettingsIcon } from "../Assets/Images/settings.svg"
 import './SideBar.scss'
@@ -33,24 +33,12 @@ export default function SideBar() {
             </label>
 
 
-            <div className='sidebar__actions-container'>
-                <img src={micImage} className='sidebar__mic-image' />
-                <img src={soundImage} className='sidebar__sound-image' />
-
-            </div>
-
-            <div className='separator-container'>
-
-                <div className='separator' />
-
-            </div>
-
             <ul className='sidebar__icons' >
 
-                <li>
-                    <img
-                        src={home}
-                        className="sidebar__home"
+                <li value={dashboard}>
+
+                    <ChatIcon
+                        className="sidebar__chat-icon"
                         value={dashboard}
                         onClick={() => dispatch(handleDashboard())}
                     />
@@ -58,19 +46,20 @@ export default function SideBar() {
                     <span className='sidebar__tooltip'>Dashboard</span>
                 </li>
 
-                <li>
-                    <img
-                        src={bellImage}
+                <li value={notifications}>
+
+                    <BellIcon
                         className='sidebar__notification-bell'
                         value={notifications} //parameter that keeps button opacity set to 1 while modal is open
                         onClick={() => dispatch(openNotifications())}
                     />
+
                     <span className='sidebar__tooltip'>Notifications</span>
 
                 </li>
 
 
-                <li>
+                <li value={addFriend}>
                     <img
                         src={addFriendImage}
                         className="sidebar__add-friend"
@@ -82,7 +71,7 @@ export default function SideBar() {
 
                 </li>
 
-                <li>
+                <li value={newGroupModal}>
                     <img
                         src={plus}
                         className="sidebar__create-server"

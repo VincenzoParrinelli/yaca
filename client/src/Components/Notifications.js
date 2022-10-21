@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { acceptFriendRequest, refuseFriendRequest } from '../Redux/socketSlice'
-import notificationBell from "../Assets/Images/bell.png"
+import { ReactComponent as BellIcon } from "../Assets/Images/bell.svg"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import acceptImage from "../Assets/Images/accept.png"
 import refuseImage from "../Assets/Images/refuse.png"
@@ -37,7 +37,7 @@ export default function Notifications() {
 
             <div className='notifications__header'>
 
-                <img src={notificationBell} className="notifications__icon" />
+                <BellIcon className="notifications__icon"/>
 
                 Notifications
 

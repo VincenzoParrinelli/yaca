@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 import { Scrollbars } from 'react-custom-scrollbars-2';
-import home from "../Assets/Images/home.png"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import SearchBar from './SearchBar';
 import "./ChatList.scss"
@@ -36,10 +35,6 @@ export default function ChatList() {
 
                 <div className='chat-list__header-container'>
 
-                    <img src={home} className='chat-list__icon' />
-
-                    Dashboard
-
                     <SearchBar />
 
                 </div>
@@ -64,6 +59,7 @@ export default function ChatList() {
                     {data.friendList?.map(friend => {
 
                         return (
+
                             <div
                                 key={friend._id}
                                 id={friend._id}
@@ -112,6 +108,7 @@ export default function ChatList() {
                                 })}
 
                             </div>
+
                         )
                     })}
 

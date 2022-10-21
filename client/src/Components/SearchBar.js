@@ -18,8 +18,9 @@ export default function SearchBar() {
                 type="text"
                 spellCheck="false"
                 className='search-bar__input-field'
-                placeholder={addFriend ? "Search username or email..." : "Search..."}
                 onChange={e => setTest(e.target.value)}
+                value={test ? test : "Chats"}
+                onBlur={() => setTest("")} //When input loses focus reset test state
 
             />
 
