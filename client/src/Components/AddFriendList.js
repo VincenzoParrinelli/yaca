@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { sendFriendRequest } from '../Redux/socketSlice'
-import addFriendImage from "../Assets/Images/add-friend.png"
+import { ReactComponent as AddFriendIcon } from "../Assets/Images/add-friend.svg"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import "./AddFriendList.scss"
 
@@ -25,7 +25,7 @@ export default function AddFriend() {
 
             <div className='add-friend-list__header'>
 
-                <img src={addFriendImage} className="add-friend-list__icon" />
+                <AddFriendIcon className="add-friend-list__icon" />
 
                 Add new friend
 

@@ -1,8 +1,8 @@
 .sidebar {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    min-width: 8%;
+    height: 100%;
+    max-width: 6%;
     z-index: 1;
     background-color: linear-gradient(#1B2121, #17181C, #17181C);
     text-overflow: ellipsis;
@@ -10,15 +10,14 @@
 
     &__propic-container {
         display: flex;
-        position: relative;
+        position: absolute;
+        bottom: 40px;
         align-self: center;
         justify-content: center;
         align-items: center;
-        width: 3.5em;
-        height: 4em;
+        width: 7vmin;
+        height: 7vmin;
         border-radius: 50%;
-        margin-top: 20px;
-        margin-bottom: 20px;
     }
 
     &__propic {
@@ -34,26 +33,35 @@
         display: flex;
         flex-direction: column;
         position: relative;
+        margin-top: 150px;
         justify-content: center;
         align-items: center;
         height: 100%;
-        bottom: 30px;
         list-style-type: none;
         padding: 0;
         text-align: center;
         
+        
         li {
             width: 100%;
             height: 5%;
-            margin: 0 0 35px 0;
+            margin: 0 0 40px 0;
             display: flex;
             align-items: center;
             justify-content: center;
 
             &[value=true] {
-                border-left: solid;
-                border-left-color: #1d90f5;
-                border-left-width: 5px;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    width: 2px;
+                    height: 8%;
+                    border-radius: 60px;
+                    background-color: #1d90f5;
+                    box-shadow: -6px 0px 25px 1px #1d90f5;;
+                }
             }
 
       
@@ -67,12 +75,16 @@
     &__settings-icon,
     &__logout-icon {
         
-        width: 100%;
-        height: 70%;
+        width: 20%;
+        height: 10%;
         fill: white;
         transition: all .3s ease-out;
         opacity: 0.4;
-   
+
+        &[value=true] {
+            fill: #1d90f5;
+            opacity: 1;
+        }
 
         &:hover {
             cursor: pointer;
@@ -85,63 +97,6 @@
             animation: .2s popIn;
         }
 
-    }
-
-    &__chat-icon {
-
-        &[value=true] {
-            fill: #1d90f5;
-            opacity: 1;
-        }
-
-    }
-
-    &__notification-bell {
-
-        &[value=true] {
-            fill: #1d90f5;
-            opacity: 1;
-        }
-
-    }
-
-    &__add-friend {
-        width: 2vw;
-        height: 2vw;
-        cursor: pointer;
-
-        &[value=true] {
-            fill: #1d90f5;
-            opacity: 1;
-        }
-    }
-
-    &__create-server {
-        width: 2vw;
-        height: 2vw;
-        cursor: pointer;
-
-        &[value=true] {
-            fill: #1d90f5;
-            opacity: 1;
-        }
-    }
-
-    &__settings-icon {
-        width: 2vw;
-        height: 2vw;
-    }
-
-    &__logout-icon {
-        width: 1.8vw;
-        opacity: 0.4;
-        position: relative;
-        cursor: pointer;
-
-        &:hover {
-            filter: invert(66%) sepia(75%) saturate(5823%) hue-rotate(332deg) brightness(92%) contrast(112%);
-            opacity: 1;
-        }
     }
 
     &__tooltip {

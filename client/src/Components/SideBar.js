@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { openNewGroupModal, openLogoutModal } from "../Redux/modalsSlice"
 import { handleAddFriend, handleDashboard, openNotifications } from "../Redux/dashboardSlice"
 import { handleUserSettings } from '../Redux/settingsSlice';
-import { ReactComponent as ChatIcon } from "../Assets/Images/chat-icon.svg"
-import micImage from "../Assets/Images/mic.png"
-import soundImage from "../Assets/Images/sound.png"
-import addFriendImage from "../Assets/Images/add-friend.png"
-import plus from "../Assets/Images/plus.png"
-import logoutImage from "../Assets/Images/logout.png"
+import { ReactComponent as ChatIcon } from "../Assets/Images/chat.svg"
+import { ReactComponent as AddFriendIcon } from "../Assets/Images/add-friend.svg"
+import { ReactComponent as CreateGroupIcon } from "../Assets/Images/create-group.svg"
+import { ReactComponent as LogoutIcon } from "../Assets/Images/logout.svg"
 import { ReactComponent as BellIcon } from "../Assets/Images/bell.svg"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import { ReactComponent as SettingsIcon } from "../Assets/Images/settings.svg"
@@ -25,13 +23,6 @@ export default function SideBar() {
 
     return (
         <div className='sidebar'>
-
-            <label className='sidebar__propic-container'>
-
-                <img src={proPicBlob ?? defaultProPic} className='sidebar__propic' />
-
-            </label>
-
 
             <ul className='sidebar__icons' >
 
@@ -60,8 +51,8 @@ export default function SideBar() {
 
 
                 <li value={addFriend}>
-                    <img
-                        src={addFriendImage}
+
+                    <AddFriendIcon
                         className="sidebar__add-friend"
                         value={addFriend} //parameter that keeps button opacity set to 1 while modal is open
                         onClick={() => dispatch(handleAddFriend())}
@@ -72,8 +63,8 @@ export default function SideBar() {
                 </li>
 
                 <li value={newGroupModal}>
-                    <img
-                        src={plus}
+
+                    <CreateGroupIcon
                         className="sidebar__create-server"
                         value={newGroupModal}
                         onClick={() => dispatch(openNewGroupModal())}
@@ -84,8 +75,19 @@ export default function SideBar() {
                 </li>
 
                 <li>
-                    <img
-                        src={logoutImage}
+
+                    <SettingsIcon
+                        className="sidebar__settings-icon"
+                        onClick={() => dispatch(handleUserSettings())}
+                    />
+
+                    <span className='sidebar__tooltip'>Settings</span>
+
+                </li>
+
+                <li>
+
+                    <LogoutIcon
                         className="sidebar__logout-icon"
                         onClick={() => dispatch(openLogoutModal())}
                     />
@@ -94,16 +96,14 @@ export default function SideBar() {
 
                 </li>
 
-                <li>
-                    <SettingsIcon
-                        className="sidebar__settings-icon"
-                        onClick={() => dispatch(handleUserSettings())}
-                    />
-
-                    <span className='sidebar__tooltip'>Settings</span>
-                </li>
-
             </ul>
+
+
+            <label className='sidebar__propic-container'>
+
+                <img src={proPicBlob ?? defaultProPic} className='sidebar__propic' />
+
+            </label>
 
         </div>
     )
