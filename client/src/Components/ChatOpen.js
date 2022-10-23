@@ -79,7 +79,7 @@ export default function MainContent() {
 
                     <ConversationContainer friendData={friendData} />
 
-                    <textarea
+                    {/* <textarea
                         ref={textAreaRef}
                         className='chat-open__message-input'
                         placeholder='Write a message...'
@@ -93,7 +93,7 @@ export default function MainContent() {
                         src={sendMessageIcon}
                         className='chat-open__send-message-icon'
 
-                    />
+                    /> */}
 
                 </>
 

@@ -1,14 +1,15 @@
 .chat-open {
     display: flex;
     justify-content: center;
+    flex-direction: column;
     text-align: center;
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    flex: 100;
 
     &__message-input {
         display: flex;
-        position: absolute;
+        position: relative;
         margin-bottom: 20px;
         bottom: 0;
         width: 70%;
@@ -25,7 +26,7 @@
     }
 
     &__send-message-icon {
-        position: absolute;
+        position: relative;
         margin-bottom: 30px;
         bottom: 1px;
         right: 140px;

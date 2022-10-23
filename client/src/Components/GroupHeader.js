@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector, useDispatch } from "react-redux"
 import { openAddGroupMembers } from '../Redux/modalsSlice'
 import defaultProPic from "../Assets/Images/user-icon-2.png"
-import addFriend from "../Assets/Images/add-friend.png"
+import { ReactComponent as AddFriendIcon } from "../Assets/Images/add-friend.svg"
 import "./GroupHeader.scss"
 
 export default function GroupHeader({ groupData }) {
@@ -33,8 +33,7 @@ export default function GroupHeader({ groupData }) {
 
             </div>
 
-            <img
-                src={addFriend}
+            <AddFriendIcon
                 className='group-header__add-friend-icon'
                 value={addGroupMembers}
                 onClick={() => dispatch(openAddGroupMembers())}

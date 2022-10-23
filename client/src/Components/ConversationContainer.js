@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import "./ConversationContainer.scss"
 
-
 export default function ChatContainer({ friendData }) {
 
-    const { conversationList, selectedFriendID } = useSelector(state => state.conversation)
+    const { conversationList } = useSelector(state => state.conversation)
 
+    const [conversationData] = useState(conversationList.find(conv => conv._id === friendData._id))
 
     const refactorDate = createdAt => {
 
@@ -22,31 +22,30 @@ export default function ChatContainer({ friendData }) {
 
 
 
-    conversationList.map(conv => {
+    return (
 
-        if (conv._id !== friendData._id) return
+        <div className='chat-container'>
 
-        return (
-            <div className='conversation-container' key={conv._id}>
+            <div className='chat-container__conversation-container'>
+
                 {
-                    conv.messages.map(message => {
+                    conversationData?.messages?.map(message => {
 
                         if (message.senderID !== friendData._id) {
 
                             return (
                                 <div
-
                                     className={
-                                        message.senderID !== friendData._id ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
+                                        message.senderID !== friendData._id ? 'chat-container__message-container chat-container__message-container--current-user' : 'chat-container__message-container chat-container__message-container--sender-user'
                                     }
                                     key={uuidv4()}
                                 >
 
-                                    <div className='metadata-container'>
+                                    <div className='chat-container__metadata-container'>
 
-                                        <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
+                                        <span className='chat-container__metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
 
-                                        <span className='metadata-container__text'>{message.text}</span>
+                                        <span className='chat-container__metadata-container__text'>{message.text}</span>
 
                                     </div>
 
@@ -57,13 +56,13 @@ export default function ChatContainer({ friendData }) {
                         }
 
                         return (
-                            <div className='message-container message-container--sender-user' key={uuidv4()}>
+                            <div className='chat-container__message-container chat-container__message-container--sender-user' key={uuidv4()}>
 
-                                <div className='metadata-container'>
+                                <div className='chat-container__metadata-container'>
 
-                                    <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
+                                    <span className='chat-container__metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
 
-                                    <span className='metadata-container__text'>{message.text}</span>
+                                    <span className='chat-container__metadata-container__text'>{message.text}</span>
 
                                 </div>
 
@@ -74,7 +73,8 @@ export default function ChatContainer({ friendData }) {
                 }
             </div>
 
-        )
+        </div>
+    )
 
-    })
+
 }

@@ -96,14 +96,16 @@ export default function SideBar() {
 
                 </li>
 
+
+                <li>
+                    <label className='sidebar__propic-container'>
+
+                        <img src={proPicBlob ?? defaultProPic} className='sidebar__propic' />
+
+                    </label>
+                </li>
+                
             </ul>
-
-
-            <label className='sidebar__propic-container'>
-
-                <img src={proPicBlob ?? defaultProPic} className='sidebar__propic' />
-
-            </label>
 
         </div>
     )

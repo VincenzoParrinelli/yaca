@@ -9,9 +9,7 @@ export default function ChatHeader({ friendData }) {
         <div className='chat-header'>
 
     
-            <div
-                className='chat-header__user-propic-container'
-            >
+            <div className='chat-header__user-propic-container'>
 
                 {friendData.proPicBlob ?
 
@@ -40,7 +38,6 @@ export default function ChatHeader({ friendData }) {
 
                         <p className='chat-header__user-status-text chat-header__user-status-text--offline' >
                             Offline
-
                         </p>
                     </>
                 }
@@ -51,7 +48,6 @@ export default function ChatHeader({ friendData }) {
             </div>
 
 
-            <div className='chat-header__separator-horizontal' />
         </div>
     )
 }

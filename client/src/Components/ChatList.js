@@ -33,11 +33,7 @@ export default function ChatList() {
 
             <div className='chat-list__header'>
 
-                <div className='chat-list__header-container'>
-
-                    <SearchBar />
-
-                </div>
+                <SearchBar />
 
             </div>
 
@@ -54,7 +50,7 @@ export default function ChatList() {
                     renderView={props => <div {...props} className="chat-list__view" />}  //we need this to remove horizontal overflow
                 >
 
-                    <p className='chat-list__text'> DIRECT MESSAGES </p>
+                    <p className='chat-list__text'> Friend Messages </p>
 
                     {data.friendList?.map(friend => {
 
@@ -91,28 +87,34 @@ export default function ChatList() {
 
                                 </div>
 
-                                <p className='chat-list__name'>{friend.username}</p>
+                                <div className='chat-list__userdata-container'>
 
-                                {
-                                    /*display last message */
-                                }
+                                    <span className='chat-list__name'>{friend.username}</span>
 
-                                {conversationList.map(conv => {
+                                    {
+                                        /*display last message */
+                                    }
 
-                                    if (!conv.members.includes(friend._id)) return
-                                    if (!conv.messages.text) return
 
-                                    return (
-                                        <span className='chat-list__last-message' key={conv._id}>{conv.messages[conv.messages.length - 1].text}</span>
-                                    )
-                                })}
+                                    {conversationList.map(conv => {
+
+                                        if (!conv.members.includes(friend._id)) return
+                                        if (!conv.messages.text) return
+
+                                        return (
+                                            <span className='chat-list__last-message' key={conv._id}>{conv.messages[conv.messages.length - 1].text}</span>
+                                        )
+                                    })}
+
+
+                                </div>
 
                             </div>
 
                         )
                     })}
 
-                    <p className='chat-list__text chat-list__text--group-messages'> GROUP MESSAGES </p>
+                    <p className='chat-list__text chat-list__text--group-messages'> Group Messages </p>
 
 
                     {/*logic that handles the rendering of the group list*/}
