@@ -8,8 +8,8 @@ import { ReactComponent as AddFriendIcon } from "../Assets/Images/add-friend.svg
 import { ReactComponent as CreateGroupIcon } from "../Assets/Images/create-group.svg"
 import { ReactComponent as LogoutIcon } from "../Assets/Images/logout.svg"
 import { ReactComponent as BellIcon } from "../Assets/Images/bell.svg"
-import defaultProPic from "../Assets/Images/user-icon-2.png"
 import { ReactComponent as SettingsIcon } from "../Assets/Images/settings.svg"
+import ProPic from './ProPic';
 import './SideBar.scss'
 
 export default function SideBar() {
@@ -98,13 +98,12 @@ export default function SideBar() {
 
 
                 <li>
-                    <label className='sidebar__propic-container'>
-
-                        <img src={proPicBlob ?? defaultProPic} className='sidebar__propic' />
-
-                    </label>
+                    <ProPic
+                        proPicBlob={proPicBlob}
+                        style={{ top: "45px", width: "", height: "" }}
+                    />
                 </li>
-                
+
             </ul>
 
         </div>

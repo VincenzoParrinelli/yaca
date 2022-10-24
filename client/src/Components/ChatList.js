@@ -1,9 +1,9 @@
 import React from 'react'
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 import { Scrollbars } from 'react-custom-scrollbars-2';
-import defaultProPic from "../Assets/Images/user-icon-2.png"
 import SearchBar from './SearchBar';
+import ProPic from './ProPic';
 import "./ChatList.scss"
 
 export default function ChatList() {
@@ -67,23 +67,11 @@ export default function ChatList() {
 
                                 <div className='chat-list__propic-container'>
 
-                                    {friend.proPicBlob ?
-
-                                        <img src={friend.proPicBlob} className='chat-list__propic' />
-
-                                        :
-
-                                        <img src={defaultProPic} className='chat-list__default-propic' />
-                                    }
-
-                                    {friend.socketID !== "OFFLINE" ?
-
-                                        <div className='chat-list__user-status chat-list__user-status--online' />
-
-                                        :
-
-                                        <div className='chat-list__user-status chat-list__user-status--offline' />
-                                    }
+                                    <ProPic
+                                        proPicBlob={friend.proPicBlob}
+                                        socketID={friend.socketID}
+                                        style={{marginLeft: "10px" }}
+                                    />
 
                                 </div>
 
@@ -132,16 +120,10 @@ export default function ChatList() {
 
                             >
 
-                                <div className='chat-list__propic-container'>
-
-                                    {group.proPicBlob ?
-
-                                        <img src={group.proPicBlob} className='chat-list__propic' />
-                                        :
-                                        <img src={defaultProPic} className='chat-list__default-propic' />
-                                    }
-
-                                </div>
+                                <ProPic
+                                    proPicBlob={group.proPicBlob}
+                                    style={{ marginLeft: "10px" }}
+                                />
 
                                 <p className='chat-list__name'>{group.groupName}</p>
                             </div>

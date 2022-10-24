@@ -28,10 +28,6 @@
             align-items: center;
             justify-content: center;
 
-            //avatar
-            &:last-child {}
-
-
             &[value=true] {
 
                 &::before {
@@ -43,7 +39,7 @@
                     border-radius: 60px;
                     background-color: #1d90f5;
                     box-shadow: -6px 0px 25px 1px #1d90f5;
-                    ;
+                    
                 }
             }
 
@@ -113,29 +109,6 @@
             border-color: transparent transparent rgb(36, 35, 35);
         }
     }
-
-    &__propic-container {
-        display: flex;
-        position: relative;
-        margin-top: 100px;
-        outline: solid;
-        outline-offset: 2px;
-        align-self: center;
-        justify-content: center;
-        align-items: center;
-        width: 7vmin;
-        height: 7vmin;
-        border-radius: 50%;
-    }
-
-    &__propic {
-        position: absolute;
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-    }
-
 
 }
 
