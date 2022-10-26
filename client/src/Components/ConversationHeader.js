@@ -2,35 +2,38 @@ import React from 'react'
 import ProPic from './ProPic';
 import "./ConversationHeader.scss"
 
-export default function ChatHeader({ friendData }) {
+export default function ChatHeader({ data }) {
 
     return (
 
         <div className='chat-header'>
 
             <ProPic
-                proPicBlob={friendData.proPicBlob}
-                socketID={friendData.socketID}
+                proPicBlob={data.proPicBlob}
+                socketID={data.socketID}
+                style={{ width: "2.4em", height: "2.4em" }}
             />
 
 
-            {friendData.socketID !== "OFFLINE" ?
+            <div className='chat-header__metadata'>
 
-                <p className='chat-header__user-status-text chat-header__user-status-text--online' >
-                    Online
-                </p>
+                <span className='chat-header__username'>{data.username}</span>
 
-                :
+                {data.socketID !== "OFFLINE" ?
 
-                <p className='chat-header__user-status-text chat-header__user-status-text--offline' >
-                    Offline
-                </p>
+                    <span className='chat-header__user-status-text chat-header__user-status-text--online' >
+                        Online
+                    </span>
 
-            }
+                    :
 
+                    <span className='chat-header__user-status-text chat-header__user-status-text--offline' >
+                        Offline
+                    </span>
 
-            <p className='chat-header__username'>{friendData.username}</p>
+                }
 
+            </div>
 
         </div>
     )

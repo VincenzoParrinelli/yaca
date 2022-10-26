@@ -29,18 +29,18 @@ export default function GroupContainer({ groupData }) {
                     return (
                         <div
                             className={
-                                message.senderID !== data._id ? 'message-container message-container--current-user' : 'message-container message-container--sender-user'
+                                message.senderID !== data._id ? 'group-container__message-container group-container__message-container--current-user' : 'group-container__message-container message-container--sender-user'
                             }
                             key={uuidv4()}
                         >
 
-                            <div className='metadata-container'>
+                            <div className='group-container__metadata-container'>
 
-                                <span className='metadata-container__sender-username'></span>
+                                <span className='group-container__metadata-container-sender-username'></span>
 
-                                <span className='metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
+                                <span className='group-container__metadata-container-created-at'>{refactorDate(message.createdAt)}</span>
 
-                                <span className='metadata-container__text'>{message.text}</span>
+                                <span className='group-container__metadata-container-text'>{message.text}</span>
 
                             </div>
 

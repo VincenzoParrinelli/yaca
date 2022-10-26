@@ -9,7 +9,7 @@
     height: 78%;
     overflow: hidden;
 
-    .message-container {
+    &__message-container {
         position: relative;
         width: 6%;
         height: 1%;
@@ -29,38 +29,30 @@
             background-color: #222226;
             border-radius: 8px 8px 8px 0px;
         }
-
-        .metadata-container {
-            display: flex;
-            width: 100%;
-            position: relative;
-            top: -25px;
-
-            &__sender-username {
-                
-            }
-
-            &__created-at {
-                position: absolute;
-                width: 100%;
-                top: 12px;
-                left: 16px;
-                opacity: 0.2;
-                font: 12px "aeroportLight";
-            }
-
-            &__text {
-                position: relative;
-                top: 16px;
-                right: 6px;
-                font: 14px "aeroportLight";
-
-            }
-        }
     }
-}
 
-@font-face {
-    font-family: "aeroportLight";
-    src: url(../Assets/Fonts/AeroportLight.otf);
+    &__metadata-container {
+        display: flex;
+        width: 100%;
+        position: relative;
+        top: -25px;
+    }
+
+    &__metadata-container-created-at {
+        position: absolute;
+        width: 100%;
+        top: 12px;
+        left: 16px;
+        opacity: 0.2;
+        font: 12px "aeroportLight";
+    }
+
+    &__metadata-container-text {
+        position: relative;
+        top: 16px;
+        right: 6px;
+        font: 14px "aeroportLight";
+
+    }
+
 }

@@ -70,7 +70,7 @@ export default function ChatList() {
                                     <ProPic
                                         proPicBlob={friend.proPicBlob}
                                         socketID={friend.socketID}
-                                        style={{marginLeft: "10px" }}
+                                        style={{ marginLeft: "10px", width: "2.5em", height: "2.5em" }}
                                     />
 
                                 </div>
@@ -122,10 +122,15 @@ export default function ChatList() {
 
                                 <ProPic
                                     proPicBlob={group.proPicBlob}
-                                    style={{ marginLeft: "10px" }}
+                                    style={{ marginLeft: "10px", width: "2.5em", height: "2.5em" }}
                                 />
 
-                                <p className='chat-list__name'>{group.groupName}</p>
+                                <div className='chat-list__userdata-container'>
+                                    
+                                    <span className='chat-list__name'>{group.groupName}</span>
+
+                                </div>
+
                             </div>
                         )
                     })}

@@ -100,7 +100,7 @@ export default function SideBar() {
                 <li>
                     <ProPic
                         proPicBlob={proPicBlob}
-                        style={{ top: "45px", width: "", height: "" }}
+                        style={{ top: "120px", width: "2.6em", height: "2.6em" }}
                     />
                 </li>
 

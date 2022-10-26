@@ -7,6 +7,18 @@
     width: 100%;
     flex: 100;
 
+    &__overlay {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 75%;
+        height: 85%;
+        background-color: #323644;
+        border-radius: 14px;    
+    }
+
     &__message-input {
         display: flex;
         position: relative;

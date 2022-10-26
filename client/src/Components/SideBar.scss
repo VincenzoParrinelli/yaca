@@ -6,7 +6,6 @@
     z-index: 1;
     background-color: linear-gradient(#1B2121, #17181C, #17181C);
     text-overflow: ellipsis;
-    overflow: hidden;
 
     &__icons {
         display: flex;
@@ -35,7 +34,7 @@
                     position: absolute;
                     left: 0;
                     width: 2px;
-                    height: 8%;
+                    height: 6%;
                     border-radius: 60px;
                     background-color: #1d90f5;
                     box-shadow: -6px 0px 25px 1px #1d90f5;
@@ -55,7 +54,7 @@
     &__logout-icon {
 
         width: 20%;
-        height: 10%;
+        height: 80%;
         fill: white;
         transition: all .3s ease-out;
         opacity: 0.4;

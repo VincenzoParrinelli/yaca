@@ -3,11 +3,11 @@ import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import "./ConversationContainer.scss"
 
-export default function ChatContainer({ friendData }) {
+export default function ChatContainer({ data }) {
 
     const { conversationList } = useSelector(state => state.conversation)
 
-    const [conversationData] = useState(conversationList.find(conv => conv._id === friendData._id))
+    const [conversationData] = useState(conversationList.find(conv => conv._id === data._id))
 
     const refactorDate = createdAt => {
 
@@ -24,56 +24,53 @@ export default function ChatContainer({ friendData }) {
 
     return (
 
-        <div className='chat-container'>
+        <div className='conversation-container'>
 
-            <div className='chat-container__conversation-container'>
+            {
+                conversationData?.messages?.map(message => {
 
-                {
-                    conversationData?.messages?.map(message => {
-
-                        if (message.senderID !== friendData._id) {
-
-                            return (
-                                <div
-                                    className={
-                                        message.senderID !== friendData._id ? 'chat-container__message-container chat-container__message-container--current-user' : 'chat-container__message-container chat-container__message-container--sender-user'
-                                    }
-                                    key={uuidv4()}
-                                >
-
-                                    <div className='chat-container__metadata-container'>
-
-                                        <span className='chat-container__metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
-
-                                        <span className='chat-container__metadata-container__text'>{message.text}</span>
-
-                                    </div>
-
-
-                                </div>
-                            )
-
-                        }
+                    if (message.senderID !== data._id) {
 
                         return (
-                            <div className='chat-container__message-container chat-container__message-container--sender-user' key={uuidv4()}>
+                            <div
+                                className={
+                                    message.senderID !== data._id ? 'conversation-container__message-container conversation-container__message-container--current-user' : 'conversation-container__message-container conversation-container__message-container--sender-user'
+                                }
+                                key={uuidv4()}
+                            >
 
-                                <div className='chat-container__metadata-container'>
+                                <div className='conversation-container__metadata-container'>
 
-                                    <span className='chat-container__metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
+                                    <span className='conversation-container__metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
 
-                                    <span className='chat-container__metadata-container__text'>{message.text}</span>
+                                    <span className='conversation-container__metadata-container__text'>{message.text}</span>
 
                                 </div>
+
 
                             </div>
                         )
 
-                    })
-                }
-            </div>
+                    }
 
+                    return (
+                        <div className='conversation-container__message-container conversation-container__message-container--sender-user' key={uuidv4()}>
+
+                            <div className='conversation-container__metadata-container'>
+
+                                <span className='conversation-container__metadata-container__created-at'>{refactorDate(message.createdAt)}</span>
+
+                                <span className='conversation-container__metadata-container__text'>{message.text}</span>
+
+                            </div>
+
+                        </div>
+                    )
+
+                })
+            }
         </div>
+
     )
 
 

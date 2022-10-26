@@ -66,51 +66,36 @@ export default function MainContent() {
 
     }
 
+    {/* conditionally render a user to user conversation or a group conversation */ }
+
     return (
         <div className='chat-open'>
 
-            {/*Render selected friend*/}
+            <ConversationHeader data={friendID ? friendData : groupData} />
 
-            {friendID &&
+            <div className='chat-open__overlay'>
 
-                <>
+                <ConversationContainer data={friendID ? friendData : groupData} />
 
-                    <ConversationHeader friendData={friendData} />
-
-                    <ConversationContainer friendData={friendData} />
-
-                    {/* <textarea
-                        ref={textAreaRef}
-                        className='chat-open__message-input'
-                        placeholder='Write a message...'
-                        spellCheck="false"
-                        value={message}
-                        onChange={e => setMessage(e.target.value)}
-                        onKeyDown={e => handleSendMessage(e)}
-                    />
-
-                    <img
-                        src={sendMessageIcon}
-                        className='chat-open__send-message-icon'
-
-                    /> */}
-
-                </>
-
-            }
-
-            {/*Render selected group*/}
-
-            {groupID &&
-
-                <>
-                    <GroupHeader groupData={groupData} />
-
-                    <GroupContainer groupData={groupData} />
-                </>
-
-            }
+            </div>
 
         </div >
     )
 }
+
+
+/* <textarea
+ref={textAreaRef}
+className='chat-open__message-input'
+placeholder='Write a message...'
+spellCheck="false"
+value={message}
+onChange={e => setMessage(e.target.value)}
+onKeyDown={e => handleSendMessage(e)}
+/>
+
+<img
+src={sendMessageIcon}
+className='chat-open__send-message-icon'
+
+/> */

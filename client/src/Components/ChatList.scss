@@ -56,11 +56,12 @@
     &__element-container {
         display: flex;
         position: relative;
+        height: 6%;
         background-color: #323644;
         border-radius: 12px;
         font-size: 14px;
         color: white;
-        padding: 9px;
+        padding: 14px;
         font-family: arial;
         cursor: pointer;
         text-overflow: ellipsis;
@@ -102,7 +103,7 @@
         display: flex;
         position: relative;
         width: 100%;
-        left: 12px;
+        left: 16px;
         flex: 1;
     }
 

@@ -1,4 +1,5 @@
 .chat-header {
+    display: flex;
     position: relative;
     top: 10px;
     width: 100%;
@@ -6,18 +7,20 @@
     color: white;
     margin-bottom: 50px;
 
+    &__metadata {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        left: 22px;
+    }
+
     &__username {
         position: relative;
-        left: 27px;
-        width: 0;
-        bottom: 5px;
         font: bold 16px sans-serif;
     }
 
     &__user-status-text {
-        position: absolute;
-        left: 69px;
-        top: 20px;
+        position: relative;
         font: 12px sans-serif;
         opacity: 0.6;
     }
