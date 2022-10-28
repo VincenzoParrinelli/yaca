@@ -4,37 +4,29 @@ import "./ConversationHeader.scss"
 
 export default function ChatHeader({ data }) {
 
+    const { proPicBlob, socketID, username, groupName } = data
+
     return (
 
         <div className='chat-header'>
 
             <ProPic
-                proPicBlob={data.proPicBlob}
-                socketID={data.socketID}
+                proPicBlob={proPicBlob}
+                socketID={socketID}
                 style={{ width: "2.4em", height: "2.4em" }}
             />
 
 
             <div className='chat-header__metadata'>
 
-                <span className='chat-header__username'>{data.username}</span>
+                <span className='chat-header__username'>{username ?? groupName}</span>
 
-                {data.socketID !== "OFFLINE" ?
+                {socketID && socketID !== "OFFLINE" && <span className='chat-header__user-status-text chat-header__user-status-text--online' > Online </span>}
 
-                    <span className='chat-header__user-status-text chat-header__user-status-text--online' >
-                        Online
-                    </span>
-
-                    :
-
-                    <span className='chat-header__user-status-text chat-header__user-status-text--offline' >
-                        Offline
-                    </span>
-
-                }
+                {socketID === "OFFLINE" && <span className='chat-header__user-status-text chat-header__user-status-text--offline' > Offline </span>}
 
             </div>
 
-        </div>
+        </div >
     )
 }

@@ -4,7 +4,7 @@ import "./ProPic.scss"
 
 export default function ProPic({ ...props }) {
 
-    const { proPicBlob, style, socketID } = props
+    const { proPicBlob, style, socketID, isLogged } = props
 
     return (
         <label className='propic-container' style={style}>
@@ -13,15 +13,13 @@ export default function ProPic({ ...props }) {
                 src={proPicBlob ?? defaultProPic}
                 className={proPicBlob ? 'propic-container__propic' : "propic-container__default-propic"}
             />
+            
 
-            {socketID !== "OFFLINE" ?
+            {isLogged && <div className='propic-container__user-status propic-container__user-status--online' />}
 
-                <div className='propic-container__user-status propic-container__user-status--online' />
+            {socketID && <div className='propic-container__user-status propic-container__user-status--online' />}
 
-                :
-
-                <div className='propic-container__user-status propic-container__user-status--offline' />
-            }
+            {socketID === "OFFLINE" && <div className='propic-container__user-status propic-container__user-status--offline' />}
 
         </label>
     )

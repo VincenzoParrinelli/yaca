@@ -16,10 +16,10 @@ export default function SideBar() {
 
     const { newGroupModal } = useSelector(state => state.modal)
     const { addFriend, dashboard, notifications } = useSelector(state => state.dashboard)
+    const { isLogged } = useSelector(state => state.user)
     const { proPicBlob } = useSelector(state => state.user.data)
 
     const dispatch = useDispatch()
-
 
     return (
         <div className='sidebar'>
@@ -100,6 +100,7 @@ export default function SideBar() {
                 <li>
                     <ProPic
                         proPicBlob={proPicBlob}
+                        isLogged={isLogged}
                         style={{ top: "120px", width: "2.6em", height: "2.6em" }}
                     />
                 </li>

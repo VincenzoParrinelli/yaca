@@ -16,39 +16,73 @@
         width: 75%;
         height: 85%;
         background-color: #323644;
-        border-radius: 14px;    
+        border-radius: 14px;
+    }
+
+    &__message-input-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        width: 80%;
+        height: min-content;
+        bottom: 2px;
+        
+    }
+
+    &__btns-container {
+        display: flex;
+        justify-content: space-between;
+        bottom: 20px;
+        position: absolute;
+        width: 100%;
+        
+    }
+
+    &__btns {
+        display: flex;
+        border: solid;
+        border-color: #4d5162;
+        border-width: 1px;
+        border-radius: 18px;
+        fill: white;
+        width: 9%;
+        padding: 15px;
+    
+        cursor: pointer;
+
+        &--attach-file-btn {
+            background-color: #424656;
+        }
+
+        &--send-message-btn {
+            background-color: #1d90f5;
+            box-shadow: 0 5px 30px -10px #1d90f5;
+        }
     }
 
     &__message-input {
-        display: flex;
         position: relative;
-        margin-bottom: 20px;
-        bottom: 0;
-        width: 70%;
-        height: 2%;
-        background-color: rgb(18, 18, 18);
-        color: white;
+        height: min-content;
+        width: 80%;
+        text-align: left;
+        box-sizing: border-box;
+        border-radius: 12px;
+        outline: solid;
+        outline-width: 2px;
+        outline-color: #1d90f5;
         border: none;
-        border-radius: 14px;
-        outline: none;
-        font: 14px "aeroportLight";
-        padding: 13px 50px;
+        background-color: #424656;
+        color: white;
+        padding: 15px 30px;
+        margin: 20px;
+        font: 15px "aeroportLight";
+        transition: 0.2s all;
         overflow: hidden;
-        resize: none;
-    }
-
-    &__send-message-icon {
-        position: relative;
-        margin-bottom: 30px;
-        bottom: 1px;
-        right: 140px;
-        width: 20px;
-        height: 20px;
-        opacity: 0.5;
-        cursor: pointer;
-
-        &:hover {
-            opacity: 1;
+        z-index: 1;
+   
+        &:focus {
+            box-shadow: 0 0px 15px -6px #1d90f5;
         }
     }
 }

@@ -3,11 +3,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { useParams } from 'react-router-dom'
 import { sendMessage } from '../Redux/socketSlice'
 import { updateChat } from '../Redux/conversationSlice'
-import sendMessageIcon from "../Assets/Images/send-message.png"
 import ConversationHeader from "./ConversationHeader"
 import ConversationContainer from './ConversationContainer'
-import GroupHeader from './GroupHeader'
-import GroupContainer from './GroupContainer'
+import { ReactComponent as Plus } from "../Assets/Images/plus.svg"
+import { ReactComponent as SendMessageIcon } from "../Assets/Images/send-message-icon.svg"
 import "./ChatOpen.scss"
 
 export default function MainContent() {
@@ -33,20 +32,28 @@ export default function MainContent() {
         friendID && setFriendData(friendList.find(friend => friend._id === friendID))
         groupID && setGroupData(groupList.find(group => group._id === groupID))
 
-    }, [])
+    }, [friendID, groupID])
 
     //Automatically resize textarea
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (!textAreaRef.current) return
+    //     textAreaRef.current.addEventListener("input", resizeTextarea)
 
-        if (!message) textAreaRef.current.style.height = "2%"
+    //     return () => {
 
-        textAreaRef.current.style.height = "2%";
-        textAreaRef.current.style.height = (textAreaRef.current.scrollHeight - 29) + "px";
+    //         textAreaRef.current.removeEventListener("input", resizeTextarea)
+    //     }
 
-    }, [message])
+    // }, [message])
 
+    // const resizeTextarea = e => {
+
+    //     if (!e.target.value) return e.target.style.height = "100%"
+
+    //     e.target.style.height = "100%"
+    //     e.target.style.height = (e.target.scrollHeight) + "px";
+
+    // }
 
     const handleSendMessage = e => {
 
@@ -77,6 +84,37 @@ export default function MainContent() {
 
                 <ConversationContainer data={friendID ? friendData : groupData} />
 
+                <div className='chat-open__message-input-container'>
+
+                    <div
+                        contentEditable
+                        className='chat-open__message-input'
+                        ref={textAreaRef}
+                        placeholder='Write a message...'
+                        spellCheck="false"
+                        value={message}
+                        onChange={e => setMessage(e.target.value)}
+                        onKeyDown={e => handleSendMessage(e)}
+                    />
+
+
+                    <div className='chat-open__btns-container'>
+
+                        <button className='chat-open__btns chat-open__btns--attach-file-btn'>
+                            <Plus />
+                        </button>
+
+
+                        <button className='chat-open__btns chat-open__btns--send-message-btn'>
+                            <SendMessageIcon />
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
             </div>
 
         </div >
@@ -84,18 +122,3 @@ export default function MainContent() {
 }
 
 
-/* <textarea
-ref={textAreaRef}
-className='chat-open__message-input'
-placeholder='Write a message...'
-spellCheck="false"
-value={message}
-onChange={e => setMessage(e.target.value)}
-onKeyDown={e => handleSendMessage(e)}
-/>
-
-<img
-src={sendMessageIcon}
-className='chat-open__send-message-icon'
-
-/> */

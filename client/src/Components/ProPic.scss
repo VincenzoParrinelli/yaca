@@ -9,6 +9,7 @@
     background-color: rgb(40, 40, 40);
     pointer-events: none;
     outline: solid;
+    outline-width: 2.5px;
     outline-offset: 2px;
 
     &__propic {
@@ -29,19 +30,19 @@
 
     &__user-status {
         position: absolute;
-        top: 0px;
-        right: 3px;
+        top: -2px;
+        right: -2px;
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        border: 1px solid black;
+        border: 2px solid rgba(53,55,67,255);
 
         &--online {
             background-color: #2be831;
         }
 
         &--offline {
-            background-color: grey;
+            background-color: rgba(184,192,203,255);
         }
     }
 
