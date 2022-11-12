@@ -32,7 +32,7 @@ export default function MainContent() {
         friendID && setFriendData(friendList.find(friend => friend._id === friendID))
         groupID && setGroupData(groupList.find(group => group._id === groupID))
 
-    }, [friendID, groupID])
+    }, [friendID, friendList, groupID, groupList])
 
     //Automatically resize textarea
     // useEffect(() => {
@@ -73,7 +73,7 @@ export default function MainContent() {
 
     }
 
-    {/* conditionally render a user to user conversation or a group conversation */ }
+    // conditionally render a user to user conversation or a group conversation 
 
     return (
         <div className='chat-open'>
@@ -111,6 +111,7 @@ export default function MainContent() {
 
 
                     </div>
+                    
 
                 </div>
 

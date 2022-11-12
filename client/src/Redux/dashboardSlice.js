@@ -14,14 +14,22 @@ export const dashboardSlice = createSlice({
 
     reducers: {
 
-        reset: () => initialState,
+        //reset everything but notifications component
+        reset: state => {
+            state.dashboard = initialState.dashboard
+            state.addFriend = initialState.addFriend
+        },
 
         handleDashboard: state => {
             state.dashboard = true
         },
 
         openNotifications: state => {
-            state.notifications = !state.notifications
+            state.notifications = true
+        },
+
+        closeNotifications: state => {
+            state.notifications = false
         },
 
         handleAddFriend: state => {
@@ -36,6 +44,7 @@ export const dashboardSlice = createSlice({
 export const {
     handleDashboard,
     openNotifications,
+    closeNotifications,
     handleAddFriend,
 } = dashboardSlice.actions
 

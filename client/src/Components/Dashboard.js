@@ -30,7 +30,7 @@ export default function Dashboard() {
         dispatch(handleDashboard())
 
 
-    }, [errors.authorized, isLogged])
+    }, [data._id, dispatch, errors.authorized, isLogged])
 
     return (
 
@@ -51,20 +51,22 @@ export default function Dashboard() {
                         <LogoutModal />
 
                         <SideBar />
-                        
+
 
                         <div className='dashboard__lists-container'>
+
                             {
-                                addFriend ? <AddFriend /> :
-                                    notifications ? <Notifications /> : <ChatList />
+                                addFriend ? <AddFriend /> : <ChatList />
                             }
 
                         </div>
 
+                        {notifications && <Notifications />}
 
                         <ChatListContextMenus />
 
                         <Outlet />
+
                     </div>
 
                 }

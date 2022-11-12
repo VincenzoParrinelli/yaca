@@ -1,7 +1,8 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { acceptFriendRequest, refuseFriendRequest } from '../Redux/socketSlice'
-import { ReactComponent as BellIcon } from "../Assets/Images/bell.svg"
+import { ReactComponent as CrossIcon } from "../Assets/Images/cross.svg"
+import { closeNotifications } from "../Redux/dashboardSlice"
 import defaultProPic from "../Assets/Images/user-icon-2.png"
 import acceptImage from "../Assets/Images/accept.png"
 import refuseImage from "../Assets/Images/refuse.png"
@@ -15,18 +16,14 @@ export default function Notifications() {
     const dispatch = useDispatch()
 
     const handleAcceptFriendRequest = userToAcceptID => {
-        const currentUserID = data._id
-
-        const payload = { currentUserID, userToAcceptID }
+        const payload = { currentUserID: data._id, userToAcceptID }
 
         dispatch(acceptFriendRequest(payload))
     }
 
 
     const handleRefuseFriendRequest = userToRefuseID => {
-        const currentUserID = data._id
-
-        const payload = { currentUserID, userToRefuseID }
+        const payload = { currentUserID: data._id, userToRefuseID }
 
         dispatch(refuseFriendRequest(payload))
     }
@@ -37,9 +34,13 @@ export default function Notifications() {
 
             <div className='notifications__header'>
 
-                <BellIcon className="notifications__icon"/>
-
                 Notifications
+
+                <button className='notifications__close-btn' onClick={() => dispatch(closeNotifications())}>
+
+                    <CrossIcon className="notifications__cross-icon"/>
+                    
+                </button>
 
             </div>
 
@@ -52,6 +53,7 @@ export default function Notifications() {
 
                             <img
                                 src={friendRequest.proPicBlob ? friendRequest.proPicBlob : defaultProPic}
+                                alt='friend-request-friend-propic'
                                 className={friendRequest.proPicBlob ? 'notifications__propic' : "notifications__default-propic"}
                             />
 
@@ -61,11 +63,19 @@ export default function Notifications() {
                         <p className='notifications__username'>{friendRequest.username}</p>
 
                         <div className='notifications__request-container notifications__request-container--accept' onClick={() => handleAcceptFriendRequest(friendRequest._id)}>
-                            <img src={acceptImage} className="notifications__request notifications__request--accept" />
+                            <img
+                                src={acceptImage}
+                                alt='accept-request-icon'
+                                className="notifications__request notifications__request--accept"
+                            />
                         </div>
 
                         <div className='notifications__request-container notifications__request-container--refuse' onClick={() => handleRefuseFriendRequest(friendRequest._id)}>
-                            <img src={refuseImage} className="notifications__request notifications__request--refuse" />
+                            <img
+                                src={refuseImage}
+                                alt="refuse-request-icon"
+                                className="notifications__request notifications__request--refuse"
+                            />
                         </div>
 
                     </div>
