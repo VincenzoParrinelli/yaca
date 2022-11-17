@@ -16,12 +16,12 @@ export default function SearchBar() {
 
         checkActiveDashboardComponent()
 
-    }, [])
+    }, [dashboard])
 
-    
+
     useEffect(() => {
 
-        if (searchBarInput && dashboard) dispatch(searchUsers(searchBarInput))
+        if (searchBarInput && addFriend) dispatch(searchUsers(searchBarInput))
 
     }, [searchBarInput])
 
@@ -43,7 +43,7 @@ export default function SearchBar() {
                     spellCheck="false"
                     className='search-bar__input-field'
                     onChange={e => setSearchBarInput(e.target.value)}
-                    value={searchBarInput}
+                    placeholder={searchBarInput}
                     onBlur={() => checkActiveDashboardComponent()} // When input loses focus reset searchBarInput state
 
                 />
