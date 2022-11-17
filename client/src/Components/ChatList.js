@@ -31,11 +31,7 @@ export default function ChatList() {
     return (
         <div className='chat-list'>
 
-            <div className='chat-list__header'>
-
-                <SearchBar />
-
-            </div>
+            <SearchBar />
 
             <div className='chat-list__container'
                 onMouseEnter={() => showScrollBar()}  //show scrollbar when chat-list hovered
@@ -126,7 +122,7 @@ export default function ChatList() {
                                 />
 
                                 <div className='chat-list__userdata-container'>
-                                    
+
                                     <span className='chat-list__name'>{group.groupName}</span>
 
                                 </div>
