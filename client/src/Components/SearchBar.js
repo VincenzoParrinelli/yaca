@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { searchUsers } from '../Redux/userSlice'
+import { searchUsers, resetSearchedUsers } from '../Redux/userSlice'
 import lens from "../Assets/Images/search-lens.png"
 import "./SearchBar.scss"
 
@@ -13,6 +13,12 @@ export default function SearchBar() {
     const { _id } = useSelector(state => state.user.data)
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+
+        if(!usernameToSearch) dispatch(resetSearchedUsers())
+
+    }, [usernameToSearch, dispatch])
 
     useEffect(() => {
 

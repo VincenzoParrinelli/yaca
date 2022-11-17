@@ -171,18 +171,6 @@ const socketMiddleware = store => next => action => {
 
     }
 
-    // if (action.type === "socket/searchUsers") {
-
-    //     const userID = store.getState().user.data._id
-
-    //     const payload = {
-    //         userID,
-    //         username: action.payload
-    //     }
-
-    //     socket.emit("search-user", payload)
-    // }
-
     //user socket handlers
 
     if (action.type === "user/updateProPic/fulfilled") {

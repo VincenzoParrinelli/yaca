@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 import { auth } from "../firebase"
 import { signInWithCustomToken } from "firebase/auth"
+import { storage } from "../firebase"
+import { ref, getDownloadURL } from "firebase/storage"
 import { firebaseDeletePrevPic, firebaseUploadProPic } from "../helpers/firebase.helpers"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
@@ -131,9 +133,30 @@ export const searchUsers = createAsyncThunk(
     "user/searchUsers",
 
     async payload => await axios.post(`${serverUrl}user/searchUsers`,
+
         payload,
         { withCredentials: true }
-    ).then(res => res.data)
+
+    ).then(users => {
+
+        const loadingUsers = users.data.map(async user => {
+
+            const { _id, profilePicID } = user
+
+            const proPicRef = ref(storage, `proPics/${_id}/${profilePicID}`)
+
+            return await getDownloadURL(proPicRef).then(proPicBlob => {
+
+                user.proPicBlob = proPicBlob
+
+                return user
+            }).catch(() => user)
+
+        })
+
+        return Promise.all(loadingUsers).then(loadedUsers => loadedUsers)
+
+    })
 )
 
 
@@ -224,6 +247,10 @@ export const userSlice = createSlice({
             state.data.friendRequestsPending = state.data.friendRequestsPending.filter(pend => pend !== action.payload)
         },
 
+        resetSearchedUsers: state => {
+            state.searchedUsers = []
+        },
+
         reset: state => {
             state.emailSent = false
         },
@@ -263,7 +290,7 @@ export const userSlice = createSlice({
 
 export const {
     reset,
-
+    resetSearchedUsers
 } = userSlice.actions
 
 export default userSlice.reducer
