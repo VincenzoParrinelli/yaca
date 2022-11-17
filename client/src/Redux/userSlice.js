@@ -21,6 +21,8 @@ const initialState = {
         friendRequestsPending: [],
         friendList: [],
     },
+
+    searchedUsers: []
 }
 
 
@@ -123,6 +125,17 @@ export const changeUsername = createAsyncThunk(
         throw rejectWithValue(err.response.data)
     })
 )
+
+
+export const searchUsers = createAsyncThunk(
+    "user/searchUsers",
+
+    async payload => await axios.post(`${serverUrl}user/searchUsers`,
+        payload,
+        { withCredentials: true }
+    ).then(res => res.data)
+)
+
 
 // Since tokens are httpOnly we need to delete them server side
 export const logout = createAsyncThunk(
@@ -234,6 +247,10 @@ export const userSlice = createSlice({
 
         [changeUsername.fulfilled]: (state, action) => {
             state.data.username = action.payload.data.newUsername
+        },
+
+        [searchUsers.fulfilled]: (state, action) => {
+            state.searchedUsers = action.payload
         },
 
         [logout.fulfilled]: (state, action) => {

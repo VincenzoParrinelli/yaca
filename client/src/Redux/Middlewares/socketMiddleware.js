@@ -60,36 +60,36 @@ const socketMiddleware = store => next => action => {
             })
         })
 
-        socket.on("receive-searched-users", users => {
+        // socket.on("receive-searched-users", users => {
 
-            //loadingUsers returns n promises based on how many users have been fetched
-            const loadingUsers = users.map(async user => {
+        //     //loadingUsers returns n promises based on how many users have been fetched
+        //     const loadingUsers = users.map(async user => {
 
-                const userID = user._id
-                const userProPic = user.profilePicId
+        //         const userID = user._id
+        //         const userProPic = user.profilePicId
 
-                const proPicRef = ref(storage, `proPics/${userID}/${userProPic}`)
+        //         const proPicRef = ref(storage, `proPics/${userID}/${userProPic}`)
 
-                //get user multimedia files from firebase and then return updated obj
-                return await getDownloadURL(proPicRef).then(proPicBlob => {
+        //         //get user multimedia files from firebase and then return updated obj
+        //         return await getDownloadURL(proPicRef).then(proPicBlob => {
 
-                    user.proPicBlob = proPicBlob
+        //             user.proPicBlob = proPicBlob
 
-                    return user
-                }).catch(() => { return user })
+        //             return user
+        //         }).catch(() => { return user })
 
-            })
+        //     })
 
-            //await users loading 
-            Promise.all(loadingUsers).then(loadedUsers => {
+        //     //await users loading 
+        //     Promise.all(loadingUsers).then(loadedUsers => {
 
-                store.dispatch({
-                    type: "socket/getSearchedUsers",
-                    payload: loadedUsers
-                })
+        //         store.dispatch({
+        //             type: "socket/getSearchedUsers",
+        //             payload: loadedUsers
+        //         })
 
-            })
-        })
+        //     })
+        // })
 
         socket.on("receive-friend-request", user => {
 
@@ -171,17 +171,17 @@ const socketMiddleware = store => next => action => {
 
     }
 
-    if (action.type === "socket/searchUsers") {
+    // if (action.type === "socket/searchUsers") {
 
-        const userID = store.getState().user.data._id
+    //     const userID = store.getState().user.data._id
 
-        const payload = {
-            userID,
-            username: action.payload
-        }
+    //     const payload = {
+    //         userID,
+    //         username: action.payload
+    //     }
 
-        socket.emit("search-user", payload)
-    }
+    //     socket.emit("search-user", payload)
+    // }
 
     //user socket handlers
 

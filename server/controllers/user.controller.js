@@ -140,6 +140,25 @@ module.exports = {
     },
 
 
+    searchUsers: async (req, res) => {
+
+        const { userID, usernameToSearch } = req.body
+
+        if (!usernameToSearch) return
+
+        //search for users matching username value and exclude current user
+        await User.find({ username: { "$regex": usernameToSearch, "$options": "i" }, _id: { "$ne": userID } })
+            .limit(40)
+            .select({ "email": 1, "username": 1, "profilePicID": 1 })
+            .then(usersData => {
+
+                res.json(usersData)
+
+            }).catch(err => new Error(err))
+
+    },
+
+
     logout: async (req, res) => {
 
         //clear tokens on logout

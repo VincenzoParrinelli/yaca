@@ -4,22 +4,6 @@ module.exports = (user, io) => {
 
     const fieldsToExclude = { createdAt: 0, password: 0 }
 
-    user.on("search-user", async payload => {
-
-        const { userID, username } = payload
-
-        if (!username) return
-
-        //search for users matching username value and exclude current user
-        await User.find({ username: { "$regex": username, "$options": "i" }, _id: { "$ne": userID } })
-            .select({ "email": 1, "username": 1, "profilePicID": 1 })
-            .then(usersData => {
-
-                user.emit("receive-searched-users", usersData)
-
-            }).catch(err => new Error(err))
-    })
-
     user.on("update-username", async payload => {
 
         const { _id, newUsername, friendList } = payload

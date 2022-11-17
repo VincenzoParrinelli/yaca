@@ -7,8 +7,6 @@ const initialState = {
     errors: {
         authorized: true
     },
-
-    searchedUsers: [],
 }
 
 export const socketsSlice = createSlice({
@@ -31,12 +29,6 @@ export const socketsSlice = createSlice({
             state.openSocket = false
         },
 
-        searchUsers: () => { },
-
-        getSearchedUsers: (state, action) => {
-            state.searchedUsers = action.payload
-        },
-
         sendFriendRequest: () => { },
 
         acceptFriendRequest: () => { },
@@ -55,7 +47,6 @@ export const socketsSlice = createSlice({
 export const {
     connection,
     reset,
-    searchUsers,
     sendFriendRequest,
     acceptFriendRequest,
     refuseFriendRequest,

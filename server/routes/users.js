@@ -18,6 +18,8 @@ router.post("/login", validateForm, userController.login)
 
 router.patch("/changeUsername", validateAccessToken, validateForm, userController.changeUsername)
 
+router.post("/searchUsers", validateAccessToken, userController.searchUsers)
+
 router.delete("/logout", userController.logout)
 
 

@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { sendFriendRequest } from '../Redux/socketSlice'
-import defaultProPic from "../Assets/Images/user-icon-2.png"
 import SearchBar from './SearchBar'
 import ProPic from './ProPic';
 import "./AddFriendList.scss"
@@ -9,7 +8,7 @@ import "./AddFriendList.scss"
 export default function AddFriend() {
 
     const { data } = useSelector(state => state.user)
-    const { searchedUsers } = useSelector(state => state.sockets)
+    const { searchedUsers } = useSelector(state => state.user)
 
     const dispatch = useDispatch()
 

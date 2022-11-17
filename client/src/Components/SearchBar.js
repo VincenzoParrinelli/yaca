@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { searchUsers } from '../Redux/socketSlice'
+import { searchUsers } from '../Redux/userSlice'
 import lens from "../Assets/Images/search-lens.png"
 import "./SearchBar.scss"
 
 export default function SearchBar() {
 
-    const [searchBarInput, setSearchBarInput] = useState("")
+    const [usernameToSearch, setUsernameToSearch] = useState("")
+    const [searchBarPlaceHolder, setSearchBarPlaceHolder] = useState("")
 
     const { dashboard, addFriend } = useSelector(state => state.dashboard)
+    const { _id } = useSelector(state => state.user.data)
 
     const dispatch = useDispatch()
 
@@ -21,15 +23,15 @@ export default function SearchBar() {
 
     useEffect(() => {
 
-        if (searchBarInput && addFriend) dispatch(searchUsers(searchBarInput))
+        if (usernameToSearch && addFriend) dispatch(searchUsers({ userID: _id, usernameToSearch }))
 
-    }, [searchBarInput])
+    }, [usernameToSearch])
 
     // Set searchBarInput state based on wich component is rendered
     const checkActiveDashboardComponent = () => {
 
-        if (dashboard) setSearchBarInput("Chats")
-        if (addFriend) setSearchBarInput("Search")
+        if (dashboard) setSearchBarPlaceHolder("Chats")
+        if (addFriend) setSearchBarPlaceHolder("Search")
 
     }
 
@@ -42,9 +44,9 @@ export default function SearchBar() {
                     type="text"
                     spellCheck="false"
                     className='search-bar__input-field'
-                    onChange={e => setSearchBarInput(e.target.value)}
-                    placeholder={searchBarInput}
-                    onBlur={() => checkActiveDashboardComponent()} // When input loses focus reset searchBarInput state
+                    onChange={e => setUsernameToSearch(e.target.value)}
+                    placeholder={searchBarPlaceHolder}
+                    onBlur={() => checkActiveDashboardComponent()} // When input loses focus reset searchBarPlaceHolder state
 
                 />
 
