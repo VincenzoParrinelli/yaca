@@ -208,15 +208,14 @@ const socketMiddleware = store => next => action => {
 
 
     if (action.type === "socket/sendMessage") {
-        const conversationID = store.getState().conversation.selectedConversationID
-        const currentUserID = store.getState().user.data._id
-        const selectedFriendID = store.getState().conversation.selectedFriendID
-        const friendList = store.getState().user.data.friendList
+
+        const { selectedConversationID, selectedFriendID } = store.getState().conversation
+        const { _id: currentUserID, friendList } = store.getState().user
 
         const getFriend = friendList.find(friend => friend._id === selectedFriendID)
 
         const payload = {
-            conversationID,
+            conversationID: selectedConversationID,
             currentUserID,
             selectedUserSocketID: getFriend.socketID,
             message: action.payload

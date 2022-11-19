@@ -4,6 +4,9 @@ module.exports = conversation => {
     
     conversation.on("send-message", async payload => {
 
+
+        console.log("first")
+
         const { conversationID, currentUserID, selectedUserSocketID, message } = payload
 
         await Conversation.findByIdAndUpdate(

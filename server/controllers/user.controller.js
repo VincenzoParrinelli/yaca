@@ -88,7 +88,7 @@ module.exports = {
 
             const getGroups = await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }, { messages: { $slice: - 1 } }).lean()
 
-            const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } }).lean()
+            const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } }).select({ "__v": 0 }).lean()
 
 
             Promise.all(getFriends).then(friendsData => {

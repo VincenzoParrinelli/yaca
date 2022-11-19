@@ -1,18 +1,28 @@
-import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 
 const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
-
     conversationList: [],
 
 }
 
+export const newConversation = createAsyncThunk(
+    "conversation/newConversation",
+
+    async payload => await axios.post(`${serverUrl}conversation/new-conversation`,
+
+        payload,
+        { withCredentials: true }
+
+    ).then(res => res.data)
+)
+
 export const getConversation = createAsyncThunk(
     "conversation/getConversation",
 
-    async payload => await axios.get(`${serverUrl}conversation/get-conversation/${payload.currentID}/${payload.friendID}`,
+    async payload => await axios.get(`${serverUrl}conversation/get-conversation/${payload.userID}/${payload.friendID}`,
 
         { withCredentials: true }
 
@@ -34,13 +44,11 @@ export const conversationSlice = createSlice({
             state.conversationList = action.payload
         },
 
-        setSelectedConv: (state, action) => {
-            state.selectedConversationID = action.payload
-        },
+        //handle this in middleware
+        setSelectedConvMainData: () => { },
 
-        resetSelectedConv: state => {
-            state.selectedFriendID = ""
-            state.selectedConversationID = ""
+        resetSelectedConvMainData: state => {
+            state.isSelectedConvFullyFetched = false
         },
 
         //get message from socket event
@@ -48,7 +56,7 @@ export const conversationSlice = createSlice({
 
             const { conversationID, newMessage } = action.payload
 
-            state.conversationList.map(conv => {
+            state.conversationList.forEach(conv => {
                 if (conv._id !== conversationID) return
 
                 conv.messages.push(newMessage)
@@ -60,7 +68,7 @@ export const conversationSlice = createSlice({
 
             const { selectedConversationID, conversationList } = state
 
-            conversationList.map(conv => {
+            conversationList.forEach(conv => {
                 if (conv._id !== selectedConversationID) return
 
                 const currentDate = Date()
@@ -73,10 +81,17 @@ export const conversationSlice = createSlice({
 
     extraReducers: {
 
+        [newConversation.fulfilled]: (state, action) => {
+
+            action.payload.isFullyFetched = true
+
+            state.conversationList.push(action.payload)
+        },
+
         [getConversation.fulfilled]: (state, action) => {
 
-            //serach for selected conversation overwrite it and set isFullyFetched flag to true
-            state.conversationList.map((conv, i) => {
+            //search for selected conversation overwrite it and set isFullyFetched flag to true
+            state.conversationList.forEach((conv, i) => {
 
                 if (conv._id !== action.payload._id) return
 
@@ -87,15 +102,14 @@ export const conversationSlice = createSlice({
                 state.conversationList[i] = conv
             })
 
-
-            state.selectedConversationID = action.payload._id
         }
     }
 })
 
 export const {
-    updateChat
-
+    updateChat,
+    setSelectedConvMainData,
+    resetSelectedConvMainData
 } = conversationSlice.actions
 
 export default conversationSlice.reducer

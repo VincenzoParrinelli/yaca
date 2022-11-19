@@ -8,6 +8,8 @@ const conversationController = require("../controllers/conversation.controller")
 
 router.use(validateAccessToken)
 
-router.get("/get-conversation/:currentID/:friendID", conversationController.getConversation)
+router.post("/new-conversation", conversationController.newConversation)
+
+router.get("/get-conversation/:userID/:friendID", conversationController.getConversation)
 
 module.exports = router

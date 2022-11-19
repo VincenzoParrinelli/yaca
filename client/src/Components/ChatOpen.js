@@ -7,6 +7,7 @@ import ConversationHeader from "./ConversationHeader"
 import ConversationContainer from './ConversationContainer'
 import { ReactComponent as Plus } from "../Assets/Images/plus.svg"
 import { ReactComponent as SendMessageIcon } from "../Assets/Images/send-message-icon.svg"
+import { setSelectedConvMainData } from "../Redux/conversationSlice"
 import "./ChatOpen.scss"
 
 export default function MainContent() {
@@ -16,7 +17,7 @@ export default function MainContent() {
     const [friendData, setFriendData] = useState({})
     const [groupData, setGroupData] = useState({})
 
-    const { friendList } = useSelector(state => state.user.data)
+    const { _id, friendList } = useSelector(state => state.user.data)
     const { groupList } = useSelector(state => state.group)
     const { friendID, groupID } = useParams()
 
@@ -25,14 +26,19 @@ export default function MainContent() {
     const textAreaRef = useRef(null)
 
     //Get friend or group data
-    // @desc: use a find method in a useEffect, rather than a map, directly in the jsx
-    // to avoid react throwing "each child in a list should have a unique key prop" error
+    // @desc: if friend is selected after getting his data set conversation id
     useEffect(() => {
 
-        friendID && setFriendData(friendList.find(friend => friend._id === friendID))
+        if (friendID) {
+            setFriendData(friendList.find(friend => friend._id === friendID))
+
+            dispatch(setSelectedConvMainData({ _id, friendID }))
+        }
+
         groupID && setGroupData(groupList.find(group => group._id === groupID))
 
-    }, [friendID, friendList, groupID, groupList])
+    }, [friendID, friendList, groupID, groupList, dispatch])
+
 
     //Automatically resize textarea
     // useEffect(() => {
@@ -56,6 +62,7 @@ export default function MainContent() {
     // }
 
     const handleSendMessage = e => {
+
 
         if (e.key === "Enter" && !e.shiftKey) {
 
@@ -93,8 +100,8 @@ export default function MainContent() {
                         placeholder='Write a message...'
                         spellCheck="false"
                         value={message}
-                        onChange={e => setMessage(e.target.value)}
-                        onKeyDown={e => handleSendMessage(e)}
+                        onInput={e => setMessage(e.currentTarget.textContent)}
+                        onKeyDown={(e) => handleSendMessage(e)}
                     />
 
 
@@ -111,7 +118,7 @@ export default function MainContent() {
 
 
                     </div>
-                    
+
 
                 </div>
 
