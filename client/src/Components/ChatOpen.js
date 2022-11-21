@@ -42,7 +42,7 @@ export default function MainContent() {
 
     const handleSendMessage = e => {
 
-        if (e.key === "Enter" && !e.shiftKey) {
+        if ((e.key === "Enter" && !e.shiftKey) || e.type === "click") {
 
             e.preventDefault()
 
@@ -59,8 +59,9 @@ export default function MainContent() {
         }
 
     }
+    
 
-    // conditionally render a user to user conversation or a group conversation 
+    // Conditionally render a user to user conversation or a group conversation 
 
     return (
         <div className='chat-open'>
@@ -81,7 +82,7 @@ export default function MainContent() {
                         spellCheck="false"
                         value={message}
                         onInput={e => setMessage(e.currentTarget.textContent)}
-                        onKeyDown={(e) => handleSendMessage(e)}
+                        onKeyDown={e => handleSendMessage(e)}
                     >
                     </div>
 
@@ -93,16 +94,17 @@ export default function MainContent() {
                         </button>
 
 
-                        <button className='chat-open__btns chat-open__btns--send-message-btn'>
+                        <button
+                            className='chat-open__btns chat-open__btns--send-message-btn'
+                            onClick={e => handleSendMessage(e)}
+                        >
                             <SendMessageIcon />
                         </button>
 
 
                     </div>
 
-
                 </div>
-
 
             </div>
 
