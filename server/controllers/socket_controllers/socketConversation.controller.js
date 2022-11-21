@@ -4,10 +4,9 @@ module.exports = conversation => {
     
     conversation.on("send-message", async payload => {
 
+        const { conversationID, currentUserID, friendSocketID, message } = payload
 
-        console.log("first")
-
-        const { conversationID, currentUserID, selectedUserSocketID, message } = payload
+        console.log(payload)
 
         await Conversation.findByIdAndUpdate(
 
@@ -24,7 +23,7 @@ module.exports = conversation => {
                 newMessage
             }
 
-            conversation.to(selectedUserSocketID).emit("get-message", payload)
+            conversation.to(friendSocketID).emit("get-message", payload)
 
         }).catch(err => new Error(err.message))
 

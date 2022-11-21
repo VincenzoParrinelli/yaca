@@ -79,9 +79,16 @@
         padding: 15px 30px;
         margin: 20px;
         font: 15px "aeroportLight";
+        cursor: ellipsis;
         transition: 0.2s all;
         overflow: hidden;
         z-index: 1;
+
+        &:empty:before {
+            content: attr(data-placeholder);
+            opacity: 0.4;
+            pointer-events: none;
+        }
 
         &:focus {
             box-shadow: 0 0px 15px -6px #1d90f5;

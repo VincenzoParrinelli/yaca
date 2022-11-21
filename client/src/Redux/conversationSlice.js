@@ -6,6 +6,7 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 const initialState = {
     conversationList: [],
 
+    selectedConvID: null
 }
 
 export const newConversation = createAsyncThunk(
@@ -47,10 +48,6 @@ export const conversationSlice = createSlice({
         //handle this in middleware
         setSelectedConvMainData: () => { },
 
-        resetSelectedConvMainData: state => {
-            state.isSelectedConvFullyFetched = false
-        },
-
         //get message from socket event
         getMessage: (state, action) => {
 
@@ -86,6 +83,8 @@ export const conversationSlice = createSlice({
             action.payload.isFullyFetched = true
 
             state.conversationList.push(action.payload)
+
+            state.selectedConvID = action.payload._id
         },
 
         [getConversation.fulfilled]: (state, action) => {
@@ -98,8 +97,9 @@ export const conversationSlice = createSlice({
                 conv = action.payload
 
                 conv.isFullyFetched = true
-
-                state.conversationList[i] = conv
+                
+                state.selectedConvID = conv._id
+    
             })
 
         }
@@ -109,7 +109,7 @@ export const conversationSlice = createSlice({
 export const {
     updateChat,
     setSelectedConvMainData,
-    resetSelectedConvMainData
+
 } = conversationSlice.actions
 
 export default conversationSlice.reducer

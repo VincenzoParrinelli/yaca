@@ -40,29 +40,7 @@ export default function MainContent() {
     }, [friendID, friendList, groupID, groupList, dispatch])
 
 
-    //Automatically resize textarea
-    // useEffect(() => {
-
-    //     textAreaRef.current.addEventListener("input", resizeTextarea)
-
-    //     return () => {
-
-    //         textAreaRef.current.removeEventListener("input", resizeTextarea)
-    //     }
-
-    // }, [message])
-
-    // const resizeTextarea = e => {
-
-    //     if (!e.target.value) return e.target.style.height = "100%"
-
-    //     e.target.style.height = "100%"
-    //     e.target.style.height = (e.target.scrollHeight) + "px";
-
-    // }
-
     const handleSendMessage = e => {
-
 
         if (e.key === "Enter" && !e.shiftKey) {
 
@@ -70,9 +48,11 @@ export default function MainContent() {
 
             if (!message) return
 
-            dispatch(sendMessage(message))
+            dispatch(sendMessage({ message, friendSocketID: friendData.socketID, _id }))
 
+            // Reset state message and editable div 
             setMessage("")
+            textAreaRef.current.textContent = ""
 
             dispatch(updateChat(message))
 
@@ -97,12 +77,13 @@ export default function MainContent() {
                         contentEditable
                         className='chat-open__message-input'
                         ref={textAreaRef}
-                        placeholder='Write a message...'
+                        data-placeholder='Write a message...'
                         spellCheck="false"
                         value={message}
                         onInput={e => setMessage(e.currentTarget.textContent)}
                         onKeyDown={(e) => handleSendMessage(e)}
-                    />
+                    >
+                    </div>
 
 
                     <div className='chat-open__btns-container'>

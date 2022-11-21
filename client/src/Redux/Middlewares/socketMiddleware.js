@@ -209,16 +209,14 @@ const socketMiddleware = store => next => action => {
 
     if (action.type === "socket/sendMessage") {
 
-        const { selectedConversationID, selectedFriendID } = store.getState().conversation
-        const { _id: currentUserID, friendList } = store.getState().user
-
-        const getFriend = friendList.find(friend => friend._id === selectedFriendID)
+        const { selectedConvID } = store.getState().conversation
+        const { message, friendSocketID, _id } = action.payload
 
         const payload = {
-            conversationID: selectedConversationID,
-            currentUserID,
-            selectedUserSocketID: getFriend.socketID,
-            message: action.payload
+            conversationID: selectedConvID,
+            currentUserID: _id,
+            friendSocketID,
+            message
         }
 
         socket.emit("send-message", payload)
