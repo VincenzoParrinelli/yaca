@@ -118,3 +118,19 @@
     }
 
 }
+
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+
+::-webkit-scrollbar-thumb {
+    background: #408ff4;
+    border-radius: 10px;
+}

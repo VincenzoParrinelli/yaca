@@ -6,7 +6,6 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 const initialState = {
     conversationList: [],
 
-    selectedConvID: null
 }
 
 export const newConversation = createAsyncThunk(
@@ -63,14 +62,16 @@ export const conversationSlice = createSlice({
         //update chat from client 
         updateChat: (state, action) => {
 
-            const { selectedConversationID, conversationList } = state
+            const { conversationList } = state
+            const { message, _id, friendID } = action.payload
+
 
             conversationList.forEach(conv => {
-                if (conv._id !== selectedConversationID) return
+                if (!conv.members.includes(_id) && !conv.members.includes(friendID)) return
 
                 const currentDate = Date()
 
-                conv.messages.push({ text: action.payload, createdAt: currentDate })
+                conv.messages.push({ text: message, createdAt: currentDate })
             })
 
         }
@@ -83,24 +84,19 @@ export const conversationSlice = createSlice({
             action.payload.isFullyFetched = true
 
             state.conversationList.push(action.payload)
-
-            state.selectedConvID = action.payload._id
         },
 
         [getConversation.fulfilled]: (state, action) => {
 
-            //search for selected conversation overwrite it and set isFullyFetched flag to true
-            state.conversationList.forEach((conv, i) => {
+            // Assign isFullyFetched flag to true to full conversation
 
-                if (conv._id !== action.payload._id) return
+            action.payload.isFullyFetched = true
 
-                conv = action.payload
+            // Find the conversation to update and then assign to it the fully fetched one with all the messages 
 
-                conv.isFullyFetched = true
-                
-                state.selectedConvID = conv._id
-    
-            })
+            const convToUpdate = state.conversationList.find(conv => conv._id === action.payload._id)
+
+            Object.assign(convToUpdate, action.payload)
 
         }
     }

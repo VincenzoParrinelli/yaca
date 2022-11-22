@@ -20,7 +20,7 @@ module.exports = {
         const { userID, friendID } = req.params
 
         //check if conversation exists in db, if yes return it, otherwise create a new one and send it afterwards 
-        await Conversation.findOne({ members: { $all: [userID, friendID] } }).then(conversation => {
+        await Conversation.findOne({ members: { $all: [userID, friendID] } }).lean().then(conversation => {
 
             res.json(conversation)
 

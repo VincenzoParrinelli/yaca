@@ -1,65 +1,160 @@
 .conversation-container {
     display: flex;
+    position: absolute;
     flex-direction: column;
-    position: relative;
-    width: 85%;
-    height: 85%;
-    bottom: 30px;
     overflow: hidden;
-    //background-color: purple;
+    width: 100%;
+    height: 85%;
+    top: 0;
+
+    &__scrollbar-track-vertical {
+        position: absolute;
+        width: 8px !important;
+        top: 10px;
+        right: 0;
+        height: 98%;
+        opacity: 0.8;
+    }
+
+    &__scrollbar-thumb-vertical {
+        background-color: #408ff4;
+        border-radius: 8px;
+
+        &:active {
+            visibility: visible !important;
+        }
+    }
+
+    //removes horizontal overflow
+    &__view {
+        overflow-x: hidden !important;
+    }
+
+    &__messages {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        align-items: flex-end;
+        right: 70px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 
     &__message-container {
+        display: flex;
+        min-width: 5%;
+        flex-direction: column;
         position: relative;
-        width: 6%;
-        height: 1%;
-        margin-top: 40px;
-        color: white;
         padding: 15px;
-        word-break: break-word;
+
+    }
+
+    &__text-container {
+        background-color: #1d90f5;
+        color: white;
+        width: 100%;
+        padding: 15px;
+        font: 14px "aeroportLight";
 
         &--current-user {
-            background-color: #1D2736;
+            background-color: #1d90f5;
             direction: ltr;
             left: 84%;
-            border-radius: 8px 8px 0 8px;
+            border-radius: 22px 22px 0 22px;
         }
 
         &--sender-user {
-            background-color: #222226;
+            background-color: #424656;
             border-radius: 8px 8px 8px 0px;
         }
-
     }
 
-
-    &__metadata-container {
+    &__message-metadata-container {
         display: flex;
+        text-align: right;
+        position: absolute;
         width: 100%;
+        left: 0px;
+        top: 58px;
+        padding: 10px;
+    }
+
+    &__created-at-date {
         position: relative;
-        top: -25px;
-
-        &__created-at {
-            position: absolute;
-            width: 100%;
-            top: 12px;
-            left: 16px;
-            opacity: 0.2;
-            font: 12px "aeroportLight";
-        }
-
-        &__text {
-            position: relative;
-            top: 16px;
-            right: 6px;
-            font: 14px "aeroportLight";
-
-        }
+        width: 100%;
+        color: white;
+        opacity: 0.4;
+        font: 12px "aeroportLight";
     }
 
 
-    @font-face {
-        font-family: "aeroportLight";
-        src: url(../Assets/Fonts/AeroportLight.otf);
-    }
 
+}
+
+
+
+
+
+// .conversation-container {
+//     display: flex;
+//     flex-direction: column;
+//     position: relative;
+//     width: 85%;
+//     height: 85%;
+//     bottom: 30px;
+//     overflow: hidden;
+//     //background-color: purple;
+
+//     &__message-container {
+//         position: relative;
+//         width: 6%;
+//         height: 1%;
+//         margin-top: 40px;
+//         color: white;
+//         padding: 15px;
+//         word-break: break-word;
+
+//         &--current-user {
+//             background-color: #1D2736;
+//             direction: ltr;
+//             left: 84%;
+//             border-radius: 8px 8px 0 8px;
+//         }
+
+//         &--sender-user {
+//             background-color: #222226;
+//             border-radius: 8px 8px 8px 0px;
+//         }
+
+//     }
+
+
+//     &__metadata-container {
+//         display: flex;
+//         width: 100%;
+//         position: relative;
+//         top: -25px;
+
+//         &__created-at {
+//             position: absolute;
+//             width: 100%;
+//             top: 12px;
+//             left: 16px;
+//             opacity: 0.2;
+//             font: 12px "aeroportLight";
+//         }
+
+//         &__text {
+//             position: relative;
+//             top: 16px;
+//             right: 6px;
+//             font: 14px "aeroportLight";
+
+//         }
+//     }
+
+
+@font-face {
+    font-family: "aeroportLight";
+    src: url(../Assets/Fonts/AeroportLight.otf);
 }

@@ -12,11 +12,12 @@ const conversationMiddleware = store => next => action => {
         const payload = { userID, friendID }
 
         const selectedConv = conversationList.find(conv => conv.members.includes(userID) && conv.members.includes(friendID))
-
+        
         //create new conversation or fetch existing one
-        if (!selectedConv?.isFullyFetched) return store.dispatch(getConversation(payload))
+        if (!selectedConv) return store.dispatch(newConversation(payload))
 
-        if (!selectedConv) store.dispatch(newConversation(payload))
+        if (!selectedConv?.isFullyFetched) store.dispatch(getConversation(payload))
+
     }
 
 }

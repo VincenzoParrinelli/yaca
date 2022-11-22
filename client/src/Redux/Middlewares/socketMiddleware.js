@@ -209,12 +209,11 @@ const socketMiddleware = store => next => action => {
 
     if (action.type === "socket/sendMessage") {
 
-        const { selectedConvID } = store.getState().conversation
-        const { message, friendSocketID, _id } = action.payload
+        const { message, friendSocketID, friendID , _id } = action.payload
 
         const payload = {
-            conversationID: selectedConvID,
             currentUserID: _id,
+            friendID,
             friendSocketID,
             message
         }

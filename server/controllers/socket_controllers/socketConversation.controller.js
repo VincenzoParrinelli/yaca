@@ -1,20 +1,18 @@
 const Conversation = require("../../models/Conversation.js")
 
 module.exports = conversation => {
-    
+
     conversation.on("send-message", async payload => {
 
-        const { conversationID, currentUserID, friendSocketID, message } = payload
+        const { currentUserID, friendSocketID, friendID, message } = payload
 
-        console.log(payload)
+        await Conversation.findOneAndUpdate(
 
-        await Conversation.findByIdAndUpdate(
-
-            conversationID,
+            { members: { $all: [currentUserID, friendID] } },
             { $push: { messages: { senderID: currentUserID, text: message } } },
             { new: true }
 
-        ).then(conversation => {
+        ).lean().then(conversation => {
 
             const newMessage = conversation.messages[conversation.messages.length - 1]
 
