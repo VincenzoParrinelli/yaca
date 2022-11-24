@@ -61,15 +61,13 @@ export default function ChatList() {
                                 onClick={() => navigate(`conversation/${friend._id}`)}
                             >
 
-                                <div className='chat-list__propic-container'>
 
-                                    <ProPic
-                                        proPicBlob={friend.proPicBlob}
-                                        socketID={friend.socketID}
-                                        style={{ marginLeft: "10px", width: "2.5em", height: "2.5em" }}
-                                    />
+                                <ProPic
+                                    proPicBlob={friend.proPicBlob}
+                                    socketID={friend.socketID}
+                                    style={{ marginLeft: "10px", width: "2.5em", height: "2.5em" }}
+                                />
 
-                                </div>
 
                                 <div className='chat-list__userdata-container'>
 

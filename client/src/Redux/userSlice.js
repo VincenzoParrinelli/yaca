@@ -16,6 +16,7 @@ const initialState = {
 
     data: {
         _id: null,
+        username: "",
         socketID: null,
         proPicBlob: "",
         profilePicID: "",

@@ -8,7 +8,6 @@ import ConversationContainer from './ConversationContainer'
 import { ReactComponent as Plus } from "../Assets/Images/plus.svg"
 import { ReactComponent as SendMessageIcon } from "../Assets/Images/send-message-icon.svg"
 import { setSelectedConvMainData } from "../Redux/conversationSlice"
-import { Scrollbars } from 'react-custom-scrollbars-2';
 import "./ChatOpen.scss"
 
 export default function MainContent() {

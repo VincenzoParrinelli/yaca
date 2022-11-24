@@ -7,20 +7,24 @@ export default function ProPic({ ...props }) {
     const { proPicBlob, style, socketID, isLogged } = props
 
     return (
-        <label className='propic-container' style={style}>
 
-            <img
-                src={proPicBlob ?? defaultProPic}
-                className={proPicBlob ? 'propic-container__propic' : "propic-container__default-propic"}
-            />
-            
+        <div>
+            <label className='propic-container' style={style}>
 
-            {isLogged && <div className='propic-container__user-status propic-container__user-status--online' />}
+                <img
+                    src={proPicBlob ? proPicBlob : defaultProPic}
+                    className={proPicBlob ? 'propic-container__propic' : "propic-container__default-propic"}
+                    alt="propic-or-defaultpropicasset"
+                />
 
-            {socketID && <div className='propic-container__user-status propic-container__user-status--online' />}
 
-            {socketID === "OFFLINE" && <div className='propic-container__user-status propic-container__user-status--offline' />}
+                {isLogged && <div className='propic-container__user-status propic-container__user-status--online' />}
 
-        </label>
+                {socketID && <div className='propic-container__user-status propic-container__user-status--online' />}
+
+                {socketID === "OFFLINE" && <div className='propic-container__user-status propic-container__user-status--offline' />}
+
+            </label>
+        </div>
     )
 }

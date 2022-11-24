@@ -38,15 +38,21 @@
         right: 70px;
         margin-top: 10px;
         margin-bottom: 10px;
+
+        &--sender {
+            align-items: flex-start;
+            right: unset;
+            left: 40px;
+        }
     }
 
     &__message-container {
         display: flex;
         min-width: 5%;
+        max-width: 60%;
         flex-direction: column;
         position: relative;
         padding: 15px;
-
     }
 
     &__text-container {
@@ -55,104 +61,58 @@
         width: 100%;
         padding: 15px;
         font: 14px "aeroportLight";
+        word-wrap: break-word;
+        text-align: center;
+
+        &--text-break {
+            text-align: left;
+            background-color: red;
+        }
 
         &--current-user {
             background-color: #1d90f5;
-            direction: ltr;
-            left: 84%;
             border-radius: 22px 22px 0 22px;
         }
 
         &--sender-user {
             background-color: #424656;
-            border-radius: 8px 8px 8px 0px;
+            border-radius: 22px 22px 22px 0px;
         }
     }
 
     &__message-metadata-container {
         display: flex;
         text-align: right;
-        position: absolute;
+        position: relative;
         width: 100%;
-        left: 0px;
-        top: 58px;
-        padding: 10px;
+        top: -5px;
+        left: 15px;
+
+        &--sender {
+            flex-direction: row-reverse;
+            text-align: left;
+            align-self: left;
+        }
     }
 
     &__created-at-date {
         position: relative;
         width: 100%;
+        white-space: nowrap;
         color: white;
-        opacity: 0.4;
+        opacity: 0.3;
         font: 12px "aeroportLight";
     }
 
-
+    &__sender-username {
+        position: relative;
+        font: 12px "aeroportLight";
+        color: white;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 
 }
-
-
-
-
-
-// .conversation-container {
-//     display: flex;
-//     flex-direction: column;
-//     position: relative;
-//     width: 85%;
-//     height: 85%;
-//     bottom: 30px;
-//     overflow: hidden;
-//     //background-color: purple;
-
-//     &__message-container {
-//         position: relative;
-//         width: 6%;
-//         height: 1%;
-//         margin-top: 40px;
-//         color: white;
-//         padding: 15px;
-//         word-break: break-word;
-
-//         &--current-user {
-//             background-color: #1D2736;
-//             direction: ltr;
-//             left: 84%;
-//             border-radius: 8px 8px 0 8px;
-//         }
-
-//         &--sender-user {
-//             background-color: #222226;
-//             border-radius: 8px 8px 8px 0px;
-//         }
-
-//     }
-
-
-//     &__metadata-container {
-//         display: flex;
-//         width: 100%;
-//         position: relative;
-//         top: -25px;
-
-//         &__created-at {
-//             position: absolute;
-//             width: 100%;
-//             top: 12px;
-//             left: 16px;
-//             opacity: 0.2;
-//             font: 12px "aeroportLight";
-//         }
-
-//         &__text {
-//             position: relative;
-//             top: 16px;
-//             right: 6px;
-//             font: 14px "aeroportLight";
-
-//         }
-//     }
-
 
 @font-face {
     font-family: "aeroportLight";
