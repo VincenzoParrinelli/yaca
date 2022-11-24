@@ -6,16 +6,18 @@ const userMiddleware = store => next => async action => {
 
     if (action.type === "user/login/fulfilled") {
 
-        //load current user proPics
+        console.log(action.payload)
+
+        //load current user proPic
         const user = action.payload.userData
 
         if (user.profilePicID) {
 
-            const userProPicBlob = await loadProPics(user)
+            const userDataWithProPicBlob = await loadProPics(user)
 
             store.dispatch({
                 type: "user/loadedUser",
-                payload: userProPicBlob
+                payload: userDataWithProPicBlob
             })
 
         }
@@ -73,8 +75,6 @@ const userMiddleware = store => next => async action => {
 
         const groupList = action.payload.groupList
 
-
-
         if (groupList.length >= 1) {
 
             groupList.forEach(group => {
@@ -85,11 +85,20 @@ const userMiddleware = store => next => async action => {
             const loadGroups = groupList.map(async group => await loadProPics(group))
 
             Promise.all(loadGroups).then(groups => {
-        
+
                 store.dispatch({
                     type: "group/loadGroupsProPics",
                     payload: groups
                 })
+            })
+
+        }
+
+        if (!user.profilePicID) {
+
+            store.dispatch({
+                type: "user/loadedUser",
+                payload: user
             })
 
         }

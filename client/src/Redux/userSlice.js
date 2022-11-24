@@ -183,6 +183,7 @@ export const userSlice = createSlice({
     reducers: {
 
         loadedUser: (state, action) => {
+            console.log(action.payload)
             state.data = action.payload
         },
 

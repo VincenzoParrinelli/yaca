@@ -11,6 +11,8 @@ const conversationMiddleware = store => next => action => {
 
         const payload = { userID, friendID }
 
+        console.log(action.payload)
+
         const selectedConv = conversationList.find(conv => conv.members.includes(userID) && conv.members.includes(friendID))
         
         //create new conversation or fetch existing one
