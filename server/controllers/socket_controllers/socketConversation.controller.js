@@ -12,12 +12,12 @@ module.exports = conversation => {
             { $push: { messages: { senderID: currentUserID, text: message } } },
             { new: true }
 
-        ).lean().then(conversation => {
+        ).lean().then(conversationData => {
 
-            const newMessage = conversation.messages[conversation.messages.length - 1]
+            const newMessage = conversationData.messages[conversationData.messages.length - 1]
 
             const payload = {
-                conversationID: conversation._id,
+                conversationID: conversationData._id,
                 newMessage
             }
 

@@ -17,6 +17,26 @@
         height: 85%;
         background-color: #323644;
         border-radius: 14px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 20%;
+            top: 0;
+            background: linear-gradient(to top, transparent, rgba(36, 40, 49, 0.4));
+            pointer-events: none;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 35%;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, rgba(36, 40, 49, 0));
+            pointer-events: none;
+        }
     }
 
     &__message-input-container {
@@ -27,7 +47,6 @@
         width: 80%;
         height: min-content;
         bottom: 2px;
-        
     }
     
 

@@ -49,7 +49,7 @@ export default function ChatList() {
                     <p className='chat-list__text'> Friend Messages </p>
 
                     {data.friendList?.map(friend => {
-
+                        
                         return (
 
                             <div

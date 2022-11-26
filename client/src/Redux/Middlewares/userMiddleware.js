@@ -6,7 +6,7 @@ const userMiddleware = store => next => async action => {
 
     if (action.type === "user/login/fulfilled") {
 
-        console.log(action.payload)
+        let promisesQueue = []
 
         //load current user proPic
         const user = action.payload.userData
@@ -20,6 +20,13 @@ const userMiddleware = store => next => async action => {
                 payload: userDataWithProPicBlob
             })
 
+        } else {
+
+            store.dispatch({
+                type: "user/loadedUser",
+                payload: user
+            })
+
         }
 
         //load friends proPics
@@ -29,17 +36,15 @@ const userMiddleware = store => next => async action => {
 
             const friendListLoadedAssets = friendList.map(async friend => await loadProPics(friend))
 
-            Promise.all(friendListLoadedAssets).then(friendListLoadedAssetsData => {
+            promisesQueue.push(Promise.all(friendListLoadedAssets).then(friendListLoadedAssetsData => {
 
                 store.dispatch({
                     type: "user/loadedFriendList",
                     payload: friendListLoadedAssetsData
                 })
 
-            })
-
+            }))
         }
-
 
         //load friendRequests data
         const friendRequestsData = action.payload.requestsData
@@ -48,13 +53,13 @@ const userMiddleware = store => next => async action => {
 
             const loadRequests = await loadProPics(friendRequestsData)
 
-            Promise.all(loadRequests).then(requests => {
+            promisesQueue.push(Promise.all(loadRequests).then(requests => {
 
                 store.dispatch({
                     type: "user/loadRequestProPic",
                     payload: requests
                 })
-            })
+            }))
 
         }
 
@@ -84,32 +89,26 @@ const userMiddleware = store => next => async action => {
             //load groups proPics
             const loadGroups = groupList.map(async group => await loadProPics(group))
 
-            Promise.all(loadGroups).then(groups => {
+            promisesQueue.push(Promise.all(loadGroups).then(groups => {
 
                 store.dispatch({
                     type: "group/loadGroupsProPics",
                     payload: groups
                 })
-            })
+            }))
 
         }
 
-        if (!user.profilePicID) {
 
+        Promise.all(promisesQueue).then(() => {
+
+            //set is logged flag to true when everything is loaded
             store.dispatch({
-                type: "user/loadedUser",
-                payload: user
+                type: "user/setIsLogged"
             })
 
-        }
-
-        //set is logged flag to true when everything is loaded
-        store.dispatch({
-            type: "user/setIsLogged"
         })
-
     }
-
 }
 
 export default userMiddleware

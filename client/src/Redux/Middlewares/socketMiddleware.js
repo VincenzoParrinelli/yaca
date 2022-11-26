@@ -140,6 +140,8 @@ const socketMiddleware = store => next => action => {
 
         socket.on("get-message", conversation => {
 
+            console.log(conversation)
+
             store.dispatch({
                 type: "conversation/getMessage",
                 payload: conversation
