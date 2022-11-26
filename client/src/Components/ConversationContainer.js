@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { Scrollbars } from 'react-custom-scrollbars-2';
@@ -11,6 +11,28 @@ export default function ConversationContainer({ data }) {
     const { proPicBlob, username } = useSelector(state => state.user.data)
 
     const [conversationData, setConversationData] = useState({})
+    const [isBottomDivRendered, setIsBottomDivRendered] = useState(false)
+
+    const bottomDivRef = useRef(null)
+
+    useLayoutEffect(() => {
+
+        if (isBottomDivRendered) bottomDivRef.current?.scrollIntoView({ behavior: "smooth" })
+
+        if (bottomDivRef.current && !isBottomDivRendered) {
+
+            bottomDivRef.current.scrollIntoView({ block: "end" })
+            setIsBottomDivRendered(true)
+
+        }
+
+        return () => {
+            setIsBottomDivRendered(false)
+        }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [conversationData])
+
 
     useEffect(() => {
 
@@ -93,18 +115,15 @@ export default function ConversationContainer({ data }) {
                     conversationData?.messages?.map(message => {
 
                         return (
-                            <div className={selectMessagesClassName(message.senderID, data._id)} key={uuidv4()}>
+                            <div className={selectMessagesClassName(message.senderID, data._id)} key={uuidv4()} >
 
                                 <div className="conversation-container__message-container">
 
                                     <div
                                         className={selectConversationClassName(message.senderID, data._id, message.text)}
-
                                     >
                                         {message.text}
                                     </div>
-
-
 
                                 </div>
 
@@ -123,9 +142,11 @@ export default function ConversationContainer({ data }) {
                                     />
 
                                 </div>
-                            </div>
-                        )
 
+                                <div ref={bottomDivRef}></div>
+                            </div>
+
+                        )
                     })
                 }
 
