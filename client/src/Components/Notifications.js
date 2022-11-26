@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { acceptFriendRequest, refuseFriendRequest } from '../Redux/socketSlice'
 import { ReactComponent as CrossIcon } from "../Assets/Images/cross.svg"
@@ -10,10 +10,20 @@ import "./Notifications.scss"
 
 export default function Notifications() {
 
+    const [inboxBtn, setInboxBtn] = useState(true)
+
+    const inboxBtnRef = useRef(null)
+
     const { data } = useSelector(state => state.user)
     const { friendRequests } = useSelector(state => state.user.data)
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+
+        if (inboxBtn) inboxBtnRef.current.classList.add("notifications__btns--active")
+
+    }, [inboxBtn])
 
     const handleAcceptFriendRequest = userToAcceptID => {
         const payload = { currentUserID: data._id, userToAcceptID }
@@ -34,17 +44,35 @@ export default function Notifications() {
 
             <div className='notifications__header'>
 
-                Notifications
+                <div className='notifications__header-container'>
 
-                <button className='notifications__close-btn' onClick={() => dispatch(closeNotifications())}>
+                    <button className='notifications__close-btn' onClick={() => dispatch(closeNotifications())}>
 
-                    <CrossIcon className="notifications__cross-icon"/>
-                    
-                </button>
+                        <CrossIcon className="notifications__cross-icon" />
+
+                    </button>
+
+                    Notifications
+
+                    <span>LOREM </span>
+                </div>
+
+                <div className='notifications__header-container-2'>
+
+                    <button
+                        className='notifications__btns'
+                        ref={inboxBtnRef}
+                        onClick={() => setInboxBtn(true)}
+                    >
+                        Inbox
+                    </button>
+
+                </div>
+
 
             </div>
 
-            {friendRequests && friendRequests.map((friendRequest, i) => {
+            {friendRequests?.map((friendRequest, i) => {
 
                 return (
                     <div key={friendRequest._id} data-index={i} className='notifications__users-container'>
