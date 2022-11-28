@@ -10,8 +10,8 @@ const conversationSchema = mongoose.Schema({
         text: String,
 
         createdAt: {
-            type: String,
-            default: Date(),
+            type: Date,
+            default: Date.now,
 
         }
         
