@@ -17,10 +17,10 @@ module.exports = {
 
     getConversation: async (req, res) => {
 
-        const { userID, friendID } = req.params
+        const { conversationID } = req.params
 
         //check if conversation exists in db, if yes return it, otherwise create a new one and send it afterwards 
-        await Conversation.findOne({ members: { $all: [userID, friendID] } }).lean().then(conversation => {
+        await Conversation.findById(conversationID).lean().then(conversation => {
 
             res.json(conversation)
 

@@ -1,25 +1,25 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { sendMessage } from '../Redux/socketSlice'
 import { updateChat } from '../Redux/conversationSlice'
 import ConversationHeader from "./ConversationHeader"
 import ConversationContainer from './ConversationContainer'
 import { ReactComponent as Plus } from "../Assets/Images/plus.svg"
 import { ReactComponent as SendMessageIcon } from "../Assets/Images/send-message-icon.svg"
-import { setSelectedConvMainData } from "../Redux/conversationSlice"
 import "./ChatOpen.scss"
 
 export default function MainContent() {
 
     const [message, setMessage] = useState("")
 
-    const [friendData, setFriendData] = useState({})
     const [groupData, setGroupData] = useState({})
 
     const { _id, friendList } = useSelector(state => state.user.data)
     const { groupList } = useSelector(state => state.group)
-    const { friendID, groupID } = useParams()
+    const { groupID } = useParams()
+
+    const { friendData } = useLocation().state
 
     const dispatch = useDispatch()
 
@@ -29,15 +29,9 @@ export default function MainContent() {
     // @desc: if friend is selected after getting his data set conversation id
     useEffect(() => {
 
-        if (friendID) {
-            setFriendData(friendList.find(friend => friend._id === friendID))
-
-            dispatch(setSelectedConvMainData({ _id, friendID }))
-        }
-
         groupID && setGroupData(groupList.find(group => group._id === groupID))
 
-    }, [friendID, friendList, groupID, groupList, dispatch])
+    }, [friendList, groupID, groupList, dispatch])
 
 
     const handleSendMessage = e => {
@@ -67,11 +61,11 @@ export default function MainContent() {
     return (
         <div className='chat-open'>
 
-            <ConversationHeader data={friendID ? friendData : groupData} />
+            <ConversationHeader data={friendData ? friendData : groupData} />
 
             <div className='chat-open__overlay'>
 
-                <ConversationContainer data={friendID ? friendData : groupData} />
+                <ConversationContainer data={friendData ? friendData : groupData} />
 
                 <div className='chat-open__message-input-container'>
 
@@ -112,5 +106,3 @@ export default function MainContent() {
         </div >
     )
 }
-
-

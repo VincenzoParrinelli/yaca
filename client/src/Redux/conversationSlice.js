@@ -5,7 +5,6 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
     conversationList: [],
-
 }
 
 export const newConversation = createAsyncThunk(
@@ -22,7 +21,7 @@ export const newConversation = createAsyncThunk(
 export const getConversation = createAsyncThunk(
     "conversation/getConversation",
 
-    async payload => await axios.get(`${serverUrl}conversation/get-conversation/${payload.userID}/${payload.friendID}`,
+    async conversationID => await axios.get(`${serverUrl}conversation/get-conversation/${conversationID}`,
 
         { withCredentials: true }
 

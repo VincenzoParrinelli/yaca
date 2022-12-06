@@ -10,6 +10,6 @@ router.use(validateAccessToken)
 
 router.post("/new-conversation", conversationController.newConversation)
 
-router.get("/get-conversation/:userID/:friendID", conversationController.getConversation)
+router.get("/get-conversation/:conversationID", conversationController.getConversation)
 
 module.exports = router

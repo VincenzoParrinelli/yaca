@@ -1,17 +1,19 @@
 import React from 'react'
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import SearchBar from './SearchBar';
 import ProPic from './ProPic';
 import "./ChatList.scss"
+import { setSelectedConvMainData } from '../Redux/conversationSlice';
 
 export default function ChatList() {
 
-    const { data } = useSelector(state => state.user)
+    const { _id, friendList } = useSelector(state => state.user.data)
     const { conversationList } = useSelector(state => state.conversation)
     const { groupList } = useSelector(state => state.group)
 
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     const { friendID, groupID } = useParams()
@@ -26,6 +28,16 @@ export default function ChatList() {
         const scrollbarRef = document.querySelector(".chat-list__scrollbar-thumb-vertical")
 
         scrollbarRef.style.visibility = "hidden"
+    }
+
+    const handleConvNavigate = friend => {
+
+        const selectedConv = conversationList.find(conv => conv.members.includes(_id) && conv.members.includes(friend._id))
+
+        dispatch(setSelectedConvMainData({ _id, friendID: friend._id, selectedConv }))
+
+        navigate(`conversation/${selectedConv._id}`, { state: { friendData: friend } })
+
     }
 
     return (
@@ -48,8 +60,8 @@ export default function ChatList() {
 
                     <p className='chat-list__text'> Friend Messages </p>
 
-                    {data.friendList?.map(friend => {
-                        
+                    {friendList?.map(friend => {
+
                         return (
 
                             <div
@@ -58,7 +70,7 @@ export default function ChatList() {
                                 data-type="friend"
                                 className='chat-list__element-container'
                                 aria-checked={friend._id === friendID}
-                                onClick={() => navigate(`conversation/${friend._id}`)}
+                                onClick={() => handleConvNavigate(friend)}
                             >
 
 
