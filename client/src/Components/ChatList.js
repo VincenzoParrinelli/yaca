@@ -40,6 +40,15 @@ export default function ChatList() {
 
     }
 
+    const handleGroupNavigate = group => {
+
+        console.log(group)
+        
+        
+      
+        //navigate(`group/${group._id}`)
+    }
+
     return (
         <div className='chat-list'>
 
@@ -122,7 +131,7 @@ export default function ChatList() {
                                 data-type="group"
                                 aria-checked={group._id === groupID}
                                 className='chat-list__element-container'
-                                onClick={() => navigate(`group/${group._id}`)}
+                                onClick={() => handleGroupNavigate(group)}
 
                             >
 

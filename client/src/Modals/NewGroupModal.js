@@ -27,7 +27,7 @@ export default function NewGroupModal() {
 
     }, [])
 
-    //reset modal state on open
+    // reset modal state on open
     useEffect(() => {
 
         setNewGroupPic(null)
@@ -35,7 +35,7 @@ export default function NewGroupModal() {
 
     }, [newGroupModal])
 
-    //if user selects an image for his group, add border radius 
+    // if user selects an image for his group, add border radius 
     useEffect(() => {
 
         if (!newGroupPic) return
@@ -47,12 +47,12 @@ export default function NewGroupModal() {
 
     const handleNewGroup = () => {
 
-    
         const payload = {
+
             data: {
                 userID: data._id,
                 groupName,
-                groupPicID: uuidv4(),
+                groupPicID: newGroupPic && uuidv4(),
             },
 
             file: {
