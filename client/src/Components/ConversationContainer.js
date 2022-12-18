@@ -1,31 +1,31 @@
-import React, { useState, memo, useLayoutEffect, useRef } from 'react'
+import React, { memo, useLayoutEffect, useRef } from 'react'
 import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import ProPic from './ProPic';
 import "./ConversationContainer.scss"
 
+const areEqual = (prevProps, nextProps) =>  prevProps.data.messages === nextProps.data.messages
+
 const ConversationContainer = memo(({ data }) => {
 
-    const { conversationList } = useSelector(state => state.conversation)
-    const { _id, proPicBlob, username } = useSelector(state => state.user.data)
+    const conversationData = data
 
-    const [conversationData, setConversationData] = useState({})
+    const { _id, proPicBlob, username } = useSelector(state => state.user.data)
 
     const bottomDivRef = useRef(null)
 
     useLayoutEffect(() => {
 
-        bottomDivRef.current?.scrollIntoView({ block: "end" })
+        bottomDivRef.current?.scrollIntoView({ behavior: "smooth" })
 
-    }, [conversationData])
+    }, [conversationData.messages])
 
     useLayoutEffect(() => {
-        
-        // Get fully fetched conversation by quering redux again
-        setConversationData(conversationList.find(conv => conv.members.includes(data._id) && conv.members.includes(_id)))
 
-    }, [conversationList, data._id, _id])
+        bottomDivRef.current?.scrollIntoView({ block: "end" })
+
+    }, [conversationData._id])
 
     const refactorDate = createdAt => {
 
@@ -47,7 +47,7 @@ const ConversationContainer = memo(({ data }) => {
         let messagesClassName = "conversation-container__messages"
         const messagesSenderModifier = " conversation-container__messages--sender"
 
-        if (messageSenderID !== dataID) return messagesClassName
+        if (messageSenderID === _id) return messagesClassName
 
         return messagesClassName += messagesSenderModifier
 
@@ -61,7 +61,7 @@ const ConversationContainer = memo(({ data }) => {
         const textBreakModifier = " conversation-container__text-container--text-break"
 
         // if current user is the sender
-        if (messageSenderID !== dataID) {
+        if (messageSenderID === _id) {
 
             // if message length is greater than 60 set className to currentUserClassName 
             // and add text break className, so the text is gonna get aligned to left
@@ -81,7 +81,7 @@ const ConversationContainer = memo(({ data }) => {
         let metadataContainerClassName = "conversation-container__message-metadata-container"
         const metadataContainerModifier = " conversation-container__message-metadata-container--sender"
 
-        if (messageSenderID !== dataID) return metadataContainerClassName
+        if (messageSenderID === _id) return metadataContainerClassName
 
         return metadataContainerClassName += metadataContainerModifier
     }
@@ -99,7 +99,7 @@ const ConversationContainer = memo(({ data }) => {
             >
 
                 {
-                    conversationData?.messages?.map(message => {
+                    conversationData?.messages?.map((message, i) => {
 
                         return (
                             <div className={selectMessagesClassName(message.senderID, data._id)} key={uuidv4()} >
@@ -119,12 +119,12 @@ const ConversationContainer = memo(({ data }) => {
                                     <span className='conversation-container__created-at-date'>{refactorDate(message.createdAt)}</span>
 
                                     <span className='conversation-container__sender-username'>
-                                        {message.senderID !== data._id ? username : data.username}
+                                        {message.senderID === _id ? username : data.username}
                                     </span>
 
 
                                     <ProPic
-                                        proPicBlob={message.senderID !== data._id && proPicBlob}
+                                        proPicBlob={message.senderID === _id && proPicBlob}
                                         style={{ width: "1.5em", height: "1.5em", outline: "none", bottom: "4px" }}
                                     />
 
@@ -141,6 +141,6 @@ const ConversationContainer = memo(({ data }) => {
         </div>
 
     )
-})
+}, areEqual)
 
 export default ConversationContainer

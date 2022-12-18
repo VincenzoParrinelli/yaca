@@ -2,28 +2,42 @@ const Conversation = require("../../models/Conversation.js")
 
 module.exports = conversation => {
 
+    conversation.on("send-new-conversation", async payload => {
+
+        const { newConversation, receiverSocketID } = payload
+
+        conversation.to(receiverSocketID).emit("get-new-conversation", newConversation)
+    })
+
     conversation.on("send-message", async payload => {
 
-        const { currentUserID, friendSocketID, friendID, message } = payload
+        const newMessage = payload.newMessage
+        const { friendSocketID, conversationID } = payload
 
-        await Conversation.findOneAndUpdate(
+        const response = { conversationID, newMessage }
 
-            { members: { $all: [currentUserID, friendID] } },
-            { $push: { messages: { senderID: currentUserID, text: message } } },
-            { new: true }
+        friendSocketID && conversation.to(friendSocketID).emit("get-message", response)
+        !friendSocketID && conversation.to(conversationID).emit("get-message", response)
 
-        ).lean().then(conversationData => {
+        // await Conversation.findByIdAndUpdate(
 
-            const newMessage = conversationData.messages[conversationData.messages.length - 1]
+        //     conversationID,
+        //     { $push: { messages: { senderID: currentUserID, text: message } } },
+        //     { new: true }
 
-            const payload = {
-                conversationID: conversationData._id,
-                newMessage
-            }
+        // ).lean().then(conversationData => {
 
-            conversation.to(friendSocketID).emit("get-message", payload)
+        //     const newMessage = conversationData.messages[conversationData.messages.length - 1]
 
-        }).catch(err => new Error(err.message))
+        //     const payload = {
+        //         conversationID: conversationData._id,
+        //         newMessage
+        //     }
+
+        //     !conversationData.groupID && conversation.to(friendSocketID).emit("get-message", payload)
+        //     conversationData.groupID && conversation.to(conversationID).emit("get-message", payload)
+
+        // }).catch(err => new Error(err.message))
 
     })
 }

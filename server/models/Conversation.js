@@ -4,6 +4,8 @@ const conversationSchema = mongoose.Schema({
 
     members: [String],
 
+    groupID: String,
+
     messages: [{
         _id: mongoose.ObjectId,
         senderID: String,
@@ -12,10 +14,10 @@ const conversationSchema = mongoose.Schema({
         createdAt: {
             type: Date,
             default: Date.now,
-
         }
         
     }]
+
 })
 
 module.exports = mongoose.model("Conversation", conversationSchema)

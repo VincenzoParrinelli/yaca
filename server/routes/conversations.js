@@ -12,4 +12,6 @@ router.post("/new-conversation", conversationController.newConversation)
 
 router.get("/get-conversation/:conversationID", conversationController.getConversation)
 
+router.post("/send-message", conversationController.sendMessage)
+
 module.exports = router

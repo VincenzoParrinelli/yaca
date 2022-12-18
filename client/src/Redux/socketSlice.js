@@ -36,9 +36,7 @@ export const socketsSlice = createSlice({
         refuseFriendRequest: () => { },
 
         //check socketMiddleware.js for message handling
-        sendMessage: state => {
-            state.message = ""
-        }
+       // sendMessage: () => { }
 
     },
 
@@ -50,7 +48,6 @@ export const {
     sendFriendRequest,
     acceptFriendRequest,
     refuseFriendRequest,
-    sendMessage,
 
 } = socketsSlice.actions
 

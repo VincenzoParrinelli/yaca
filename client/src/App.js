@@ -16,8 +16,8 @@ export default function App() {
                 <Route path="/verify-account" element={<VerifyAccount />} />
                 <Route path="/verify-account/:token" element={<VerifyAccount />} />
                 <Route path="/dashboard" element={<Dashboard />}>
-                    <Route path="group/:groupID" element={<ChatOpen />} />
                     <Route path="conversation/:conversationID" element={<ChatOpen />} />
+                    <Route path="group/:groupID/:conversationID" element={<ChatOpen />} />
                 </Route>
             </Routes>
         </BrowserRouter>

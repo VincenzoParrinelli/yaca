@@ -4,27 +4,38 @@ const groupMiddleware = store => next => action => {
 
     next(action)
 
-    if (action.type === "conversation/setSelectedConv") {
+    // if (action.type === "conversation/setSelectedConv") {
 
-        store.dispatch({
-            type: "group/resetSelectedGroupID"
-        })
+    //     store.dispatch({
+    //         type: "group/resetSelectedGroupID"
+    //     })
 
-    }
+    // }
 
-    if (action.type === "group/setSelectedGroupID") {
+    // if (action.type === "group/setSelectedGroupID") {
 
-        store.dispatch({
-            type: "conversation/resetSelectedConv"
-        })
+    //     store.dispatch({
+    //         type: "conversation/resetSelectedConv"
+    //     })
 
-        const { groupList, selectedGroupID } = store.getState().group
+    //     const { groupList, selectedGroupID } = store.getState().group
 
-        const groupExists = groupList.some(group => group.isFullyFetched)
+    //     const groupExists = groupList.some(group => group.isFullyFetched)
 
-        if (!groupExists) store.dispatch(getGroup({ selectedGroupID }))
+    //     if (!groupExists) store.dispatch(getGroup({ selectedGroupID }))
 
-    }
+    // }
+
+    // if (action.type === "group/setSelectedGroupData") {
+
+    //     const group = action.payload
+
+    //     //if (!group) return store.dispatch()
+
+    //     // *-*-*-*-ALREADY FETCHED
+    //     if (!group?.isFullyFetched) store.dispatch(getGroup(group._id))
+
+    // }
 
 }
 

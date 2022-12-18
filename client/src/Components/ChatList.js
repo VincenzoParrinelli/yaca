@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, useLocation } from "react-router-dom"
 import { Scrollbars } from 'react-custom-scrollbars-2';
+import { getConversation, newConversation } from '../Redux/conversationSlice';
 import SearchBar from './SearchBar';
 import ProPic from './ProPic';
 import "./ChatList.scss"
-import { setSelectedConvMainData } from '../Redux/conversationSlice';
 
 export default function ChatList() {
+
+    const [selectedConv, setSelectedConv] = useState({})
 
     const { _id, friendList } = useSelector(state => state.user.data)
     const { conversationList } = useSelector(state => state.conversation)
@@ -30,23 +32,40 @@ export default function ChatList() {
         scrollbarRef.style.visibility = "hidden"
     }
 
-    const handleConvNavigate = friend => {
+    const handleFriendConv = friend => {
 
-        const selectedConv = conversationList.find(conv => conv.members.includes(_id) && conv.members.includes(friend._id))
+        const selectedConv = conversationList.find(conv => conv.members.includes(_id) && conv.members.includes(friend._id) && !conv.groupID)
 
-        dispatch(setSelectedConvMainData({ _id, friendID: friend._id, selectedConv }))
+        checkConvExistence(selectedConv, friend)
+    }
 
-        navigate(`conversation/${selectedConv._id}`, { state: { friendData: friend } })
+    const handleGroupConv = group => {
+
+        const selectedConv = conversationList.find(conv => conv.groupID === group._id)
+
+        checkConvExistence(selectedConv, group)
+    }
+
+    const checkConvExistence = (selectedConv, data) => {
+
+        if (!selectedConv) {
+
+            // Define payload for either group conversation or direct conversation
+            let payload = data.groupName ? { groupID: data._id, socketID: data.socketID } : { userID: _id, friendID: data._id, socketID: data.socketID }
+
+            dispatch(newConversation(payload)).then(newConv => handleNavigation(newConv.payload, data))
+
+        }
+
+        if (selectedConv) dispatch(getConversation(selectedConv._id)).then(convData => handleNavigation(convData.payload, data))
 
     }
 
-    const handleGroupNavigate = group => {
+    const handleNavigation = (convData, data) => {
 
-        console.log(group)
-        
-        
-      
-        //navigate(`group/${group._id}`)
+        if (!convData.groupID) navigate(`conversation/${convData._id}`, { state: { convData, friendData: data } })
+
+        if (convData.groupID) navigate(`group/${data._id}/${convData._id}`, { state: { convData, groupData: data } })
     }
 
     return (
@@ -79,7 +98,7 @@ export default function ChatList() {
                                 data-type="friend"
                                 className='chat-list__element-container'
                                 aria-checked={friend._id === friendID}
-                                onClick={() => handleConvNavigate(friend)}
+                                onClick={() => handleFriendConv(friend)}
                             >
 
 
@@ -131,7 +150,7 @@ export default function ChatList() {
                                 data-type="group"
                                 aria-checked={group._id === groupID}
                                 className='chat-list__element-container'
-                                onClick={() => handleGroupNavigate(group)}
+                                onClick={() => handleGroupConv(group)}
 
                             >
 

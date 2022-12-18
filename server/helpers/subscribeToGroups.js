@@ -5,11 +5,11 @@ const subscribeToGroups = async (socket, next) => {
 
     const currentUserID = socket.handshake.auth.currentUserID
 
-    await Group.find({currentUserID}).then(data => {
+    await Group.find({ currentUserID }).lean().then(data => {
 
         const groupIDS = data.map(group => group._id.toJSON())
-        
-        //subscribe user to his groups
+
+        // subscribe user to his groups
         socket.join(groupIDS)
 
         next()

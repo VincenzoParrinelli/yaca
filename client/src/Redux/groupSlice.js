@@ -21,17 +21,6 @@ export const createGroup = createAsyncThunk(
     }).catch(err => { throw Error(err) })
 )
 
-export const getGroup = createAsyncThunk(
-    "group/getGroup",
-
-    async groupID => await axios.get(`${serverUrl}group/get-group`,
-
-        { withCredentials: true, params: groupID }
-    ).then(res => {
-
-        return res.data
-    }).catch(err => { throw Error(err) })
-)
 
 const groupSlice = createSlice({
     name: "group",
@@ -47,7 +36,6 @@ const groupSlice = createSlice({
         resetSelectedGroupID: state => {
             state.selectedGroupID = ""
         },
-
 
         sendGroupInvite: () => { },
 
@@ -68,7 +56,7 @@ const groupSlice = createSlice({
         handleDeletedGroup: (state, action) => {
 
             state.groupList = state.groupList.filter(group => group._id !== action.payload)
-            
+
         }
     },
 
@@ -83,23 +71,6 @@ const groupSlice = createSlice({
             state.groupList.push(newGroup)
         },
 
-        [getGroup.fulfilled]: (state, action) => {
-
-
-            state.groupList.map((group, i) => {
-
-                if (group._id !== action.payload.group._id) return
-
-                // state.founder = action.payload.group.founder
-                // state.moderators = action.payload.group.moderators
-                // state.members = action.payload.group.members
-
-                group.isFullyFetched = true
-
-            })
-
-
-        }
     }
 })
 
@@ -107,7 +78,7 @@ const groupSlice = createSlice({
 export const {
     sendGroupInvite,
     updateGroupSettings,
-    deleteGroup
+    deleteGroup,
 
 } = groupSlice.actions
 

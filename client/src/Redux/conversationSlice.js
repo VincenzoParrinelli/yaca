@@ -5,7 +5,10 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 
 const initialState = {
     conversationList: [],
+
+    newMessageFromSocket: null
 }
+
 
 export const newConversation = createAsyncThunk(
     "conversation/newConversation",
@@ -31,6 +34,17 @@ export const getConversation = createAsyncThunk(
     }).catch(err => { throw Error(err) })
 )
 
+export const sendMessage = createAsyncThunk(
+    "conversation/sendMessage",
+
+    async payload => await axios.post(`${serverUrl}conversation/send-message`,
+
+        payload,
+        { withCredentials: true }
+
+    ).then(res => res.data)
+)
+
 export const conversationSlice = createSlice({
     name: "conversation",
 
@@ -46,6 +60,10 @@ export const conversationSlice = createSlice({
         //handle this in middleware
         setSelectedConvMainData: () => { },
 
+        getNewConversationFromSocket: (state, action) => {
+            state.conversationList.push(action.payload)
+        },
+
         //get message from socket event
         getMessage: (state, action) => {
 
@@ -56,21 +74,22 @@ export const conversationSlice = createSlice({
 
                 conv.messages.push(newMessage)
             })
+
+            state.newMessageFromSocket = newMessage
         },
 
         //update chat from client 
         updateChat: (state, action) => {
 
             const { conversationList } = state
-            const { message, _id, friendID } = action.payload
-
+            const { message, _id, conversationID } = action.payload
 
             conversationList.forEach(conv => {
-                if (!conv.members.includes(_id) && !conv.members.includes(friendID)) return
+                if (conv._id !== conversationID) return
 
                 const currentDate = Date()
 
-                conv.messages.push({ text: message, createdAt: currentDate })
+                conv.messages.push({ text: message, senderID: _id, createdAt: currentDate })
             })
 
         }

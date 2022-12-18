@@ -8,8 +8,9 @@ const groupSchema = mongoose.Schema({
 
     founder: String,
     moderators: [String],
-    members: [String],
-    
+
+    members: [String]
+
 })
 
 module.exports = mongoose.model("Group", groupSchema)

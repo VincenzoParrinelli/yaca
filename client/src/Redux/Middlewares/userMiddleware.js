@@ -47,7 +47,7 @@ const userMiddleware = store => next => async action => {
         }
 
         //load friendRequests data
-        const friendRequestsData = action.payload.requestsData
+        const friendRequestsData = action.payload.friendRequestsData
 
         if (friendRequestsData.length >= 1) {
 

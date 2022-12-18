@@ -81,40 +81,25 @@ module.exports = {
 
             // await for all the promises to fullfill then send logged user data among with his friends, groups
             // and last message sent to the respective conversation so we can display it without fetching all the messages
-            const getFriends = await User.find({ _id: userData.friendList })
+            const friendsData = await User.find({ _id: userData.friendList })
                 .select({ "socketID": 1, "username": 1, "profilePicID": 1 }).lean()
 
-            const friendRequests = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicID": 1 }).lean()
+            const friendRequestsData = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicID": 1 }).lean()
 
-            const getGroups = await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }, { messages: { $slice: - 1 } }).lean()
-
+            const groupsData = await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }, { messages: { $slice: - 1 } }).lean()
+            
             const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } }).select({ "__v": 0 }).lean()
 
 
-            Promise.all(getFriends).then(friendsData => {
-
-                Promise.all(getGroups).then(groupsData => {
-
-                    Promise.all(friendRequests).then(requestsData => {
-
-                        Promise.all(getConversations).then(convData => {
-
-                            res.json({
-                                isLogged: true,
-                                isValid: true,
-                                userData,
-                                requestsData,
-                                friendList: friendsData,
-                                groupList: groupsData,
-                                convData
-                            })
-
-                        })
-
-                    })
-
-                })
-            }).catch(err => console.error(err.message))
+            res.json({
+                isLogged: true,
+                isValid: true,
+                userData,
+                friendRequestsData,
+                friendList: friendsData,
+                groupList: groupsData,
+                convData: getConversations
+            })
 
         }).catch(err => console.error(err.message))
     },

@@ -25,7 +25,7 @@ module.exports = (group, io) => {
 
         })
 
-        await Group.findById(selectedGroupID).then(async data => {
+        await Group.findById(selectedGroupID).lean().then(async data => {
 
             const { founder } = data
 
@@ -51,7 +51,7 @@ module.exports = (group, io) => {
 
         const { userID, groupID } = payload
 
-        await Group.findById(groupID).then(async data => {
+        await Group.findById(groupID).lean().then(async data => {
 
             if (data.founder !== userID) return
 

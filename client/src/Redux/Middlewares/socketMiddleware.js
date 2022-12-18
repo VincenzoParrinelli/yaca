@@ -138,9 +138,18 @@ const socketMiddleware = store => next => action => {
             })
         })
 
-        socket.on("get-message", conversation => {
+        // conversation listeners
 
-            console.log(conversation)
+        socket.on("get-new-conversation", newConversation => {
+
+            store.dispatch({
+                type: "conversation/getNewConversationFromSocket",
+                payload: newConversation
+            })
+
+        })
+
+        socket.on("get-message", conversation => {
 
             store.dispatch({
                 type: "conversation/getMessage",
@@ -193,7 +202,7 @@ const socketMiddleware = store => next => action => {
     }
 
 
-    //friend requests socket handlers
+    // friend requests socket handlers
 
     if (action.type === "socket/sendFriendRequest") socket.emit("send-friend-request", action.payload)
 
@@ -202,7 +211,23 @@ const socketMiddleware = store => next => action => {
     if (action.type === "socket/refuseFriendRequest") socket.emit("refuse-friend-request", action.payload)
 
 
-    //group socket handlers
+    // conversation handlers
+
+    if (action.type === "conversation/newConversation/fulfilled" && action.meta.arg.socketID) socket.emit("send-new-conversation", { newConversation: action.payload, receiverSocketID: action.meta.arg.socketID })
+
+    if (action.type === "conversation/sendMessage/fulfilled") {
+
+        const payload = {
+            newMessage: action.payload,
+            friendSocketID: action.meta.arg.friendSocketID,
+            conversationID: action.meta.arg.conversationID
+        }
+
+        socket.emit("send-message", payload)
+
+    }
+
+    // group socket handlers
 
     if (action.type === "group/sendGroupInvite") socket.emit("send-group-invite", action.payload)
 
@@ -211,13 +236,13 @@ const socketMiddleware = store => next => action => {
 
     if (action.type === "socket/sendMessage") {
 
-        const { message, friendSocketID, friendID , _id } = action.payload
+        const { message, currentUserID, friendSocketID, conversationID } = action.payload
 
         const payload = {
-            currentUserID: _id,
-            friendID,
+            message,
+            currentUserID,
             friendSocketID,
-            message
+            conversationID
         }
 
         socket.emit("send-message", payload)
