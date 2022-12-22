@@ -220,8 +220,11 @@ const socketMiddleware = store => next => action => {
         const payload = {
             newMessage: action.payload,
             friendSocketID: action.meta.arg.friendSocketID,
-            conversationID: action.meta.arg.conversationID
+            conversationID: action.meta.arg.conversationID,
+            groupID: action.meta.arg.groupID
         }
+
+        console.log(action.meta.arg.groupID)
 
         socket.emit("send-message", payload)
 

@@ -27,9 +27,7 @@ module.exports = {
 
     sendMessage: async (req, res) => {
 
-        const { message, currentUserID, friendSocketID, conversationID } = req.body
-
-        console.log(req.body)
+        const { message, currentUserID, conversationID } = req.body
 
         await Conversation.findByIdAndUpdate(
 

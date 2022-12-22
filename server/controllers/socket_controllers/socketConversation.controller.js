@@ -12,12 +12,12 @@ module.exports = conversation => {
     conversation.on("send-message", async payload => {
 
         const newMessage = payload.newMessage
-        const { friendSocketID, conversationID } = payload
+        const { friendSocketID, conversationID, groupID } = payload
 
         const response = { conversationID, newMessage }
 
         friendSocketID && conversation.to(friendSocketID).emit("get-message", response)
-        !friendSocketID && conversation.to(conversationID).emit("get-message", response)
+        groupID && conversation.to(groupID).emit("get-message", response)
 
         // await Conversation.findByIdAndUpdate(
 

@@ -27,8 +27,8 @@ export default function ChatOpen() {
     const textAreaRef = useRef(null)
 
     useEffect(() => {
-        setConversationData(convData)
-    }, [convData])
+        setConversationData(convData ?? groupData)
+    }, [convData, groupData])
 
     const handleSendMessage = e => {
 
@@ -42,7 +42,7 @@ export default function ChatOpen() {
 
             // Set payload accordingly 
             if (friendData) payload = { message, currentUserID: _id, friendSocketID: friendData.socketID, conversationID }
-            if (groupData) payload = { message, currentUserID: _id, conversationID }
+            if (groupData) payload = { message, currentUserID: _id, groupID: groupData._id, conversationID }
 
             dispatch(updateChat({ message, _id, conversationID }))
 
