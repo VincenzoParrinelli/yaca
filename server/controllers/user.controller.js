@@ -86,19 +86,31 @@ module.exports = {
 
             const friendRequestsData = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicID": 1 }).lean()
 
-            const groupsData = await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }, { messages: { $slice: - 1 } }).lean()
-            
-            const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } }).select({ "__v": 0 }).lean()
+            // Get user to user conversations
+            const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } }).select({ "__v": 0 }).lean() || []
+
+            await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }).lean().then(async groupsData => {
+
+                // Get group all group ids
+                const groupIDS = groupsData.map(group => group._id)
+
+                await Conversation.find({ groupID: groupIDS }).lean().then(conversationData => {
+                    
+                    // Merge group conversation into user to user conversations
+                    getConversations.push(...conversationData)
 
 
-            res.json({
-                isLogged: true,
-                isValid: true,
-                userData,
-                friendRequestsData,
-                friendList: friendsData,
-                groupList: groupsData,
-                convData: getConversations
+                    res.json({
+                        isLogged: true,
+                        isValid: true,
+                        userData,
+                        friendRequestsData,
+                        friendList: friendsData,
+                        groupList: groupsData,
+                        convData: getConversations
+                    })
+
+                })
             })
 
         }).catch(err => console.error(err.message))

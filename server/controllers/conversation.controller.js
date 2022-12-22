@@ -12,7 +12,6 @@ module.exports = {
 
         }).catch(err => console.error(err.message))
 
-
     },
 
     getConversation: async (req, res) => {
@@ -29,6 +28,8 @@ module.exports = {
     sendMessage: async (req, res) => {
 
         const { message, currentUserID, friendSocketID, conversationID } = req.body
+
+        console.log(req.body)
 
         await Conversation.findByIdAndUpdate(
 
