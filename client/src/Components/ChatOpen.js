@@ -27,8 +27,8 @@ export default function ChatOpen() {
     const textAreaRef = useRef(null)
 
     useEffect(() => {
-        setConversationData(convData ?? groupData)
-    }, [convData, groupData])
+        setConversationData(convData)
+    }, [convData])
 
     const handleSendMessage = e => {
 
@@ -78,7 +78,7 @@ export default function ChatOpen() {
 
             <div className='chat-open__overlay'>
 
-                <ConversationContainer data={conversationData} />
+                <ConversationContainer conversationData={conversationData} friendData={friendData} groupData={groupData} />
 
                 <div className='chat-open__message-input-container'>
 

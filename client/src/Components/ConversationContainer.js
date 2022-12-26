@@ -5,15 +5,15 @@ import { Scrollbars } from 'react-custom-scrollbars-2';
 import ProPic from './ProPic';
 import "./ConversationContainer.scss"
 
-const areEqual = (prevProps, nextProps) =>  prevProps.data.messages === nextProps.data.messages
+const areEqual = (prevProps, nextProps) => prevProps.conversationData?.messages === nextProps.conversationData?.messages
 
-const ConversationContainer = memo(({ data }) => {
-
-    const conversationData = data
+const ConversationContainer = memo(({ conversationData, friendData, groupData }) => {
 
     const { _id, proPicBlob, username } = useSelector(state => state.user.data)
 
     const bottomDivRef = useRef(null)
+
+    console.log(groupData)
 
     useLayoutEffect(() => {
 
@@ -42,7 +42,7 @@ const ConversationContainer = memo(({ data }) => {
         return formattedString
     }
 
-    const selectMessagesClassName = (messageSenderID, dataID) => {
+    const selectMessagesClassName = (messageSenderID) => {
 
         let messagesClassName = "conversation-container__messages"
         const messagesSenderModifier = " conversation-container__messages--sender"
@@ -54,7 +54,7 @@ const ConversationContainer = memo(({ data }) => {
     }
 
     // Choose className accordingly based on text length and if user is a sender or a receiver
-    const selectConversationClassName = (messageSenderID, dataID, messageText) => {
+    const selectConversationClassName = (messageSenderID, messageText) => {
 
         let currentUserClassName = "conversation-container__text-container conversation-container__text-container--current-user"
         let senderUserClassName = "conversation-container__text-container conversation-container__text-container--sender-user"
@@ -76,7 +76,7 @@ const ConversationContainer = memo(({ data }) => {
         return senderUserClassName
     }
 
-    const selectMetadataContainerClassName = (messageSenderID, dataID) => {
+    const selectMetadataContainerClassName = messageSenderID => {
 
         let metadataContainerClassName = "conversation-container__message-metadata-container"
         const metadataContainerModifier = " conversation-container__message-metadata-container--sender"
@@ -84,6 +84,39 @@ const ConversationContainer = memo(({ data }) => {
         if (messageSenderID === _id) return metadataContainerClassName
 
         return metadataContainerClassName += metadataContainerModifier
+    }
+
+    const selectUsernameAndProPicBlobJSX = messageSenderID => {
+
+        let member = {}
+
+        if (!friendData?.username) member = groupData.members.find(member => member.userData._id === messageSenderID)
+
+        return (
+            <>
+                <span className='conversation-container__sender-username'>
+
+                    {friendData?.username}
+
+                    {member.userData.username}
+
+                </span>
+
+
+                <ProPic
+                    proPicBlob={getProPicBlob(messageSenderID, member)}
+                    style={{ width: "1.5em", height: "1.5em", outline: "none", bottom: "4px" }}
+                />
+            </>
+        )
+    }
+
+    const getProPicBlob = (messageSenderID, member) => {
+        
+        if (messageSenderID === _id) return proPicBlob
+        if (friendData?.proPicBlob) return friendData.proPicBlob
+        if (member) return member.userData.proPicBlob
+
     }
 
     return (
@@ -99,34 +132,26 @@ const ConversationContainer = memo(({ data }) => {
             >
 
                 {
-                    conversationData?.messages?.map((message, i) => {
+                    conversationData?.messages?.map(message => {
 
                         return (
-                            <div className={selectMessagesClassName(message.senderID, data._id)} key={uuidv4()} >
+                            <div className={selectMessagesClassName(message.senderID)} key={uuidv4()} >
 
                                 <div className="conversation-container__message-container">
 
                                     <div
-                                        className={selectConversationClassName(message.senderID, data._id, message.text)}
+                                        className={selectConversationClassName(message.senderID, message.text)}
                                     >
                                         {message.text}
                                     </div>
 
                                 </div>
 
-                                <div className={selectMetadataContainerClassName(message.senderID, data._id)}>
+                                <div className={selectMetadataContainerClassName(message.senderID)}>
 
                                     <span className='conversation-container__created-at-date'>{refactorDate(message.createdAt)}</span>
 
-                                    <span className='conversation-container__sender-username'>
-                                        {message.senderID === _id ? username : data.username}
-                                    </span>
-
-
-                                    <ProPic
-                                        proPicBlob={message.senderID === _id && proPicBlob}
-                                        style={{ width: "1.5em", height: "1.5em", outline: "none", bottom: "4px" }}
-                                    />
+                                    {selectUsernameAndProPicBlobJSX(message.senderID)}
 
                                 </div>
 

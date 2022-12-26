@@ -224,8 +224,6 @@ const socketMiddleware = store => next => action => {
             groupID: action.meta.arg.groupID
         }
 
-        console.log(action.meta.arg.groupID)
-
         socket.emit("send-message", payload)
 
     }

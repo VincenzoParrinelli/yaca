@@ -79,6 +79,8 @@ module.exports = {
                 secure: true
             })
 
+            //*************USE POPULATE TO FIX THIS CODE SCOPE 
+
             // await for all the promises to fullfill then send logged user data among with his friends, groups
             // and last message sent to the respective conversation so we can display it without fetching all the messages
             const friendsData = await User.find({ _id: userData.friendList })
@@ -86,19 +88,20 @@ module.exports = {
 
             const friendRequestsData = await User.find({ _id: userData.friendRequests }).select({ "username": 1, "profilePicID": 1 }).lean()
 
+            //*************USE POPULATE TO FIX THIS CODE SCOPE 
+
             // Get user to user conversations
             const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } }).select({ "__v": 0 }).lean() || []
 
-            await Group.find({ $or: [{ founder: userData._id }, { moderators: userData._id }, { members: userData._id }] }).lean().then(async groupsData => {
+            await Group.find({ "members.userData": userData._id }).populate("members.userData").then(async groupsData => {
 
-                // Get group all group ids
+                // Get all group ids
                 const groupIDS = groupsData.map(group => group._id)
 
                 await Conversation.find({ groupID: groupIDS }).lean().then(conversationData => {
-                    
+
                     // Merge group conversation into user to user conversations
                     getConversations.push(...conversationData)
-
 
                     res.json({
                         isLogged: true,
@@ -111,6 +114,7 @@ module.exports = {
                     })
 
                 })
+
             })
 
         }).catch(err => console.error(err.message))

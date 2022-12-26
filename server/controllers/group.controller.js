@@ -5,7 +5,7 @@ module.exports = {
 
         const { groupName, groupPicID, userID } = req.body
 
-        await Group.create({ groupName, groupPicID, founder: userID }).then(group => {
+        await Group.create({ groupName, groupPicID, members: [{ userData: userID, role: ["admin"] }] }).then(group => {
 
             res.json(group)
 

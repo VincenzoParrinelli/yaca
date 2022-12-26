@@ -6,10 +6,25 @@ const groupSchema = mongoose.Schema({
 
     groupPicID: String,
 
-    founder: String,
-    moderators: [String],
+    members: [{
 
-    members: [String]
+        userData: {
+            type: mongoose.Types.ObjectId,
+            ref: "User",
+        },
+
+        role: [{
+            type: String,
+            enum: ["admin", "user"],
+            default: "user"
+        }],
+
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
+
+    }]
 
 })
 

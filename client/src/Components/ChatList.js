@@ -57,13 +57,12 @@ export default function ChatList() {
 
         }
 
-        if (selectedConv && !selectedConv.isFullyFetched) dispatch(getConversation(selectedConv._id)).then(convData => handleNavigation(convData.payload, data))
+        if (!selectedConv?.isFullyFetched) dispatch(getConversation(selectedConv._id)).then(convData => handleNavigation(convData.payload, data))
 
+        if (selectedConv.isFullyFetched) handleNavigation(selectedConv, data)
     }
 
     const handleNavigation = (convData, data) => {
-
-        console.log(convData)
 
         if (!convData.groupID) navigate(`conversation/${convData._id}`, { state: { convData, friendData: data } })
 
