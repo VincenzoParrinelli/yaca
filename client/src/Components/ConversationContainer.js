@@ -9,11 +9,9 @@ const areEqual = (prevProps, nextProps) => prevProps.conversationData?.messages 
 
 const ConversationContainer = memo(({ conversationData, friendData, groupData }) => {
 
-    const { _id, proPicBlob, username } = useSelector(state => state.user.data)
+    const { _id, proPicBlob } = useSelector(state => state.user.data)
 
     const bottomDivRef = useRef(null)
-
-    console.log(groupData)
 
     useLayoutEffect(() => {
 
@@ -98,7 +96,7 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
 
                     {friendData?.username}
 
-                    {member.userData.username}
+                    {member.userData?.username}
 
                 </span>
 
@@ -112,7 +110,7 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
     }
 
     const getProPicBlob = (messageSenderID, member) => {
-        
+
         if (messageSenderID === _id) return proPicBlob
         if (friendData?.proPicBlob) return friendData.proPicBlob
         if (member) return member.userData.proPicBlob

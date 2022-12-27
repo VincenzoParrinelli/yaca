@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useParams, useLocation } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { getConversation, newConversation } from '../Redux/conversationSlice';
 import SearchBar from './SearchBar';
@@ -8,8 +8,6 @@ import ProPic from './ProPic';
 import "./ChatList.scss"
 
 export default function ChatList() {
-
-    const [selectedConv, setSelectedConv] = useState({})
 
     const { _id, friendList } = useSelector(state => state.user.data)
     const { conversationList } = useSelector(state => state.conversation)
@@ -69,6 +67,26 @@ export default function ChatList() {
         if (convData.groupID) navigate(`group/${data._id}/${convData._id}`, { state: { convData, groupData: data } })
     }
 
+
+    const renderLastMessage = (friendID, groupID) => {
+
+        return conversationList.map(conv => {
+
+            // Check if is a group or a direct conversation by using members array since group members
+            // are stored in groupList data 
+            if (conv.members.length && !conv.members.includes(friendID)) return
+
+            if (!conv.members.length && conv.groupID !== groupID) return
+
+            return <span className='chat-list__last-message' key={conv._id}>{conv.messages[conv.messages.length - 1]?.text}</span>
+
+
+        })
+
+    }
+
+
+
     return (
         <div className='chat-list'>
 
@@ -114,21 +132,7 @@ export default function ChatList() {
 
                                     <span className='chat-list__name'>{friend.username}</span>
 
-                                    {
-                                        /*display last message */
-                                    }
-
-
-                                    {conversationList.map(conv => {
-
-                                        if (!conv.members.includes(friend._id)) return
-                                        if (!conv.messages.text) return
-
-                                        return (
-                                            <span className='chat-list__last-message' key={conv._id}>{conv.messages[conv.messages.length - 1].text}</span>
-                                        )
-                                    })}
-
+                                    {renderLastMessage(friend._id)}
 
                                 </div>
 
@@ -163,6 +167,8 @@ export default function ChatList() {
                                 <div className='chat-list__userdata-container'>
 
                                     <span className='chat-list__name'>{group.groupName}</span>
+
+                                    {renderLastMessage(null, group._id)}
 
                                 </div>
 
