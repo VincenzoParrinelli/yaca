@@ -21,6 +21,8 @@ const validateAccessToken = (req, res, next) => {
 
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
 
+        if (!err) next()
+
         if (err?.name === "TokenExpiredError") {
 
             const refreshToken = authHeader?.split(" ")[1].split("=")[1].split(";")[0]
@@ -41,8 +43,7 @@ const validateAccessToken = (req, res, next) => {
                 next()
             })
 
-        } else return res.sendStatus(401)
-
+        }
 
     })
 }
