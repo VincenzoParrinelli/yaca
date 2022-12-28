@@ -15,47 +15,37 @@ const validateActivationToken = (req, res, next) => {
 
 const validateAccessToken = (req, res, next) => {
     const authHeader = req.headers.cookie
-    const accessToken = authHeader && authHeader.split(" ")[0].split("=")[1].split(";")[0]
+    const accessToken = authHeader?.split(" ")[0].split("=")[1].split(";")[0]
 
     if (!accessToken) return res.sendStatus(401)
 
-    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
 
-        //automatically refresh token on expiry
-        if (err && err.message === "jwt expired") {
-            
-            console.log(err.message)
+        if (err?.name === "TokenExpiredError") {
 
-            refreshToken(req, res, next)
-        } else if (err) return res.sendStatus(403)
+            const refreshToken = authHeader?.split(" ")[1].split("=")[1].split(";")[0]
 
-        next()
+            if (!refreshToken) return res.sendStatus(401)
+
+            jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+
+                if (err) return res.sendStatus(401)
+
+                const newAccessToken = jwt.sign({ id: decoded.id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
+
+                res.cookie("accessToken", newAccessToken, {
+                    httpOnly: true,
+                    secure: true
+                })
+
+                next()
+            })
+
+        } else return res.status(401)
+
+
     })
 }
 
-const refreshToken = (req, res, next) => {
-    const authHeader = req.headers.cookie
-    const refreshToken = authHeader && authHeader.split(" ")[1].split("=")[1].split(";")[0]
 
-    if (!refreshToken) return res.sendStatus(401)
-
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-
-        if (err) return res.sendStatus(403)
-
-        const accessToken = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
-        const refreshToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET)
-
-        res.cookie("accessToken", accessToken, {
-            httpOnly: true
-        })
-
-        res.cookie("refreshToken", refreshToken, {
-            httpOnly: true,
-        })
-
-        next()
-    })
-}
-
-module.exports = { validateActivationToken, validateAccessToken, refreshToken }
+module.exports = { validateActivationToken, validateAccessToken }

@@ -60,7 +60,7 @@ module.exports = {
         if (!await bcrypt.compare(password, userData.password)) return res.status(401).send({ passwordErrors: { isInvalid: true } })
 
         //create access and refresh token
-        const accessToken = jwt.sign({ id: userData._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" })
+        const accessToken = jwt.sign({ id: userData._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1s" })
         const refreshToken = jwt.sign({ id: userData._id }, process.env.REFRESH_TOKEN_SECRET)
 
         await auth().createCustomToken(userData._id.toString()).then(async firebaseToken => {
