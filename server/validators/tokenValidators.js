@@ -41,7 +41,7 @@ const validateAccessToken = (req, res, next) => {
                 next()
             })
 
-        } else return res.status(401)
+        } else return res.sendStatus(401)
 
 
     })
