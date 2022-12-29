@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useRef } from 'react'
+import React, { memo, useLayoutEffect, useRef, useState } from 'react'
 import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { Scrollbars } from 'react-custom-scrollbars-2';
@@ -25,7 +25,7 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
 
     }, [conversationData._id])
 
-    const refactorDate = createdAt => {
+    const refactorMessageDate = createdAt => {
 
         const stringToDate = new Date(createdAt)
 
@@ -39,6 +39,17 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
 
         return formattedString
     }
+
+    const refactorSeparatorDate = createdAt => {
+
+        const stringToDate = new Date(createdAt)
+
+        // Format date to hour12 (AM - PM) format
+        let formattedString = stringToDate.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
+
+        return formattedString
+    }
+
 
     const selectMessagesClassName = (messageSenderID) => {
 
@@ -117,6 +128,26 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
 
     }
 
+    const getDay = createdAt => new Date(createdAt).toLocaleDateString("en-GB", { day: "numeric" })
+
+    // Render date separator once for each day 
+    const renderDateSeparator = (message, i) => {
+
+        const currentMessageDay = getDay(message.createdAt)
+        const prevMessageDay = getDay(conversationData.messages[i - 1]?.createdAt)
+
+        if (currentMessageDay === prevMessageDay) return
+
+        return (
+            <div className='conversation-container__date-separator'>
+
+                <span className='conversation-container__date-separator-date-text'>{refactorSeparatorDate(message.createdAt)}</span>
+
+            </div>
+        )
+    }
+
+
     return (
 
         <div className='conversation-container'>
@@ -130,31 +161,38 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
             >
 
                 {
-                    conversationData?.messages?.map(message => {
+                    conversationData?.messages?.map((message, i) => {
+
 
                         return (
-                            <div className={selectMessagesClassName(message.senderID)} key={uuidv4()} >
 
-                                <div className="conversation-container__message-container">
+                            <>
 
-                                    <div
-                                        className={selectConversationClassName(message.senderID, message.text)}
-                                    >
-                                        {message.text}
+                                {renderDateSeparator(message, i)}
+
+                                <div className={selectMessagesClassName(message.senderID)} key={uuidv4()} >
+
+                                    <div className="conversation-container__message-container">
+
+                                        <div
+                                            className={selectConversationClassName(message.senderID, message.text)}
+                                        >
+                                            {message.text}
+                                        </div>
+
                                     </div>
 
+                                    <div className={selectMetadataContainerClassName(message.senderID)}>
+
+                                        <span className='conversation-container__created-at-date'>{refactorMessageDate(message.createdAt)}</span>
+
+                                        {selectUsernameAndProPicBlobJSX(message.senderID)}
+
+                                    </div>
+
+                                    <div ref={bottomDivRef}></div>
                                 </div>
-
-                                <div className={selectMetadataContainerClassName(message.senderID)}>
-
-                                    <span className='conversation-container__created-at-date'>{refactorDate(message.createdAt)}</span>
-
-                                    {selectUsernameAndProPicBlobJSX(message.senderID)}
-
-                                </div>
-
-                                <div ref={bottomDivRef}></div>
-                            </div>
+                            </>
 
                         )
                     })
