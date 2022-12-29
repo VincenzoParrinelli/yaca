@@ -2,7 +2,10 @@ const mongoose = require("mongoose")
 
 const conversationSchema = mongoose.Schema({
 
-    members: [String],
+    members: [{
+        type: mongoose.Types.ObjectId,
+        ref: "User"
+    }],
 
     groupID: String,
 

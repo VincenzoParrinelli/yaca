@@ -91,17 +91,17 @@ module.exports = {
             //*************USE POPULATE TO FIX THIS CODE SCOPE 
 
             // Get user to user conversations
-            const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } }).select({ "__v": 0 }).lean() || []
+            const getConversations = await Conversation.find({ members: userData._id }, { messages: { $slice: -1 } })
+                .populate({ path: 'members', select: '+ email profilePicID socketID username' }).lean() || []
 
+
+            //******DO I REALLY NEED TO POPULATE AGAIN??? */ 
             await Group.find({ "members.userData": userData._id }).populate("members.userData").then(async groupsData => {
 
                 // Get all group ids
                 const groupIDS = groupsData.map(group => group._id)
 
                 await Conversation.find({ groupID: groupIDS }).lean().then(conversationData => {
-
-                    // Merge group conversation into user to user conversations
-                    getConversations.push(...conversationData)
 
                     res.json({
                         isLogged: true,
@@ -110,7 +110,8 @@ module.exports = {
                         friendRequestsData,
                         friendList: friendsData,
                         groupList: groupsData,
-                        convData: getConversations
+                        convData: getConversations,
+                        groupConvData: conversationData
                     })
 
                 })

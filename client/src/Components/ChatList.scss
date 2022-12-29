@@ -108,6 +108,13 @@
         pointer-events: none;
         line-height: 20px;
     }
+
+    &__new-message-counter {
+
+        &[data-newMessageCounter] {
+            
+        }
+    }
     
     &__last-message {
         font: 12.5px "RozanovaUltraLight";

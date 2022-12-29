@@ -6,6 +6,8 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 const initialState = {
     conversationList: [],
 
+    groupConversationList: [],
+
     newMessageFromSocket: null
 }
 
@@ -54,7 +56,11 @@ export const conversationSlice = createSlice({
 
         //get only last messages on login, so we can display them after user has logged in
         getLastMessages: (state, action) => {
-            state.conversationList = action.payload
+
+            const {convData, groupConvData} = action.payload
+
+            state.conversationList = convData
+            state.groupConversationList = groupConvData
         },
 
         //handle this in middleware

@@ -190,7 +190,6 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
 
                                     </div>
 
-                                    <div ref={bottomDivRef}></div>
                                 </div>
                             </>
 
@@ -198,6 +197,7 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
                     })
                 }
 
+                <div ref={bottomDivRef}></div>
             </Scrollbars>
         </div>
 

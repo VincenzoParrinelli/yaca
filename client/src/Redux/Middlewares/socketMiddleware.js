@@ -155,6 +155,11 @@ const socketMiddleware = store => next => action => {
                 type: "conversation/getMessage",
                 payload: conversation
             })
+
+            store.dispatch({
+                type: "user/increaseNewMessageCounter",
+                payload: conversation._id
+            })
         })
 
         //group listeners

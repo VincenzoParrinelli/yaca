@@ -252,6 +252,14 @@ export const userSlice = createSlice({
             state.searchedUsers = []
         },
 
+        increaseNewMessageCounter: (state, action) => {
+
+            state.friendList.map(friend => {
+
+            })
+
+        },
+
         reset: state => {
             state.emailSent = false
         },
