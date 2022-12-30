@@ -10,6 +10,14 @@ module.exports = (group, io) => {
         await User.findById()
     })
 
+    group.on("send-group-message", payload => {
+
+        const { newMessage, groupID } = payload
+
+        group.to(groupID).emit("get-group-message", { newMessage, groupID })
+
+    })
+
     group.on("update-group-settings", async payload => {
 
         const { userID, selectedGroupID, newSettings } = payload
@@ -60,7 +68,7 @@ module.exports = (group, io) => {
                 const idToJSON = data._id.toJSON()
 
                 io.in(idToJSON).emit("delete-group-successful", groupID)
-                
+
             }).catch(err => new Error(err.message))
 
         }).catch(err => new Error(err.message))

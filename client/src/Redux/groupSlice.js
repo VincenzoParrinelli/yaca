@@ -6,6 +6,7 @@ const serverUrl = process.env.REACT_APP_SERVER_ROOT_URL
 const initialState = {
     groupList: [],
 
+    newGroupMessageFromSocket: null
 }
 
 export const createGroup = createAsyncThunk(
@@ -20,6 +21,29 @@ export const createGroup = createAsyncThunk(
         return res.data
     }).catch(err => { throw Error(err) })
 )
+
+
+export const getAllGroupMessages = createAsyncThunk(
+    "group/getAllGroupMessages",
+
+    async groupID => await axios.get(`${serverUrl}group/get-all-group-messages/${groupID}`,
+
+        { withCredentials: true }
+
+    ).then(res => res.data)
+)
+
+export const sendGroupMessage = createAsyncThunk(
+    "group/sendGroupMessage",
+
+    async payload => await axios.post(`${serverUrl}group/send-group-message`,
+
+        payload,
+        { withCredentials: true }
+
+    ).then(res => res.data)
+)
+
 
 
 const groupSlice = createSlice({
@@ -42,6 +66,35 @@ const groupSlice = createSlice({
         updateGroupSettings: () => { },
 
         deleteGroup: () => { },
+
+        getGroupMessage: (state, action) => {
+
+            const { newMessage, groupID } = action.payload
+
+            state.groupList.forEach(group => {
+
+                if (group._id !== groupID) return
+
+                group.messages.push(newMessage)
+
+            })
+
+            state.newGroupMessageFromSocket = newMessage
+
+        },
+
+        updateGroupChatUI: (state, action) => {
+
+            const { newMessage, groupID } = action.payload
+
+            state.groupList.forEach(group => {
+
+                if (group._id !== groupID) return
+
+                group.messages.push(newMessage)
+            })
+
+        },
 
         getUpdatedGroupSettings: (state, action) => {
 
@@ -71,6 +124,15 @@ const groupSlice = createSlice({
             state.groupList.push(newGroup)
         },
 
+        [getAllGroupMessages.fulfilled]: (state, action) => {
+
+            action.payload.isFullyFetched = true
+
+            const groupToUpdate = state.groupList.find(conv => conv._id === action.payload._id)
+
+            Object.assign(groupToUpdate, action.payload)
+        }
+
     }
 })
 
@@ -79,6 +141,7 @@ export const {
     sendGroupInvite,
     updateGroupSettings,
     deleteGroup,
+    updateGroupChatUI
 
 } = groupSlice.actions
 

@@ -7,8 +7,6 @@ const conversationSchema = mongoose.Schema({
         ref: "User"
     }],
 
-    groupID: String,
-
     messages: [{
         _id: mongoose.ObjectId,
         senderID: String,

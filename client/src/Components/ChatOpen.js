@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { useLocation, useParams } from 'react-router-dom'
 import { sendMessage } from '../Redux/conversationSlice'
 import { updateChat } from '../Redux/conversationSlice'
+import { sendGroupMessage, updateGroupChatUI } from '../Redux/groupSlice'
 import ConversationHeader from "./ConversationHeader"
 import ConversationContainer from './ConversationContainer'
 import { ReactComponent as Plus } from "../Assets/Images/plus.svg"
@@ -14,11 +15,14 @@ export default function ChatOpen() {
     const [message, setMessage] = useState("")
 
     const { _id } = useSelector(state => state.user.data)
-    const { newMessageFromSocket } = useSelector(state => state.conversation)
+    const { newMessageFromSocket, } = useSelector(state => state.conversation)
+    const { newGroupMessageFromSocket } = useSelector(state => state.group)
 
     const { conversationID } = useParams()
 
-    const { friendData, groupData, convData } = useLocation().state
+    const { convData, receiverData } = useLocation().state
+
+    console.log(convData)
 
     const [conversationData, setConversationData] = useState({})
 
@@ -38,26 +42,39 @@ export default function ChatOpen() {
 
             if (!message) return
 
-            let payload = {}
-
-            // Set payload accordingly 
-            if (friendData) payload = { message, currentUserID: _id, friendSocketID: friendData.socketID, conversationID }
-            if (groupData) payload = { message, currentUserID: _id, groupID: groupData._id, conversationID }
-
-            dispatch(updateChat({ message, _id, conversationID }))
-
             const currentDate = Date()
 
             const newMessage = { text: message, senderID: _id, createdAt: currentDate }
 
-            setConversationData({ ...conversationData, messages: conversationData.messages.concat(newMessage) })
+            setConversationData({ ...conversationData, messages: conversationData.messages?.concat(newMessage) })
+
+            let payload = {}
+
+            // Set payload accordingly 
+            if (!convData.groupName) {
+
+                payload = { newMessage, receiverSocketID: receiverData.socketID, conversationID }
+
+                dispatch(updateChat(payload))
+
+                dispatch(sendMessage(payload))
+            }
+
+            if (convData.groupName) {
+
+                payload = { newMessage, groupID: convData._id }
+
+                dispatch(updateGroupChatUI(payload))
+
+                dispatch(sendGroupMessage(payload))
+
+            }
 
             // Reset state message and editable div 
             setMessage("")
 
             textAreaRef.current.textContent = ""
 
-            dispatch(sendMessage(payload))
 
         }
 
@@ -65,20 +82,20 @@ export default function ChatOpen() {
 
     useEffect(() => {
 
-        newMessageFromSocket && setConversationData({ ...conversationData, messages: conversationData.messages?.concat(newMessageFromSocket) })
+        (newMessageFromSocket || newGroupMessageFromSocket) && setConversationData({ ...conversationData, messages: conversationData.messages?.concat(newMessageFromSocket || newGroupMessageFromSocket) })
 
-    }, [newMessageFromSocket])
+    }, [newMessageFromSocket, newGroupMessageFromSocket])
 
     // Conditionally render a user to user conversation or a group conversation 
 
     return (
         <div className='chat-open'>
 
-            <ConversationHeader data={friendData ? friendData : groupData} />
+            <ConversationHeader data={receiverData ? receiverData : conversationData} />
 
             <div className='chat-open__overlay'>
 
-                <ConversationContainer conversationData={conversationData} friendData={friendData} groupData={groupData} />
+                <ConversationContainer conversationData={conversationData} receiverData={receiverData} />
 
                 <div className='chat-open__message-input-container'>
 

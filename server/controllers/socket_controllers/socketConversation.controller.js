@@ -1,21 +1,17 @@
 module.exports = conversation => {
 
-    conversation.on("send-new-conversation", async payload => {
+    conversation.on("send-new-conversation", payload => {
 
         const { newConversation, receiverSocketID } = payload
 
         conversation.to(receiverSocketID).emit("get-new-conversation", newConversation)
     })
 
-    conversation.on("send-message", async payload => {
+    conversation.on("send-message", payload => {
 
-        const newMessage = payload.newMessage
-        const { friendSocketID, conversationID, groupID } = payload
+        const { newMessage, receiverSocketID, conversationID } = payload
 
-        const response = { conversationID, newMessage }
-
-        friendSocketID && conversation.to(friendSocketID).emit("get-message", response)
-        groupID && conversation.to(groupID).emit("get-message", response)
+        conversation.to(receiverSocketID).emit("get-message", { newMessage, conversationID })
 
     })
 }

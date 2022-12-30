@@ -96,24 +96,17 @@ module.exports = {
 
 
             //******DO I REALLY NEED TO POPULATE AGAIN??? */ 
-            await Group.find({ "members.userData": userData._id }).populate("members.userData").then(async groupsData => {
+            await Group.find({ "members.userData": userData._id }, { messages: { $slice: -1 } }).populate("members.userData").then(async groupsData => {
 
-                // Get all group ids
-                const groupIDS = groupsData.map(group => group._id)
 
-                await Conversation.find({ groupID: groupIDS }).lean().then(conversationData => {
-
-                    res.json({
-                        isLogged: true,
-                        isValid: true,
-                        userData,
-                        friendRequestsData,
-                        friendList: friendsData,
-                        groupList: groupsData,
-                        convData: getConversations,
-                        groupConvData: conversationData
-                    })
-
+                res.json({
+                    isLogged: true,
+                    isValid: true,
+                    userData,
+                    friendRequestsData,
+                    friendList: friendsData,
+                    groupList: groupsData,
+                    convData: getConversations,
                 })
 
             })

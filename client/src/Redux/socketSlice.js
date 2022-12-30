@@ -35,9 +35,6 @@ export const socketsSlice = createSlice({
 
         refuseFriendRequest: () => { },
 
-        //check socketMiddleware.js for message handling
-       // sendMessage: () => { }
-
     },
 
 })

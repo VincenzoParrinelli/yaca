@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useRef, useState } from 'react'
+import React, { memo, useLayoutEffect, useRef } from 'react'
 import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { Scrollbars } from 'react-custom-scrollbars-2';
@@ -7,7 +7,7 @@ import "./ConversationContainer.scss"
 
 const areEqual = (prevProps, nextProps) => prevProps.conversationData?.messages === nextProps.conversationData?.messages
 
-const ConversationContainer = memo(({ conversationData, friendData, groupData }) => {
+const ConversationContainer = memo(({ conversationData, recieverData, groupData }) => {
 
     const { _id, proPicBlob } = useSelector(state => state.user.data)
 
@@ -99,15 +99,15 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
 
         let member = {}
 
-        if (!friendData?.username) member = groupData.members.find(member => member.userData._id === messageSenderID)
+        if (!recieverData?.username) member = groupData?.members?.find(member => member.userData._id === messageSenderID)
 
         return (
             <>
                 <span className='conversation-container__sender-username'>
 
-                    {friendData?.username}
+                    {recieverData?.username}
 
-                    {member.userData?.username}
+                    {member?.userData?.username}
 
                 </span>
 
@@ -123,8 +123,8 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
     const getProPicBlob = (messageSenderID, member) => {
 
         if (messageSenderID === _id) return proPicBlob
-        if (friendData?.proPicBlob) return friendData.proPicBlob
-        if (member) return member.userData.proPicBlob
+        if (recieverData?.proPicBlob) return recieverData.proPicBlob
+        if (member) return member.userData?.proPicBlob
 
     }
 
@@ -133,7 +133,7 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
     // Render date separator once for each day 
     const renderDateSeparator = (message, i) => {
 
-        const currentMessageDay = getDay(message.createdAt)
+        const currentMessageDay = getDay(message?.createdAt)
         const prevMessageDay = getDay(conversationData.messages[i - 1]?.createdAt)
 
         if (currentMessageDay === prevMessageDay) return
@@ -163,6 +163,7 @@ const ConversationContainer = memo(({ conversationData, friendData, groupData })
                 {
                     conversationData?.messages?.map((message, i) => {
 
+                        if (!message) return
 
                         return (
 

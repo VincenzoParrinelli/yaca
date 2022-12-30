@@ -65,15 +65,14 @@ const userMiddleware = store => next => async action => {
 
 
         //load conversations last messages
-        const { convData, groupConvData } = action.payload
+        const { convData } = action.payload
 
         //for each conversation set an isFullyFetched flag to false since we are only fetching the last messages for now
         convData.forEach(conv => conv.isFullyFetched = false)
-        groupConvData.forEach(conv => conv.isFullyFetched = false)
 
         store.dispatch({
             type: "conversation/getLastMessages",
-            payload: {convData, groupConvData}
+            payload: convData
         })
 
 

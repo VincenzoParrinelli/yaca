@@ -1,22 +1,22 @@
 import React from 'react'
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { getConversation, newConversation } from '../Redux/conversationSlice';
+import { getAllGroupMessages } from '../Redux/groupSlice';
+import { getReceiverDataFromConv } from "../helpers/getReceiverDataFromConv"
 import SearchBar from './SearchBar';
 import ProPic from './ProPic';
 import "./ChatList.scss"
 
 export default function ChatList() {
 
-    const { _id, friendList } = useSelector(state => state.user.data)
-    const { conversationList, groupConversationList } = useSelector(state => state.conversation)
+    const { _id } = useSelector(state => state.user.data)
+    const { conversationList } = useSelector(state => state.conversation)
     const { groupList } = useSelector(state => state.group)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
-    const { friendID, groupID } = useParams()
 
     const showScrollBar = () => {
         const scrollbarRef = document.querySelector(".chat-list__scrollbar-thumb-vertical")
@@ -30,28 +30,32 @@ export default function ChatList() {
         scrollbarRef.style.visibility = "hidden"
     }
 
-    const handleConv = (conv, senderOrGroupData) => {
+    const handleConv = (conv, receiverData) => {
 
         if (!conv) {
 
-            // Define payload for either group conversation or direct conversation
-            let payload = senderOrGroupData.groupName ? { groupID: senderOrGroupData._id, socketID: senderOrGroupData.socketID } : { userID: _id, friendID: senderOrGroupData._id, socketID: senderOrGroupData.socketID }
+            // Define payload for direct conversation
+            let payload = { userID: _id, friendID: receiverData._id, socketID: receiverData.socketID }
 
-            dispatch(newConversation(payload)).then(newConv => handleNavigation(newConv.payload, senderOrGroupData))
+            dispatch(newConversation(payload)).then(newConv => handleNavigation(newConv.payload, receiverData))
 
         }
 
-        if (!conv?.isFullyFetched) dispatch(getConversation(conv._id)).then(convData => handleNavigation(convData.payload, senderOrGroupData))
+        if (!conv?.isFullyFetched) {
 
-        if (conv.isFullyFetched) handleNavigation(conv, senderOrGroupData)
+            if (!conv.groupName) dispatch(getConversation(conv._id)).then(convData => handleNavigation(convData.payload, receiverData))
+            if (conv.groupName) dispatch(getAllGroupMessages(conv._id)).then(convData => handleNavigation(convData.payload))
+        }
+
+        if (conv.isFullyFetched) handleNavigation(conv, receiverData)
     }
 
 
-    const handleNavigation = (convData, senderOrGroupData) => {
+    const handleNavigation = (convData, receiverData) => {
 
-        if (!convData.groupID) navigate(`conversation/${convData._id}`, { state: { convData, friendData: senderOrGroupData } })
+        if (!convData.groupName) navigate(`conversation/${convData._id}`, { state: { convData, receiverData } })
 
-        if (convData.groupID) navigate(`group/${senderOrGroupData._id}/${convData._id}`, { state: { convData, groupData: senderOrGroupData } })
+        if (convData.groupName) navigate(`group/${convData._id}`, { state: { convData } })
     }
 
 
@@ -72,9 +76,6 @@ export default function ChatList() {
         })
 
     }
-
-
-    console.log(conversationList)
 
     return (
         <div className='chat-list'>
@@ -98,27 +99,25 @@ export default function ChatList() {
 
                     {conversationList?.map(conv => {
 
-                        const senderData = conv.members.find(member => member._id !== _id)
-
-
+                        const receiverData = getReceiverDataFromConv(conv, _id)
 
                         return (
                             <div
                                 key={conv._id}
                                 className='chat-list__element-container'
-                                onClick={() => handleConv(conv, senderData)}
+                                onClick={() => handleConv(conv, receiverData)}
                             >
                                 <ProPic
-                                    proPicBlob={senderData.proPicBlob}
-                                    socketID={senderData.socketID}
+                                    proPicBlob={receiverData.proPicBlob}
+                                    socketID={receiverData.socketID}
                                     style={{ marginLeft: "10px", width: "2.5em", height: "2.5em" }}
                                 />
 
                                 <div className='chat-list__userdata-container'>
 
-                                    <span className='chat-list__name'>{senderData.username}</span>
+                                    <span className='chat-list__name'>{receiverData.username}</span>
 
-                                    {renderLastMessage(senderData._id)}
+                                    {renderLastMessage(receiverData._id)}
 
 
                                 </div>
@@ -129,6 +128,31 @@ export default function ChatList() {
 
                     <p className='chat-list__text chat-list__text--group-messages'> Group Messages </p>
 
+                    {groupList.map(group => {
+
+                        return (
+                            <div
+                                key={group._id}
+                                className='chat-list__element-container'
+                                onClick={() => handleConv(group)}
+                            >
+                                <ProPic
+                                    proPicBlob={group.proPicBlob}
+
+                                    style={{ marginLeft: "10px", width: "2.5em", height: "2.5em" }}
+                                />
+
+                                <div className='chat-list__userdata-container'>
+
+                                    <span className='chat-list__name'>{group.groupName}</span>
+
+                                    {renderLastMessage(group._id)}
+
+
+                                </div>
+                            </div>
+                        )
+                    })}
 
                     {/* {friendList?.map(friend => {
 

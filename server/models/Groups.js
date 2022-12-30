@@ -24,6 +24,18 @@ const groupSchema = mongoose.Schema({
             default: Date.now,
         },
 
+    }],
+
+    messages: [{
+        _id: mongoose.ObjectId,
+        senderID: String,
+        text: String,
+
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        }
+
     }]
 
 })

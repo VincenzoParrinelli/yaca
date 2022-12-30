@@ -9,4 +9,8 @@ router.use(validateAccessToken)
 
 router.post("/create-group", groupController.createGroup)
 
+router.get("/get-all-group-messages/:groupID", groupController.getAllGroupMessages)
+
+router.post("/send-group-message", groupController.sendGroupMessage)
+
 module.exports = router

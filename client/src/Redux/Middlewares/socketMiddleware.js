@@ -149,17 +149,17 @@ const socketMiddleware = store => next => action => {
 
         })
 
-        socket.on("get-message", conversation => {
+        socket.on("get-message", payload => {
 
             store.dispatch({
                 type: "conversation/getMessage",
-                payload: conversation
+                payload
             })
 
-            store.dispatch({
-                type: "user/increaseNewMessageCounter",
-                payload: conversation._id
-            })
+            // store.dispatch({
+            //     type: "user/increaseNewMessageCounter",
+            //     payload: conversation._id
+            // })
         })
 
         //group listeners
@@ -169,6 +169,14 @@ const socketMiddleware = store => next => action => {
             store.dispatch({
                 type: "group/getUpdatedGroupSettings",
                 payload: updatedGroupData
+            })
+        })
+
+        socket.on("get-group-message", payload => {
+
+            store.dispatch({
+                type: "group/getGroupMessage",
+                payload
             })
         })
 
@@ -222,14 +230,21 @@ const socketMiddleware = store => next => action => {
 
     if (action.type === "conversation/sendMessage/fulfilled") {
 
-        const payload = {
-            newMessage: action.payload,
-            friendSocketID: action.meta.arg.friendSocketID,
-            conversationID: action.meta.arg.conversationID,
-            groupID: action.meta.arg.groupID
-        }
+        const { newMessage, conversationID, receiverSocketID } = action.meta.arg
+
+        const payload = { newMessage, receiverSocketID, conversationID }
 
         socket.emit("send-message", payload)
+
+    }
+
+    if (action.type === "group/sendGroupMessage/fulfilled") {
+
+        const { newMessage, groupID } = action.meta.arg
+
+        const payload = { newMessage, groupID }
+
+        socket.emit("send-group-message", payload)
 
     }
 

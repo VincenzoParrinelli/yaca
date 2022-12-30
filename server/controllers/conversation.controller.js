@@ -4,9 +4,9 @@ module.exports = {
 
     newConversation: async (req, res) => {
 
-        const { userID, friendID, groupID } = req.body
+        const { userID, friendID } = req.body
 
-        await Conversation.create(groupID ? { groupID } : { members: [userID, friendID] }).then(newConversation => {
+        await Conversation.create({ members: [userID, friendID] }).then(newConversation => {
 
             res.status(201).json(newConversation)
 
@@ -18,26 +18,28 @@ module.exports = {
 
         const { conversationID } = req.params
 
-        await Conversation.findById(conversationID).lean().then(conversation => {
+        /**********populate again?**/
+        await Conversation.findById(conversationID).populate({ path: 'members', select: '+ email profilePicID socketID username' })
+            .lean().then(conversation => {
 
-            res.json(conversation)
+                res.json(conversation)
 
-        }).catch(err => console.error(err.message))
+            }).catch(err => console.error(err.message))
     },
 
     sendMessage: async (req, res) => {
 
-        const { message, currentUserID, conversationID } = req.body
+        const { newMessage, conversationID } = req.body
 
         await Conversation.findByIdAndUpdate(
 
             conversationID,
-            { $push: { messages: { senderID: currentUserID, text: message } } },
+            { $push: { messages: newMessage } },
             { new: true }
 
-        ).lean().then(conversationData => {
+        ).lean().then(() => {
 
-            const newMessage = conversationData.messages[conversationData.messages.length - 1]
+            //const newMessage = conversationData.messages[conversationData.messages.length - 1]
 
             res.status(201).json(newMessage)
 
