@@ -40,13 +40,15 @@ export default function ChatList() {
             dispatch(newConversation(payload)).then(newConv => handleNavigation(newConv.payload, receiverData))
 
         }
-
+        
+        // Fetch conv If it hasn't been fetched yet 
         if (!conv?.isFullyFetched) {
 
             if (!conv.groupName) dispatch(getConversation(conv._id)).then(convData => handleNavigation(convData.payload, receiverData))
             if (conv.groupName) dispatch(getAllGroupMessages(conv._id)).then(convData => handleNavigation(convData.payload))
         }
-
+        
+        // else render conv
         if (conv.isFullyFetched) handleNavigation(conv, receiverData)
     }
 

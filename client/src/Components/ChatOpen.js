@@ -22,8 +22,6 @@ export default function ChatOpen() {
 
     const { convData, receiverData } = useLocation().state
 
-    console.log(convData)
-
     const [conversationData, setConversationData] = useState({})
 
     const dispatch = useDispatch()
@@ -50,7 +48,7 @@ export default function ChatOpen() {
 
             let payload = {}
 
-            // Set payload accordingly 
+            // Set payload based on group or normal conversation by using groupname property
             if (!convData.groupName) {
 
                 payload = { newMessage, receiverSocketID: receiverData.socketID, conversationID }
@@ -80,6 +78,7 @@ export default function ChatOpen() {
 
     }
 
+    // Get incoming message from socket and update ui
     useEffect(() => {
 
         (newMessageFromSocket || newGroupMessageFromSocket) && setConversationData({ ...conversationData, messages: conversationData.messages?.concat(newMessageFromSocket || newGroupMessageFromSocket) })
