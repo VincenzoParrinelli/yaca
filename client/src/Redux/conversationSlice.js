@@ -55,9 +55,7 @@ export const conversationSlice = createSlice({
         //get only last messages on login, so we can display them after user has logged in
         getLastMessages: (state, action) => {
 
-            const convData = action.payload
-
-            state.conversationList = convData
+            state.conversationList = action.payload
 
         },
 

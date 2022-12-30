@@ -106,7 +106,7 @@ module.exports = {
                     friendRequestsData,
                     friendList: friendsData,
                     groupList: groupsData,
-                    convData: getConversations,
+                    conversationsData: getConversations,
                 })
 
             })

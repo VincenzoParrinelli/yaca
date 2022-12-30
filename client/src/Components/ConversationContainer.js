@@ -7,7 +7,7 @@ import "./ConversationContainer.scss"
 
 const areEqual = (prevProps, nextProps) => prevProps.conversationData?.messages === nextProps.conversationData?.messages
 
-const ConversationContainer = memo(({ conversationData, recieverData, groupData }) => {
+const ConversationContainer = memo(({ conversationData, receiverData }) => {
 
     const { _id, proPicBlob } = useSelector(state => state.user.data)
 
@@ -99,13 +99,13 @@ const ConversationContainer = memo(({ conversationData, recieverData, groupData 
 
         let member = {}
 
-        if (!recieverData?.username) member = groupData?.members?.find(member => member.userData._id === messageSenderID)
-
+        if (!receiverData?.username) member = conversationData.members?.find(member => member.userData._id === messageSenderID)
+        
         return (
             <>
                 <span className='conversation-container__sender-username'>
 
-                    {recieverData?.username}
+                    {receiverData?.username}
 
                     {member?.userData?.username}
 
@@ -123,7 +123,7 @@ const ConversationContainer = memo(({ conversationData, recieverData, groupData 
     const getProPicBlob = (messageSenderID, member) => {
 
         if (messageSenderID === _id) return proPicBlob
-        if (recieverData?.proPicBlob) return recieverData.proPicBlob
+        if (receiverData?.proPicBlob) return receiverData.proPicBlob
         if (member) return member.userData?.proPicBlob
 
     }
@@ -162,8 +162,6 @@ const ConversationContainer = memo(({ conversationData, recieverData, groupData 
 
                 {
                     conversationData?.messages?.map((message, i) => {
-
-                        if (!message) return
 
                         return (
 

@@ -18,13 +18,11 @@ module.exports = {
 
         const { conversationID } = req.params
 
-        /**********populate again?**/
-        await Conversation.findById(conversationID).populate({ path: 'members', select: '+ email profilePicID socketID username' })
-            .lean().then(conversation => {
+        await Conversation.findById(conversationID).select({ "messages": 1 }).lean().then(conversation => {
 
-                res.json(conversation)
+            res.json(conversation)
 
-            }).catch(err => console.error(err.message))
+        }).catch(err => console.error(err.message))
     },
 
     sendMessage: async (req, res) => {

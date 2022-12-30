@@ -1,4 +1,5 @@
 import { loadProPics } from "../../helpers/firebase.helpers"
+import { getReceiverDataFromConv } from "../../helpers/getReceiverDataFromConv"
 
 const userMiddleware = store => next => async action => {
 
@@ -65,15 +66,33 @@ const userMiddleware = store => next => async action => {
 
 
         //load conversations last messages
-        const { convData } = action.payload
+        const { conversationsData } = action.payload
+        const { _id } = store.getState().user.data
+
 
         //for each conversation set an isFullyFetched flag to false since we are only fetching the last messages for now
-        convData.forEach(conv => conv.isFullyFetched = false)
 
-        store.dispatch({
-            type: "conversation/getLastMessages",
-            payload: convData
+        const loadedConversations = conversationsData.map(async conv => {
+
+            conv.isFullyFetched = false
+
+            const receiverData = getReceiverDataFromConv(conv, _id)
+
+            const loadedReceiver = await loadProPics(receiverData)
+
+            Object.assign(...conv.members, loadedReceiver)
+
+            return conv
         })
+
+        promisesQueue.push(Promise.all(loadedConversations).then(requests => {
+
+            store.dispatch({
+                type: "conversation/getLastMessages",
+                payload: requests
+            })
+
+        }))
 
 
         const groupList = action.payload.groupList

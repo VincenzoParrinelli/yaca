@@ -63,7 +63,6 @@ export default function ChatList() {
 
     const renderLastMessage = (friendID, groupID) => {
 
-
         return conversationList.map(conv => {
 
             // Check if is a group or a direct conversation by using members array since group members
@@ -109,6 +108,8 @@ export default function ChatList() {
                                 className='chat-list__element-container'
                                 onClick={() => handleConv(conv, receiverData)}
                             >
+
+
                                 <ProPic
                                     proPicBlob={receiverData.proPicBlob}
                                     socketID={receiverData.socketID}
@@ -140,7 +141,6 @@ export default function ChatList() {
                             >
                                 <ProPic
                                     proPicBlob={group.proPicBlob}
-
                                     style={{ marginLeft: "10px", width: "2.5em", height: "2.5em" }}
                                 />
 

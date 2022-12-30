@@ -5,7 +5,6 @@ import "./ConversationHeader.scss"
 export default function ChatHeader({ data }) {
 
     const { proPicBlob, socketID, username, groupName } = data
-    
 
     return (
 
